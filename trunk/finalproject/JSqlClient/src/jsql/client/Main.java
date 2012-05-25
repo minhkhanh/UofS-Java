@@ -2,9 +2,10 @@ package jsql.client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-
-public class Main extends JFrame{
+public class Main extends JFrame implements ActionListener{
 
 	private JButton jB_Execute;
     private JLabel jLabel1;
@@ -34,8 +35,11 @@ public class Main extends JFrame{
 
         jB_Execute.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jB_Execute.setText("Execute");
+        jB_Execute.setActionCommand("a_execute");
+        jB_Execute.addActionListener(this);
 
-        jPanel1.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( javax.swing.border.EtchedBorder.RAISED), "Statement", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel1.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( javax.swing.border.EtchedBorder.RAISED),
+        		"Statement", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jTA_State.setColumns(20);
         jTA_State.setRows(5);
@@ -52,7 +56,8 @@ public class Main extends JFrame{
             .addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
 
-        jPanel2.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( javax.swing.border.EtchedBorder.RAISED), "Result", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel2.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( javax.swing.border.EtchedBorder.RAISED), 
+        		"Result", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -125,6 +130,12 @@ public class Main extends JFrame{
                 new Main().setVisible(true);
             }
         });
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
