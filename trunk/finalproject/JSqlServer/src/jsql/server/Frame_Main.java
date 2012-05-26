@@ -117,13 +117,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 				GroupLayout.Alignment.LEADING).addComponent(jScrollPane2,
 				GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE));
 
-		/*
-		 * JButton button = new JButton(); button.setText("Execute");
-		 * button.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		 * button.setActionCommand("a_execute"); contentPane.add(button,
-		 * BorderLayout.NORTH);
-		 */
-
 		GroupLayout layout = new GroupLayout(getContentPane());
 		layout.setHorizontalGroup(layout
 				.createParallelGroup(Alignment.TRAILING)
