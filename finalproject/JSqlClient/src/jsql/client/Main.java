@@ -7,98 +7,108 @@ import java.awt.event.ActionListener;
 
 public class Main extends JFrame implements ActionListener{
 
-	private JButton jB_Execute;
+	private JButton jB_Connect;
+    private JButton jB_Execute;
     private JLabel jLabel1;
-    private JPanel jPanel1;
-    private JPanel jPanel2;
-    private JScrollPane jScrollPane2;
-    private JTextArea jTA_State;
+    private JPanel jP_Result;
+    private JPanel jP_Statement;
+    private JScrollPane jScrollPane1;
+    private JTextArea jTA_Statement;
     private JTextField jT_IP;
 	
 	public Main(){
-		jLabel1 = new  JLabel();
-        jT_IP = new  JTextField();
+		jLabel1 = new JLabel();
+        jT_IP = new JTextField();
+        jB_Connect = new JButton();
         jB_Execute = new JButton();
-        jPanel1 = new JPanel();
-        jScrollPane2 = new JScrollPane();
-        jTA_State = new JTextArea();
-        jPanel2 = new JPanel();
+        jP_Statement = new JPanel();
+        jScrollPane1 = new JScrollPane();
+        jTA_Statement = new JTextArea();
+        jP_Result = new JPanel();
 
-        setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("JSql Server address:");
+        jLabel1.setText("JSql Server Address:");
 
         jT_IP.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jT_IP.setText("172.0.0.1:3456");
-        jT_IP.setBorder(new javax.swing.border.LineBorder(new Color(0, 0, 0), 1, true));
+
+        jB_Connect.setFont(new Font("Tahoma", 0, 14)); // NOI18N
+        jB_Connect.setText("Connect");
+        jB_Connect.setActionCommand("connect");
+        jB_Connect.addActionListener(this);
 
         jB_Execute.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jB_Execute.setText("Execute");
-        jB_Execute.setActionCommand("a_execute");
+        jB_Execute.setActionCommand("execute");
         jB_Execute.addActionListener(this);
 
-        jPanel1.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( javax.swing.border.EtchedBorder.RAISED),
-        		"Statement", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jP_Statement.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Statement"));
 
-        jTA_State.setColumns(20);
-        jTA_State.setRows(5);
-        jScrollPane2.setViewportView(jTA_State);
+        jTA_Statement.setColumns(20);
+        jTA_Statement.setFont(new Font("Monospaced", 0, 16)); // NOI18N
+        jTA_Statement.setRows(5);
+        jScrollPane1.setViewportView(jTA_Statement);
 
-        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup( GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+        GroupLayout jP_StatementLayout = new GroupLayout(jP_Statement);
+        jP_Statement.setLayout(jP_StatementLayout);
+        jP_StatementLayout.setHorizontalGroup(
+            jP_StatementLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup( GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+        jP_StatementLayout.setVerticalGroup(
+            jP_StatementLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jP_StatementLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( javax.swing.border.EtchedBorder.RAISED), 
-        		"Result", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jP_Result.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Result"));
 
-        GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup( GroupLayout.Alignment.LEADING)
-            .addGap(0, 482, Short.MAX_VALUE)
+        GroupLayout jP_ResultLayout = new GroupLayout(jP_Result);
+        jP_Result.setLayout(jP_ResultLayout);
+        jP_ResultLayout.setHorizontalGroup(
+            jP_ResultLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup( GroupLayout.Alignment.LEADING)
-            .addGap(0, 212, Short.MAX_VALUE)
+        jP_ResultLayout.setVerticalGroup(
+            jP_ResultLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 178, Short.MAX_VALUE)
         );
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup( GroupLayout.Alignment.LEADING)
-            .addGroup( GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup( GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup( GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jT_IP)
-                        .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jB_Execute, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(jP_Result, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jP_Statement, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jT_IP, GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jB_Connect, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jB_Execute, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup( GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup( GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jB_Execute)
-                    .addComponent(jT_IP, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jT_IP, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jB_Connect)
+                    .addComponent(jB_Execute))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jP_Statement, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jP_Result, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -115,13 +125,13 @@ public class Main extends JFrame implements ActionListener{
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            System.out.println("ClassNotFoundException: " + ex.getMessage());
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        	 System.out.println("InstantiationException: " + ex.getMessage());
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch ( UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        	 System.out.println("IllegalAccessException: " + ex.getMessage());
+        } catch (UnsupportedLookAndFeelException ex) {
+        	 System.out.println("UnsupportedLookAndFeelException: " + ex.getMessage());
         }
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -135,7 +145,16 @@ public class Main extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		switch(e.getActionCommand()){
+		case "connect":
+			if(jT_IP.getText() == null){
+				break;
+			}
+		case "execute":
+			if(jTA_Statement.getText() == null){
+				break;
+			}
+		}
 	}
 
 }
