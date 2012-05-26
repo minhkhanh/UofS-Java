@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Socket;
 
 public class Main extends JFrame implements ActionListener{
 
@@ -13,6 +14,7 @@ public class Main extends JFrame implements ActionListener{
     private JPanel jP_Result;
     private JPanel jP_Statement;
     private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
     private JTextArea jTA_Statement;
     private JTextField jT_IP;
 	
@@ -23,6 +25,7 @@ public class Main extends JFrame implements ActionListener{
         jB_Execute = new JButton();
         jP_Statement = new JPanel();
         jScrollPane1 = new JScrollPane();
+        jScrollPane2 = new JScrollPane();
         jTA_Statement = new JTextArea();
         jP_Result = new JPanel();
 
@@ -36,18 +39,14 @@ public class Main extends JFrame implements ActionListener{
 
         jB_Connect.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jB_Connect.setText("Connect");
-        jB_Connect.setActionCommand("connect");
-        jB_Connect.addActionListener(this);
 
         jB_Execute.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jB_Execute.setText("Execute");
-        jB_Execute.setActionCommand("execute");
-        jB_Execute.addActionListener(this);
 
         jP_Statement.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Statement"));
 
         jTA_Statement.setColumns(20);
-        jTA_Statement.setFont(new Font("Monospaced", 0, 16)); // NOI18N
+        jTA_Statement.setFont(new Font("Monospaced", 0, 14)); // NOI18N
         jTA_Statement.setRows(5);
         jScrollPane1.setViewportView(jTA_Statement);
 
@@ -66,15 +65,15 @@ public class Main extends JFrame implements ActionListener{
 
         jP_Result.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Result"));
 
-        GroupLayout jP_ResultLayout = new GroupLayout(jP_Result);
+        javax.swing.GroupLayout jP_ResultLayout = new GroupLayout(jP_Result);
         jP_Result.setLayout(jP_ResultLayout);
         jP_ResultLayout.setHorizontalGroup(
             jP_ResultLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
         );
         jP_ResultLayout.setVerticalGroup(
             jP_ResultLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 178, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
         );
 
         GroupLayout layout = new GroupLayout(getContentPane());
@@ -151,6 +150,7 @@ public class Main extends JFrame implements ActionListener{
 			if(jT_IP.getText() == null){
 				break;
 			}
+			Socket socClient = new Socket();
 		case "execute":
 			if(jTA_Statement.getText() == null){
 				break;
