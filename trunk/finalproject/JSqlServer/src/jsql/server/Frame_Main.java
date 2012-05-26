@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
@@ -89,7 +91,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 		
 		
 		JPanel panel_2 = new JPanel();
-		contentPane.add(panel_2, BorderLayout.SOUTH);
+		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel_2.setBounds(10, 128, 654, 253);
+		panel_1.add(panel_2);
 
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
