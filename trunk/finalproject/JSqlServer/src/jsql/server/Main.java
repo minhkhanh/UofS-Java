@@ -12,7 +12,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new Frame_Main().setVisible(true);
+                new temp().setVisible(true);
             }
         });
 	}
