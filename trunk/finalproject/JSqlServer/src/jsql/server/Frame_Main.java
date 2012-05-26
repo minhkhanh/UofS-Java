@@ -2,7 +2,6 @@ package jsql.server;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,12 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
-import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+@SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
@@ -38,7 +36,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JPanel jPanel1;
 	private JScrollPane jScrollPane2;
 	private JTextArea jTA_State;
-	private JTextField jT_IP;
 
 	/**
 	 * Create the frame.
