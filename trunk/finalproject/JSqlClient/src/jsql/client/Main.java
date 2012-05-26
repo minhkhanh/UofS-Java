@@ -144,7 +144,8 @@ public class Main extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+
+
 		switch(e.getActionCommand()){
 		case "connect":
 			if(jT_IP.getText() == null){
