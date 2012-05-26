@@ -21,9 +21,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
-
-	private JPanel contentPane;
-
 	private JTextField jTF_AdrrFolder;
 	private JTextField jTF_Port;
 	private JLabel jLbl_AdrrFolder;
@@ -33,8 +30,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JButton jBtn_Listen;
 	private JButton jBtn_Stop;
 
-	private JPanel jPanel1;
-	private JScrollPane jScrollPane2;
+	private JPanel jPanel_Content;
+	private JScrollPane jScrollPane_1;
 	private JTextArea jTA_State;
 
 	/**
@@ -43,13 +40,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 	public Frame_Main() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
 
-		jPanel1 = new JPanel();
-		jScrollPane2 = new JScrollPane();
+		jPanel_Content = new JPanel();
+		jScrollPane_1 = new JScrollPane();
 		jTA_State = new JTextArea();
 
 		jTF_AdrrFolder = new JTextField();
@@ -74,8 +67,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		jTF_Port.setFont(new Font("Tahoma", 0, 14));
 		jTF_Port.setText("3456");
-		jTF_Port.setBorder(new javax.swing.border.LineBorder(
-				new Color(0, 0, 0), 1, true));
+		jTF_Port.setBorder(new javax.swing.border.LineBorder(new Color(0, 0, 0), 1, true));
 
 		jBtn_Browse.setFont(new Font("Tahoma", 0, 14));
 		jBtn_Browse.setText("Browse");
@@ -97,21 +89,21 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jBtn_Stop.setActionCommand("a_stop");
 		jBtn_Stop.addActionListener(this);
 
-		jPanel1.setBorder(BorderFactory.createTitledBorder(BorderFactory
+		jPanel_Content.setBorder(BorderFactory.createTitledBorder(BorderFactory
 				.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED),
 				"Log", javax.swing.border.TitledBorder.LEFT,
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
 		jTA_State.setColumns(20);
 		jTA_State.setRows(5);
-		jScrollPane2.setViewportView(jTA_State);
+		jScrollPane_1.setViewportView(jTA_State);
 
-		GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-		jPanel1.setLayout(jPanel1Layout);
+		GroupLayout jPanel1Layout = new GroupLayout(jPanel_Content);
+		jPanel_Content.setLayout(jPanel1Layout);
 		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(
-				GroupLayout.Alignment.LEADING).addComponent(jScrollPane2));
+				GroupLayout.Alignment.LEADING).addComponent(jScrollPane_1));
 		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(
-				GroupLayout.Alignment.LEADING).addComponent(jScrollPane2,
+				GroupLayout.Alignment.LEADING).addComponent(jScrollPane_1,
 				GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE));
 
 		GroupLayout layout = new GroupLayout(getContentPane());
@@ -124,7 +116,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 										layout.createParallelGroup(
 												Alignment.LEADING)
 												.addComponent(
-														jPanel1,
+														jPanel_Content,
 														GroupLayout.DEFAULT_SIZE,
 														494, Short.MAX_VALUE)
 												.addGroup(
@@ -157,7 +149,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 										layout.createParallelGroup(
 												Alignment.LEADING)
 												.addComponent(
-														jPanel1,
+														jPanel_Content,
 														GroupLayout.DEFAULT_SIZE,
 														494, Short.MAX_VALUE)
 												.addGroup(
@@ -187,6 +179,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 																		132,
 																		GroupLayout.PREFERRED_SIZE)))
 								.addContainerGap()));
+		
 		layout.setVerticalGroup(layout
 				.createParallelGroup(Alignment.LEADING)
 				.addGroup(
@@ -223,7 +216,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 														23,
 														GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(jPanel1,
+								.addComponent(jPanel_Content,
 										GroupLayout.PREFERRED_SIZE,
 										GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
