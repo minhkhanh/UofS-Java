@@ -8,10 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JTable;
 
 public class Frame_AddTable extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Create the frame.
@@ -33,6 +35,9 @@ public class Frame_AddTable extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(null);
+		
+		table = new JTable();
+		table.setBounds(10, 11, 404, 197);
+		panel_1.add(table);
 	}
-
 }
