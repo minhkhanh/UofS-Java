@@ -25,7 +25,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 @SuppressWarnings("serial")
-public class Frame_Main extends JFrame implements ActionListener {
+public class temp extends JFrame implements ActionListener {
 	private JTextField jTF_AdrrFolder;
 	private JTextField jTF_Port;
 	private JLabel jLbl_AdrrFolder;
@@ -44,9 +44,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public Frame_Main() {
+	public temp() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		//setBounds(100, 100, 450, 300);
 
 		jPanel_Content = new JPanel();
 		jScrollPane_1 = new JScrollPane();
@@ -105,7 +105,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
 		jTA_State.setColumns(20);
-		jTA_State.setRows(5);
+		jTA_State.setRows(20);
 		jScrollPane_1.setViewportView(jTA_State);
 
 		GroupLayout jPanel1Layout = new GroupLayout(jPanel_Content);
@@ -114,9 +114,11 @@ public class Frame_Main extends JFrame implements ActionListener {
 				GroupLayout.Alignment.LEADING).addComponent(jScrollPane_1));
 		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(
 				GroupLayout.Alignment.LEADING).addComponent(jScrollPane_1,
-				GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE));
+				GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE));
 
-		/*GroupLayout layout = new GroupLayout(getContentPane());
+		
+		
+		GroupLayout layout = new GroupLayout(getContentPane());
 		layout.setHorizontalGroup(layout
 				.createParallelGroup(Alignment.TRAILING)
 				.addGroup(
@@ -142,19 +144,19 @@ public class Frame_Main extends JFrame implements ActionListener {
 																.addComponent(
 																		jTF_AdrrFolder,
 																		GroupLayout.DEFAULT_SIZE,
-																		204,
+																		220,
 																		Short.MAX_VALUE)
 																.addPreferredGap(
 																		ComponentPlacement.RELATED)
 																.addComponent(
 																		jBtn_Browse,
 																		GroupLayout.DEFAULT_SIZE,
-																		132,
+																		100,
 																		Short.MAX_VALUE)
 																.addComponent(
 																		jBtn_Edit,
 																		GroupLayout.PREFERRED_SIZE,
-																		132,
+																		100,
 																		GroupLayout.PREFERRED_SIZE)))
 								.addGroup(
 										layout.createParallelGroup(
@@ -174,22 +176,23 @@ public class Frame_Main extends JFrame implements ActionListener {
 																		ComponentPlacement.RELATED)
 																.addComponent(
 																		jTF_Port,
-																		204,
-																		204,
-																		204)
+																		220,
+																		220,
+																		220)
 																.addPreferredGap(
 																		ComponentPlacement.RELATED)
 																.addComponent(
 																		jBtn_Listen,
 																		GroupLayout.PREFERRED_SIZE,
-																		132,
+																		100,
 																		GroupLayout.PREFERRED_SIZE)
 																.addComponent(
 																		jBtn_Stop,
 																		GroupLayout.PREFERRED_SIZE,
-																		132,
+																		100,
 																		GroupLayout.PREFERRED_SIZE)))
 								.addContainerGap()));
+		
 		layout.setVerticalGroup(layout
 				.createParallelGroup(Alignment.LEADING)
 				.addGroup(
@@ -229,10 +232,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 										GroupLayout.PREFERRED_SIZE,
 										GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE).addGap(251)));
-		layout.setLayoutStyle(null);
+		//layout.setLayoutStyle(null);
 		getContentPane().setLayout(layout);
 
-		pack();*/
+		pack();
 	}
 
 	@Override
