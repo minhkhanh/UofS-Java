@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Main extends JFrame implements ActionListener{
 
@@ -16,11 +18,11 @@ public class Main extends JFrame implements ActionListener{
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
     private JTextArea jTA_Statement;
-    private JTextField jT_IP;
+    private JTextField jTF_IP;
 	
 	public Main(){
 		jLabel1 = new JLabel();
-        jT_IP = new JTextField();
+        jTF_IP = new JTextField();
         jB_Connect = new JButton();
         jB_Execute = new JButton();
         jP_Statement = new JPanel();
@@ -34,8 +36,8 @@ public class Main extends JFrame implements ActionListener{
         jLabel1.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("JSql Server Address:");
 
-        jT_IP.setFont(new Font("Tahoma", 0, 14)); // NOI18N
-        jT_IP.setText("172.0.0.1:3456");
+        jTF_IP.setFont(new Font("Tahoma", 0, 14)); // NOI18N
+        jTF_IP.setText("172.0.0.1:3456");
 
         jB_Connect.setFont(new Font("Tahoma", 0, 14)); // NOI18N
         jB_Connect.setText("Connect");
@@ -88,7 +90,7 @@ public class Main extends JFrame implements ActionListener{
                     .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jT_IP, GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                        .addComponent(jTF_IP, GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jB_Connect, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -101,7 +103,7 @@ public class Main extends JFrame implements ActionListener{
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jT_IP, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTF_IP, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                     .addComponent(jB_Connect)
                     .addComponent(jB_Execute))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
@@ -147,14 +149,21 @@ public class Main extends JFrame implements ActionListener{
 
 		switch(e.getActionCommand()){
 		case "connect":
-			if(jT_IP.getText() == null){
+			if(jTF_IP.getText() == null){
 				break;
 			}
-			Socket socClient = new Socket();
+			try {
+				Socket socClient = new Socket("172.0.0.1", 3456); // cat chuoi string
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("UnknownHostException: " + e1.getMessage());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("IOException: " + e1.getMessage());
+			}
 		case "execute":
-			if(jTA_Statement.getText() == null){
-				break;
-			}
+			//add table thong bao message va error va ket qua
+			
 		}
 	}
 
