@@ -1,57 +1,68 @@
 package jsql.server;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 
-public class Frame_ManagerTable extends JFrame {
+@SuppressWarnings("serial")
+public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-
-	/**
-	 * Create the frame.
-	 */
+	private JPanel panel_1;
+	
+	private JButton btn_AddTable;
+	private JButton btn_DeleteTable;
+	private JButton btn_AddData;
+	
 	public Frame_ManagerTable() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(300, 100, 700, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		JPanel panel_1 = new JPanel();
+
+		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(null);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(93, 43, 89, 23);
-		panel_1.add(btnNewButton);
+		btn_AddTable = new JButton("Add Table");
+		btn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn_AddTable.setBounds(28, 11, 131, 30);
+		btn_AddTable.setActionCommand("addtable");
+		panel_1.add(btn_AddTable);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBounds(32, 94, 89, 23);
-		panel_1.add(btnNewButton_1);
+		btn_DeleteTable = new JButton("Delete Table");
+		btn_DeleteTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn_DeleteTable.setActionCommand("deletetable");
+		btn_DeleteTable.setBounds(28, 61, 131, 30);
+		panel_1.add(btn_DeleteTable);
 		
-		JPanel panel_2 = new JPanel();
-		contentPane.add(panel_2, BorderLayout.SOUTH);
+		btn_AddData = new JButton("Them du lieu");
+		btn_AddData.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn_AddData.setActionCommand("adddata");
+		btn_AddData.setBounds(28, 119, 131, 30);
+		panel_1.add(btn_AddData);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.NORTH);
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 424, Short.MAX_VALUE)
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 10, Short.MAX_VALUE)
-		);
-		panel.setLayout(gl_panel);
+		switch (arg0.getActionCommand()) {
+		case "addtable":
+			// Hien frame addTable
+			break;
+		case "deletetable":
+			//xoa bang da chon
+			break;
+		case "adddate":
+			//hien frame edit data
+			break;
+		}
 	}
 
 }
