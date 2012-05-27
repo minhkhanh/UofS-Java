@@ -17,12 +17,12 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JTextField tf_AddrFolder;
 	private JTextField tf_Port;
 	private JButton btn_Browse;
-	private JButton btn_Edit;
+	private JButton btn_ManagerTable;
 	private JButton btn_Listen;
 	private JButton btn_Stop;
 	private JLabel lbl_AddrFolder;
 	private JLabel lbl_Port;
-	
+
 	private MyServer _MyServer;
 
 	public Frame_Main() {
@@ -69,11 +69,11 @@ public class Frame_Main extends JFrame implements ActionListener {
 		btn_Browse.setActionCommand("browse");
 		panel_1.add(btn_Browse);
 
-		btn_Edit = new JButton("Edit");
-		btn_Edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_Edit.setBounds(531, 11, 131, 30);
-		btn_Edit.setActionCommand("edit");
-		panel_1.add(btn_Edit);
+		btn_ManagerTable = new JButton("Manager Table");
+		btn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn_ManagerTable.setBounds(531, 11, 131, 30);
+		btn_ManagerTable.setActionCommand("managertable");
+		panel_1.add(btn_ManagerTable);
 
 		btn_Listen = new JButton("Listen");
 		btn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -88,19 +88,19 @@ public class Frame_Main extends JFrame implements ActionListener {
 		panel_1.add(btn_Stop);
 
 		JPanel panel_1_1 = new JPanel();
-		panel_1_1.setBorder(new MatteBorder(1, 1, 1, 1,
-				(Color) new Color(0, 0, 0)));
+		panel_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0,
+				0)));
 		panel_1_1.setBounds(10, 128, 654, 253);
 		panel_1.add(panel_1_1);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
+
 		switch (arg0.getActionCommand()) {
 		case "browse":
 			break;
-		case "edit":
+		case "managertable":
 			new Frame_ManagerTable().setVisible(true);
 			break;
 		case "listen":
@@ -108,6 +108,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			_MyServer = new MyServer(port);
 			break;
 		case "stop":
+
 			break;
 		}
 	}
