@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class Frame_AddTable extends JFrame implements ActionListener {
@@ -16,6 +18,8 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JPanel panel_1;
 	
 	private JButton btn_Ok;
+	private JLabel lbl_NameTable;
+	private JTextField tf_NameTable;
 	
 	public Frame_AddTable() {
 		setBounds(300, 100, 700, 450);
@@ -33,6 +37,17 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		btn_Ok.setBounds(253, 11, 131, 30);
 		btn_Ok.setActionCommand("ok");
 		panel_1.add(btn_Ok);
+		
+		lbl_NameTable = new JLabel("Ten Bang:");
+		lbl_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl_NameTable.setBounds(10, 73, 77, 30);
+		panel_1.add(lbl_NameTable);
+		
+		tf_NameTable = new JTextField();
+		tf_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tf_NameTable.setBounds(97, 74, 173, 30);
+		tf_NameTable.setColumns(10);
+		panel_1.add(tf_NameTable);
 		
 		
 		

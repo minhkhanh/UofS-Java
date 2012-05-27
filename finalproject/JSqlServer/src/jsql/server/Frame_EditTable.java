@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class Frame_EditTable extends JFrame implements ActionListener {
@@ -20,6 +21,7 @@ public class Frame_EditTable extends JFrame implements ActionListener {
 	
 	private JButton btn_Ok;
 	private JComboBox cbb_ListTable;
+	private JLabel lbl_ChoseTable;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Frame_EditTable() {
@@ -35,7 +37,7 @@ public class Frame_EditTable extends JFrame implements ActionListener {
 		
 		btn_Ok = new JButton("OK");
 		btn_Ok.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_Ok.setBounds(205, 171, 131, 30);
+		btn_Ok.setBounds(251, 11, 103, 30);
 		btn_Ok.setActionCommand("ok");
 		panel_1.add(btn_Ok);
 		
@@ -44,8 +46,13 @@ public class Frame_EditTable extends JFrame implements ActionListener {
 		// se load tu du lieu len
 		cbb_ListTable.setModel(new DefaultComboBoxModel(new String[] {
 				"HocSinh", "Lop", }));
-		cbb_ListTable.setBounds(258, 11, 243, 30);
+		cbb_ListTable.setBounds(119, 11, 103, 30);
 		panel_1.add(cbb_ListTable);
+		
+		lbl_ChoseTable = new JLabel("Chon Bang: ");
+		lbl_ChoseTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl_ChoseTable.setBounds(24, 11, 85, 30);
+		panel_1.add(lbl_ChoseTable);
 		
 	}
 

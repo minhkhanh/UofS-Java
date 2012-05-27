@@ -43,4 +43,9 @@ public class MyServer implements Runnable {
 			}
 		}
 	}
+	
+	@SuppressWarnings("deprecation")
+	public void stop(){
+		_Thread.stop();		
+	}
 }
