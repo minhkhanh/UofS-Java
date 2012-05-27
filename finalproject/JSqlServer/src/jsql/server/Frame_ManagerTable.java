@@ -19,6 +19,9 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	private JButton btn_DeleteTable;
 	private JButton btn_AddData;
 	
+	private Frame_AddTable _FrameAddTable;
+	private Frame_EditTable _FrameEditTable;
+	
 	public Frame_ManagerTable() {
 		setBounds(300, 100, 700, 450);
 		contentPane = new JPanel();
@@ -47,6 +50,22 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		btn_AddData.setActionCommand("adddata");
 		btn_AddData.setBounds(28, 119, 131, 30);
 		panel_1.add(btn_AddData);
+		
+		
+		
+		btn_AddTable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_FrameAddTable = new Frame_AddTable();
+				_FrameAddTable.setVisible(true);
+			}
+		});
+		
+		btn_AddData.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_FrameEditTable = new Frame_EditTable();
+				_FrameEditTable.setVisible(true);
+			}
+		});
 	}
 
 	@Override
