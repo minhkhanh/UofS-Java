@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
@@ -24,8 +25,13 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JLabel lbl_Port;
 
 	private MyServer _MyServer;
+	private Frame_Browse _FrameBrowse;
+	private Frame_ManagerTable _FrameManagerTable;
+	
 
 	public Frame_Main() {
+		setResizable(false);
+		setTitle("jSQLServer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 100, 700, 450);
 		contentPane = new JPanel();
@@ -92,23 +98,46 @@ public class Frame_Main extends JFrame implements ActionListener {
 				0)));
 		panel_1_1.setBounds(10, 128, 654, 253);
 		panel_1.add(panel_1_1);
+		
+		
+		btn_Browse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				_FrameBrowse = new Frame_Browse();
+				_FrameBrowse.setVisible(true);
+			}
+		});
+		
+		btn_ManagerTable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				_FrameManagerTable = new Frame_ManagerTable();
+				_FrameManagerTable.setVisible(true);
+			}
+		});
+		
+		btn_Listen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		
+		btn_Stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 
-		switch (arg0.getActionCommand()) {
+		switch (e.getActionCommand()) {
 		case "browse":
 			break;
 		case "managertable":
-			new Frame_ManagerTable().setVisible(true);
 			break;
 		case "listen":
 			int port = 3456; // lay port tu tf_port
 			_MyServer = new MyServer(port);
 			break;
 		case "stop":
-
 			break;
 		}
 	}

@@ -47,10 +47,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		tf_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tf_NameTable.setBounds(97, 74, 173, 30);
 		tf_NameTable.setColumns(10);
-		panel_1.add(tf_NameTable);
-		
-		
-		
+		panel_1.add(tf_NameTable);		
 	}
 
 	@Override
