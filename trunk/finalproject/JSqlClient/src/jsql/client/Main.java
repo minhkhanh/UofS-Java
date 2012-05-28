@@ -21,6 +21,8 @@ public class Main extends JFrame implements ActionListener{
     private JTextArea jTA_Statement;
     private JTextField jTF_IP;
     private JTable jTable1;
+    
+    private Socket socClient;
 	
 	public Main(){
 		jLabel1 = new javax.swing.JLabel();
@@ -181,23 +183,28 @@ public class Main extends JFrame implements ActionListener{
 					String ip = jTF_IP.getText().substring(0, mid);
 					int port = Integer.parseInt(jTF_IP.getText().substring(mid + 1, jTF_IP.getText().length()));
 					
-					Socket socClient = new Socket(ip, port);
+					socClient = new Socket(ip, port);
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("UnknownHostException: " + e1.getMessage());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					System.out.println("IOException: " + e1.getMessage());
+					System.out.println("IOException connect: " + e1.getMessage());
 				}
 			}
 		}
 		
 		if("Disconnect".equals(e.getActionCommand())){
-			
+			try {
+				socClient.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("IOException disconnect: " + e1.getMessage());
+			}
 		}
 
 		if("Execute".equals(e.getActionCommand())){
-			
+			//gửi lệnh query lên server
 		}
 
 	}
