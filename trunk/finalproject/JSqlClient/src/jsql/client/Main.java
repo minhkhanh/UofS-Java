@@ -177,7 +177,11 @@ public class Main extends JFrame implements ActionListener{
 		if("Connect".equals(e.getActionCommand())){
 			if(jTF_IP.getText() != null){
 				try {
-					Socket socClient = new Socket("172.0.0.1", 3456);
+					int mid = jTF_IP.getText().lastIndexOf(":");
+					String ip = jTF_IP.getText().substring(0, mid);
+					int port = Integer.parseInt(jTF_IP.getText().substring(mid + 1, jTF_IP.getText().length()));
+					
+					Socket socClient = new Socket(ip, port);
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("UnknownHostException: " + e1.getMessage());
