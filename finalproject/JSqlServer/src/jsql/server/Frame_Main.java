@@ -22,11 +22,12 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JButton btn_Stop;
 	private JLabel lbl_AddrFolder;
 	private JLabel lbl_Port;
+	JFileChooser jFChooser;
 
 	private MyServer _MyServer;
 	private int _Port;
-	private Frame_Browse _FrameBrowse;
 	private Frame_ManagerTable _FrameManagerTable;
+	JLabel lblNewLabel;
 
 	public Frame_Main() {
 		this.InitFrame();
@@ -46,7 +47,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(null);
 
-		lbl_AddrFolder = new JLabel("Thu muc du lieu:");
+		lbl_AddrFolder = new JLabel("Thư mục dữ liệu:");
 		lbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lbl_AddrFolder.setBounds(10, 11, 110, 30);
@@ -105,14 +106,26 @@ public class Frame_Main extends JFrame implements ActionListener {
 				0)));
 		panel_1_1.setBounds(10, 128, 654, 253);
 		panel_1.add(panel_1_1);
+
+		lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(43, 100, 161, 14);
+		panel_1.add(lblNewLabel);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("browse".equals(arg0.getActionCommand())) {
-			_FrameBrowse = new Frame_Browse();
-			_FrameBrowse.setVisible(true);
+			jFChooser = new JFileChooser();
+			;
+			int op = jFChooser.showOpenDialog(this);
+
+			if (op == JFileChooser.APPROVE_OPTION) {
+				// lấy đường file ra xử lý
+				// jFChooser.getSelectedFile().getPath();
+			} else {
+				// cancel
+			}
 		}
 
 		if ("managertable".equals(arg0.getActionCommand())) {
@@ -121,13 +134,13 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {
-			if (tf_Port.getText().trim() != null) {
+			/*if (tf_Port.getText().trim() != null) {
 				try {
 					_Port = Integer.parseInt(tf_Port.getText().trim());
 					_MyServer = new MyServer(_Port);
 				} catch (Exception ex) {
 				}
-			}
+			}*/
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
