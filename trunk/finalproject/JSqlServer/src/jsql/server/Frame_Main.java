@@ -24,10 +24,15 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JLabel lbl_Port;
 
 	private MyServer _MyServer;
+	private int _Port;
 	private Frame_Browse _FrameBrowse;
 	private Frame_ManagerTable _FrameManagerTable;
 
 	public Frame_Main() {
+		this.InitFrame();
+	}
+
+	public void InitFrame() {
 		setResizable(false);
 		setTitle("jSQLServer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,9 +122,18 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {
+			if (tf_Port.getText().trim() != null) {
+				try {
+					_Port = Integer.parseInt(tf_Port.getText().trim());
+					_MyServer = new MyServer(_Port);
+					_MyServer.run();
+				} catch (Exception ex) {
+				}
+			}
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
+			_MyServer.Stop();
 		}
 	}
 }
