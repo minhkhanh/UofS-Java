@@ -116,7 +116,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("managertable".equals(arg0.getActionCommand())) {
-
 			_FrameManagerTable = new Frame_ManagerTable();
 			_FrameManagerTable.setVisible(true);
 		}
@@ -126,7 +125,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 				try {
 					_Port = Integer.parseInt(tf_Port.getText().trim());
 					_MyServer = new MyServer(_Port);
-					_MyServer.run();
 				} catch (Exception ex) {
 				}
 			}
