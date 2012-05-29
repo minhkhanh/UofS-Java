@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 public class MyServer implements Runnable {
 	private ServerSocket _ServerSocket;
 	private Thread _Thread;
-	private int _Port; //default 3456
+	private int _Port;
 
 	public MyServer(int port) {
-		
+
 		_Port = port;
 
 		try {
@@ -26,26 +26,22 @@ public class MyServer implements Runnable {
 		}
 	}
 
-	/*public void RunThread() {
-		_Thread.start();
-	}*/
-
 	@Override
 	public void run() {
 		while (true) {
 			try {
 				Thread.sleep(100);
-				
-				///////////
+
+				// /////////
 			} catch (InterruptedException ex) {
 				Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE,
 						null, ex);
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	public void Stop(){
-		_Thread.stop();		
+	public void Stop() {
+		_Thread.stop();
 	}
 }
