@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
-import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
@@ -27,7 +26,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private MyServer _MyServer;
 	private Frame_Browse _FrameBrowse;
 	private Frame_ManagerTable _FrameManagerTable;
-	
 
 	public Frame_Main() {
 		setResizable(false);
@@ -73,24 +71,28 @@ public class Frame_Main extends JFrame implements ActionListener {
 		btn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_Browse.setBounds(390, 11, 131, 30);
 		btn_Browse.setActionCommand("browse");
+		btn_Browse.addActionListener(this);
 		panel_1.add(btn_Browse);
 
 		btn_ManagerTable = new JButton("Manager Table");
 		btn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_ManagerTable.setBounds(531, 11, 131, 30);
 		btn_ManagerTable.setActionCommand("managertable");
+		btn_ManagerTable.addActionListener(this);
 		panel_1.add(btn_ManagerTable);
 
 		btn_Listen = new JButton("Listen");
 		btn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_Listen.setBounds(390, 54, 131, 30);
 		btn_Listen.setActionCommand("listen");
+		btn_Listen.addActionListener(this);
 		panel_1.add(btn_Listen);
 
 		btn_Stop = new JButton("Stop");
 		btn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_Stop.setBounds(531, 54, 131, 30);
 		btn_Stop.setActionCommand("stop");
+		btn_Stop.addActionListener(this);
 		panel_1.add(btn_Stop);
 
 		JPanel panel_1_1 = new JPanel();
@@ -98,47 +100,26 @@ public class Frame_Main extends JFrame implements ActionListener {
 				0)));
 		panel_1_1.setBounds(10, 128, 654, 253);
 		panel_1.add(panel_1_1);
-		
-		
-		btn_Browse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				_FrameBrowse = new Frame_Browse();
-				_FrameBrowse.setVisible(true);
-			}
-		});
-		
-		btn_ManagerTable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				_FrameManagerTable = new Frame_ManagerTable();
-				_FrameManagerTable.setVisible(true);
-			}
-		});
-		
-		btn_Listen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		
-		btn_Stop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent arg0) {
 
-		switch (e.getActionCommand()) {
-		case "browse":
-			break;
-		case "managertable":
-			break;
-		case "listen":
-			int port = 3456; // lay port tu tf_port
-			_MyServer = new MyServer(port);
-			break;
-		case "stop":
-			break;
+		if ("browse".equals(arg0.getActionCommand())) {
+			_FrameBrowse = new Frame_Browse();
+			_FrameBrowse.setVisible(true);
+		}
+
+		if ("managertable".equals(arg0.getActionCommand())) {
+
+			_FrameManagerTable = new Frame_ManagerTable();
+			_FrameManagerTable.setVisible(true);
+		}
+
+		if ("listen".equals(arg0.getActionCommand())) {
+		}
+
+		if ("stop".equals(arg0.getActionCommand())) {
 		}
 	}
 }
