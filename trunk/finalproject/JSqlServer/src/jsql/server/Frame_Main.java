@@ -148,8 +148,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		jFChooser = new JFileChooser();
 		jFChooser.setFileFilter(_FileFilter_DB);
-		
-		_PathDataBase= "";
+
+		_PathDataBase = "";
 	}
 
 	@Override
@@ -182,8 +182,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			if (tf_Port.getText().trim() != null) {
 				_Port = Integer.parseInt(tf_Port.getText().trim());
 
-				// _MyServer._Port = _Port;
-				_MyServer = new MyServer();
+				_MyServer = new MyServer(_Port);
 			}
 		}
 
