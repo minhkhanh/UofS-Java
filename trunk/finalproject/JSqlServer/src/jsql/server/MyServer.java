@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unused")
 public class MyServer implements Runnable {
 	private ServerSocket _ServerSocket;
 	private Socket _Socket;
@@ -28,11 +29,11 @@ public class MyServer implements Runnable {
 			System.out.println("Khởi chạy máy chủ thành công");
 
 			// ?? 1 client hay nhieu client
-			//while (true) {
-				_Socket = _ServerSocket.accept();
-				_Thread = new Thread(this);
-				_Thread.start();
-			//}
+			// while (true) {
+			_Socket = _ServerSocket.accept();
+			_Thread = new Thread(this);
+			_Thread.start();
+			// }
 		} catch (IOException ex) {
 			Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE, null,
 					ex);
@@ -43,9 +44,9 @@ public class MyServer implements Runnable {
 	public void run() {
 		try {
 			Thread.sleep(100);
-			
-			 _OOS = new ObjectOutputStream(_Socket.getOutputStream());
-			 _OIS = new ObjectInputStream(_Socket.getInputStream());
+
+			_OOS = new ObjectOutputStream(_Socket.getOutputStream());
+			_OIS = new ObjectInputStream(_Socket.getInputStream());
 
 			while (true) {
 				// Đọc dữ liệu từ Client gửi tới -> Xử lý
