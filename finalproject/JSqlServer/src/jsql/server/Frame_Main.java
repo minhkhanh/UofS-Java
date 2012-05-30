@@ -134,17 +134,16 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {
-			/*if (tf_Port.getText().trim() != null) {
-				try {
-					_Port = Integer.parseInt(tf_Port.getText().trim());
-					_MyServer = new MyServer(_Port);
-				} catch (Exception ex) {
-				}
-			}*/
+			if (tf_Port.getText().trim() != null) {
+				_Port = Integer.parseInt(tf_Port.getText().trim());
+
+				//_MyServer._Port = _Port;
+				_MyServer = new MyServer();
+			}
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
-			_MyServer.Stop();
+			_MyServer.stop();
 		}
 	}
 }
