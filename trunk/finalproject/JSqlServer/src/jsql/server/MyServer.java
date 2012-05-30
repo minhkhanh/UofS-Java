@@ -11,44 +11,54 @@ import java.util.logging.Logger;
 public class MyServer implements Runnable {
 	private ServerSocket _ServerSocket;
 	private Socket _Socket;
-	private Thread _Thread;
-	private int _Port;
 	private ObjectOutputStream _OOS;
 	private ObjectInputStream _OIS;
+	private Thread _Thread;
+	public int _Port = 3456;
 
-	public MyServer(int port) {
-
-		_Port = port;
+	public MyServer() {
+		_Thread = new Thread(this);
 
 		try {
 			_ServerSocket = new ServerSocket(_Port);
 			_Socket = _ServerSocket.accept();
-			_OOS = new ObjectOutputStream(_Socket.getOutputStream());
-			_Thread = new Thread(this);
-			_Thread.start();
+
+			//_OOS = new ObjectOutputStream(_Socket.getOutputStream());
+			//_OIS = new ObjectInputStream(_Socket.getInputStream());
+			
+			RunThread();
 		} catch (IOException ex) {
 			Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE, null,
 					ex);
 		}
 	}
 
+	public void RunThread() {
+		_Thread.start();
+	}
+
 	@Override
 	public void run() {
 		while (true) {
-			try {
+			/*try {
 				Thread.sleep(100);
-
-				_OOS.writeObject("III");
-				_OOS.flush();
-			} catch (InterruptedException | IOException ex) {
+				// tra ket qua cho client
+				//_OOS.writeObject("sdfdsf");
+				//_OOS.flush();
+				
+				///_OIS.readObject(); doc thong tin tu client
+			} catch (InterruptedException ex) {
 				Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE,
 						null, ex);
-			}
+			} catch (IOException ex) {
+				Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE,
+						null, ex);
+			}*/
 		}
 	}
-
+	
 	@SuppressWarnings("deprecation")
-	public void Stop() {
+	public void stop(){
 		_Thread.stop();
 	}
 }
