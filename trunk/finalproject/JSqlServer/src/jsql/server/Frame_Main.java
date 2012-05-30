@@ -4,10 +4,14 @@ import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.filechooser.FileFilter;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.io.File;
+
+import jsql.data.Database;
 
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
@@ -22,15 +26,19 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JButton btn_Stop;
 	private JLabel lbl_AddrFolder;
 	private JLabel lbl_Port;
-	JFileChooser jFChooser;
+	private JFileChooser jFChooser;
+	private JLabel lbl_Status;
 
 	private MyServer _MyServer;
 	private int _Port;
 	private Frame_ManagerTable _FrameManagerTable;
-	JLabel lblNewLabel;
+	private FileFilter _FileFilter_DB;
+	private Database _DataBase;
+	private String _PathDataBase;
 
 	public Frame_Main() {
 		this.InitFrame();
+		this.Init();
 	}
 
 	public void InitFrame() {
@@ -60,7 +68,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 		panel_1.add(lbl_Port);
 
 		tf_AddrFolder = new JTextField();
-		tf_AddrFolder.setText("D:\\DB\\");
+		tf_AddrFolder.setEditable(false);
+		tf_AddrFolder.setText("");
 		tf_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tf_AddrFolder.setBounds(130, 12, 239, 30);
 		tf_AddrFolder.setColumns(10);
@@ -101,30 +110,66 @@ public class Frame_Main extends JFrame implements ActionListener {
 		btn_Stop.addActionListener(this);
 		panel_1.add(btn_Stop);
 
+		lbl_Status = new JLabel("Status");
+		lbl_Status.setBounds(43, 100, 161, 14);
+		lbl_Status.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl_Status.setText("Chưa chọn file DataBase");
+		panel_1.add(lbl_Status);
+
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0,
 				0)));
 		panel_1_1.setBounds(10, 128, 654, 253);
 		panel_1.add(panel_1_1);
+	}
 
-		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(43, 100, 161, 14);
-		panel_1.add(lblNewLabel);
+	public void Init() {
+
+		_FileFilter_DB = new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "DataBase";
+			}
+
+			@Override
+			public boolean accept(File f) {
+				String extension = getExtension(f);
+				if (extension != null && extension.equals("db")) {
+					return true;
+				}
+
+				if (f.isDirectory()) {
+					return true;
+				}
+
+				return false;
+			}
+		};
+
+		jFChooser = new JFileChooser();
+		jFChooser.setFileFilter(_FileFilter_DB);
+		
+		_PathDataBase= "";
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("browse".equals(arg0.getActionCommand())) {
-			jFChooser = new JFileChooser();
-			;
-			int op = jFChooser.showOpenDialog(this);
 
-			if (op == JFileChooser.APPROVE_OPTION) {
-				// lấy đường file ra xử lý
-				// jFChooser.getSelectedFile().getPath();
+			int returnVal = jFChooser.showDialog(this, "Chọn DataBase");
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				_PathDataBase = jFChooser.getSelectedFile().getPath();
+				tf_AddrFolder.setText(_PathDataBase);
+				lbl_Status.setText("Đã chọn file DataBase");
+
+				_DataBase = new Database(_PathDataBase);
 			} else {
-				// cancel
+				if (!_PathDataBase.equals(""))
+					lbl_Status.setText("Đã chọn file DataBase");
+				else
+					lbl_Status.setText("Chưa chọn file DataBase");
 			}
 		}
 
@@ -137,7 +182,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			if (tf_Port.getText().trim() != null) {
 				_Port = Integer.parseInt(tf_Port.getText().trim());
 
-				//_MyServer._Port = _Port;
+				// _MyServer._Port = _Port;
 				_MyServer = new MyServer();
 			}
 		}
@@ -145,5 +190,16 @@ public class Frame_Main extends JFrame implements ActionListener {
 		if ("stop".equals(arg0.getActionCommand())) {
 			_MyServer.stop();
 		}
+	}
+
+	public String getExtension(File f) {
+		String ext = null;
+		String s = f.getName();
+		int i = s.lastIndexOf('.');
+
+		if (i > 0 && i < s.length() - 1) {
+			ext = s.substring(i + 1).toLowerCase();
+		}
+		return ext;
 	}
 }
