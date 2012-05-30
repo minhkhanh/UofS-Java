@@ -21,7 +21,7 @@ public class Test {
 	}
 
 	private static void generateDatabase() {
-		Database database = new Database("test.db");
+		Database database = new Database("\\test.db");
 		
 		Table table = new Table();
 		table.setName("HocSinh");
