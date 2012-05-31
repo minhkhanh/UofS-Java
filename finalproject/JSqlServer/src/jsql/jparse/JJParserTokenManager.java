@@ -1,4 +1,4 @@
-package jsql.parse;
+package jsql.jparse;
 
 public class JJParserTokenManager implements JJParserConstants {
 	public java.io.PrintStream debugStream = System.out;

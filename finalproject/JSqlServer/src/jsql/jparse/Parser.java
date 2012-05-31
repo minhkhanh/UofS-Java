@@ -1,7 +1,7 @@
 /**
  * 
  */
-package jsql.parse;
+package jsql.jparse;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

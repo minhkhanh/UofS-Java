@@ -1,7 +1,7 @@
 /**
  * 
  */
-package jsql.parse;
+package jsql.jparse;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

@@ -1,4 +1,4 @@
-package jsql.parse;
+package jsql.jparse;
 
 /**
  * ZFromItem: an SQL FROM clause (example: the FROM part of a SELECT...FROM).

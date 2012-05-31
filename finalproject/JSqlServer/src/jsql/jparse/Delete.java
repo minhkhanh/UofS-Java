@@ -1,7 +1,7 @@
 /**
  * 
  */
-package jsql.parse;
+package jsql.jparse;
 
 /**
  * @author tmkhanh

@@ -1,4 +1,4 @@
-package jsql.parse;
+package jsql.jparse;
 
 /**
  * This exception is thrown when parse errors are encountered.
