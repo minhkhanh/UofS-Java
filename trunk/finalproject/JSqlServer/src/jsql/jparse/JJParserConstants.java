@@ -1,4 +1,4 @@
-package jsql.parse;
+package jsql.jparse;
 
 public interface JJParserConstants {
 	  int EOF = 0;

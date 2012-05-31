@@ -1,4 +1,4 @@
-package jsql.parse;
+package jsql.jparse;
 
 
 /**
