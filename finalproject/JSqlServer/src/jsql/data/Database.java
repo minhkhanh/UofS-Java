@@ -13,6 +13,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import jsql.parse.Insert;
+import jsql.parse.Statement;
+
 /**
  * @author tmkhanh
  *
@@ -75,5 +78,24 @@ public class Database implements Serializable {
 	public void addTable(Table table) {
 		if (table==null) return;
 		tables.add(table);
+	}
+	
+	public Result executeStatement(Statement statement) {
+		if (statement instanceof Insert) return executeInsert((Insert) statement);
+		return new Result("statement is dont suport!");
+	}
+	
+	private Result executeInsert(Insert insert) {
+		try {
+			for (Table table : tables) {
+				if (table.getName()==insert.getTable()) {
+					//return table.e;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			//return new Result("insert error!");
+		}
+		return new Result("insert error!");
 	}
 }

@@ -6,6 +6,9 @@ package jsql.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import jsql.parse.Parser;
+import jsql.parse.Statement;
+
 /**
  * @author tmkhanh
  *
@@ -17,11 +20,17 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		generateDatabase();
+		testInsert();
+	}
+	
+	public static void testInsert() {
+		Database database = Database.loadFromFile("test.db");
+		Statement statement = Parser.parseStatement("INSERT INTO Persons (P_Id, LastName, FirstName) VALUES (5, 'Tjessem', 'Jakob')");
+		System.out.println("insert test.");
 	}
 
-	private static void generateDatabase() {
-		Database database = new Database("\\test.db");
+	public static void generateDatabase() {
+		Database database = new Database("test.db");
 		
 		Table table = new Table();
 		table.setName("HocSinh");
