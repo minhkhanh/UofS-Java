@@ -52,4 +52,10 @@ public class Column implements Serializable {
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
 	}
+	
+	// added by khuong
+	
+	public Column(){
+		
+	}
 }

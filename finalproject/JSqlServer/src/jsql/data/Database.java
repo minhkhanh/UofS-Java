@@ -78,6 +78,7 @@ public class Database implements Serializable {
 	public void addTable(Table table) {
 		if (table==null) return;
 		tables.add(table);
+		this.saveToFile();
 	}
 	
 	public Table getTable(int index) {
