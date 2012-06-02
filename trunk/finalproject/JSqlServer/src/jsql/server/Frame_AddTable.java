@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -19,9 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
-import java.awt.FlowLayout;
 import javax.swing.JComboBox;
 
+import jsql.data.Column;
 import jsql.data.Database;
 import jsql.data.Table;
 
@@ -173,6 +173,28 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 			if (CheckAddTable(tableName)) {
 				// them table moi vao database
 
+				Table table = new Table();
+				List<Column> colums = new ArrayList<Column>();
+				Column tcol;
+				
+				for (int i = 0; i < _Fields.size(); i++) {
+					tcol = new Column();
+					tcol.setName(_Fields.get(i).get(1));
+					tcol.setType(_Fields.get(i).get(2).toUpperCase());
+					tcol.setDescription(_Fields.get(i).get(3));
+					if(_Fields.get(i).get(0).equals("false"))
+						tcol.setPrimary(false);
+					else
+						tcol.setPrimary(true);
+					
+					colums.add(tcol);
+				}
+
+				table.setName(tableName);
+				table.setColumns(colums);
+
+				_DataBase.addTable(table);
+
 				JOptionPane.showMessageDialog(this, "Added table: \""
 						+ tableName + "\"" + " successful", "OK",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -212,15 +234,15 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 	public Boolean CheckAddField(String fieldName, String dataType,
 			String description) {
-		
+
 		// fieldName bi trung
-		for(int i=0; i< _Fields.size(); i++)
-			if(fieldName.equals(_Fields.get(i).get(1))){
+		for (int i = 0; i < _Fields.size(); i++)
+			if (fieldName.equals(_Fields.get(i).get(1))) {
 				JOptionPane.showMessageDialog(this, "Field Name is exist!!!!",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-		
+
 		// chua nhap fieldName
 		if (fieldName.equals("")) {
 			JOptionPane.showMessageDialog(this, "Please Enter Field Name!",
