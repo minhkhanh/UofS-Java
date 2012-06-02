@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import java.awt.FlowLayout;
 import javax.swing.JComboBox;
+
+import jsql.data.Database;
+import jsql.data.Table;
 
 @SuppressWarnings("serial")
 public class Frame_AddTable extends JFrame implements ActionListener {
@@ -44,7 +48,10 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JComboBox<?> jCbb_DataType;
 	private JButton jBtn_AddField;
 
-	public Frame_AddTable() {
+	private Database _DataBase;
+
+	public Frame_AddTable(String pathdb) {
+		_DataBase = Database.loadFromFile(pathdb);
 		this.InitFrame();
 	}
 
@@ -163,12 +170,13 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 			String tableName = jTf_TableName.getText().trim();
 
-			if(CheckAddTable(tableName)){
-				//them table moi vao database
-							
-				JOptionPane.showMessageDialog(this, "Added table: \"" + tableName +"\"" + " successful",
-						"OK", JOptionPane.INFORMATION_MESSAGE);
-				
+			if (CheckAddTable(tableName)) {
+				// them table moi vao database
+
+				JOptionPane.showMessageDialog(this, "Added table: \""
+						+ tableName + "\"" + " successful", "OK",
+						JOptionPane.INFORMATION_MESSAGE);
+
 				this.ResetAddTable();
 			}
 		}
@@ -204,18 +212,30 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 	public Boolean CheckAddField(String fieldName, String dataType,
 			String description) {
+		
+		// fieldName bi trung
+		for(int i=0; i< _Fields.size(); i++)
+			if(fieldName.equals(_Fields.get(i))){
+				JOptionPane.showMessageDialog(this, "Field Name is exist!!!!",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		
+		// chua nhap fieldName
 		if (fieldName.equals("")) {
 			JOptionPane.showMessageDialog(this, "Please Enter Field Name!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
+		// Chua chon DataType
 		if (dataType.equals("")) {
 			JOptionPane.showMessageDialog(this, "Please Choose Data Type!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
+		// Chua nhap description
 		if (description.equals("")) {
 			int ch = JOptionPane.showConfirmDialog(this,
 					"You don't enter Description! Do you want continue?",
@@ -237,10 +257,13 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	public Boolean CheckAddTable(String tableName) {
 
 		// table da co
-		if (tableName == "aa") {
-			JOptionPane.showMessageDialog(this, "TableName is exist",
-					"Warning", JOptionPane.WARNING_MESSAGE);
-			return false;
+		List<Table> tables = _DataBase.getTables();
+		for (int i = 0; i < tables.size(); i++) {
+			if (tableName.equals(tables.get(i).getName())) {
+				JOptionPane.showMessageDialog(this, "TableName is exist",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
 		}
 
 		// chua nhap ten table
@@ -249,11 +272,11 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		
+
 		// chua them field nao
-		if(_Fields.size() <1){
-			JOptionPane.showMessageDialog(this, "Please add Fields",
-					"Warning", JOptionPane.WARNING_MESSAGE);
+		if (_Fields.size() < 1) {
+			JOptionPane.showMessageDialog(this, "Please add Fields", "Warning",
+					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
