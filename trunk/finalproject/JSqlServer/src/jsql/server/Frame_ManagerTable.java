@@ -23,31 +23,29 @@ import jsql.data.Table;
 
 /**
  * @author DWater
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-	private JPanel panel_1;
-
-	private JButton btn_AddTable;
-	private JButton btn_DeleteTable;
-	private JButton btn_AddData;
-
+	private JPanel jP_Main;
+	private JButton jBtn_AddTable;
+	private JButton jBtn_DeleteTable;
+	private JButton jBtn_AddData;
+	private JButton jBtn_Browse;
+	private JButton jBtn_CreateNewDatabase;
+	private JFileChooser jFChooser;
 	private JTextField jTf_AddrFileDB;
 	@SuppressWarnings("rawtypes")
 	private JComboBox jCbb_ListTable;
 
 	private Frame_AddTable _FrameAddTable;
-	private Frame_AddData _FrameEditTable;
+	private Frame_AddData _FrameAddData;
 
 	private Database _DataBase;
 	private String _PathFileDataBase;
-	private JButton jBtn_Browse;
-	private JFileChooser jFChooser;
 	private FileFilterDb _FileFilterDb;
-	private JButton jBtn_CreateNewDatabase;
 
 	public Frame_ManagerTable() {
 		this.InitFrame();
@@ -63,49 +61,49 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(null);
+		jP_Main = new JPanel();
+		contentPane.add(jP_Main, BorderLayout.CENTER);
+		jP_Main.setLayout(null);
 
-		btn_AddTable = new JButton("Add Table");
-		btn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_AddTable.setBounds(10, 107, 131, 30);
-		btn_AddTable.setActionCommand("addtable");
-		btn_AddTable.addActionListener(this);
-		panel_1.add(btn_AddTable);
+		jBtn_AddTable = new JButton("Add Table");
+		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_AddTable.setBounds(10, 75, 131, 30);
+		jBtn_AddTable.setActionCommand("addtable");
+		jBtn_AddTable.addActionListener(this);
+		jP_Main.add(jBtn_AddTable);
 
-		btn_DeleteTable = new JButton("Delete Table");
-		btn_DeleteTable.setToolTipText("");
-		btn_DeleteTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_DeleteTable.setActionCommand("deletetable");
-		btn_DeleteTable.addActionListener(this);
-		btn_DeleteTable.setBounds(10, 160, 131, 30);
-		panel_1.add(btn_DeleteTable);
+		jBtn_DeleteTable = new JButton("Delete Table");
+		jBtn_DeleteTable.setToolTipText("");
+		jBtn_DeleteTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_DeleteTable.setActionCommand("deletetable");
+		jBtn_DeleteTable.addActionListener(this);
+		jBtn_DeleteTable.setBounds(10, 116, 131, 30);
+		jP_Main.add(jBtn_DeleteTable);
 
-		btn_AddData = new JButton("Them du lieu");
-		btn_AddData.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_AddData.setActionCommand("adddata");
-		btn_AddData.addActionListener(this);
-		btn_AddData.setBounds(10, 214, 131, 30);
-		panel_1.add(btn_AddData);
+		jBtn_AddData = new JButton("Them du lieu");
+		jBtn_AddData.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_AddData.setActionCommand("adddata");
+		jBtn_AddData.addActionListener(this);
+		jBtn_AddData.setBounds(10, 157, 131, 30);
+		jP_Main.add(jBtn_AddData);
 
 		JLabel lblFileDatabase = new JLabel("File Database:");
 		lblFileDatabase.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFileDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFileDatabase.setBounds(10, 11, 103, 29);
-		panel_1.add(lblFileDatabase);
+		jP_Main.add(lblFileDatabase);
 
 		jTf_AddrFileDB = new JTextField();
 		jTf_AddrFileDB.setEditable(false);
 		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_AddrFileDB.setBounds(123, 11, 387, 30);
-		panel_1.add(jTf_AddrFileDB);
+		jP_Main.add(jTf_AddrFileDB);
 		jTf_AddrFileDB.setColumns(10);
 
 		jCbb_ListTable = new JComboBox();
 		jCbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jCbb_ListTable.setBounds(151, 160, 103, 30);
-		panel_1.add(jCbb_ListTable);
+		jCbb_ListTable.setBounds(151, 116, 103, 30);
+		jP_Main.add(jCbb_ListTable);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -113,14 +111,14 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		jBtn_Browse.setBounds(528, 10, 138, 30);
 		jBtn_Browse.setActionCommand("browse");
 		jBtn_Browse.addActionListener(this);
-		panel_1.add(jBtn_Browse);
+		jP_Main.add(jBtn_Browse);
 
 		jBtn_CreateNewDatabase = new JButton("Create DataBase");
 		jBtn_CreateNewDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_CreateNewDatabase.setActionCommand("createdb");
 		jBtn_CreateNewDatabase.addActionListener(this);
-		jBtn_CreateNewDatabase.setBounds(528, 58, 138, 30);
-		panel_1.add(jBtn_CreateNewDatabase);
+		jBtn_CreateNewDatabase.setBounds(528, 75, 138, 30);
+		jP_Main.add(jBtn_CreateNewDatabase);
 
 		_FileFilterDb = new FileFilterDb() {
 		};
@@ -175,8 +173,8 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		if ("adddata".equals(arg0.getActionCommand())) {
 
 			if (this.CheckChooseDataBase()) {
-				_FrameEditTable = new Frame_AddData();
-				_FrameEditTable.setVisible(true);
+				_FrameAddData = new Frame_AddData(_PathFileDataBase);
+				_FrameAddData.setVisible(true);
 			}
 		}
 	}
@@ -195,15 +193,8 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	public void LoadDataBase() {
 		_DataBase = Database.loadFromFile(_PathFileDataBase);
 
-		// load danh sach table len
-		List<Table> table = _DataBase.getTables();
-		String[] obj = new String[table.size()];
-
-		for (int i = 0; i < table.size(); i++) {
-			obj[i] = table.get(i).getName();
-		}
-
-		jCbb_ListTable.setModel(new DefaultComboBoxModel(obj));
+		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
+				.GetListTableName(_DataBase)));
 
 	}
 }

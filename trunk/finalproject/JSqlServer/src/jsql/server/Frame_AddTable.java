@@ -38,8 +38,8 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JPanel jP_AddField;
 	private JTable jTable1;
 	private JScrollPane jSP1;
-	private Vector<String> colNameTable1 = new Vector<String>();
-	private Vector<Vector<String>> _Fields = new Vector<Vector<String>>();
+	private Vector<Object> colNameTable1 = new Vector<Object>();
+	private Vector<Vector<Object>> _Fields = new Vector<Vector<Object>>();
 	private JButton jBtn_AddTable;
 	private JLabel jLbl_NameTable;
 	private JTextField jTf_TableName;
@@ -183,9 +183,9 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 				
 				for (int i = 0; i < _Fields.size(); i++) {
 					tcol = new Column();
-					tcol.setName(_Fields.get(i).get(1));
-					tcol.setType(_Fields.get(i).get(2).toUpperCase());
-					tcol.setDescription(_Fields.get(i).get(3));
+					tcol.setName(_Fields.get(i).get(1).toString());
+					tcol.setType(_Fields.get(i).get(2).toString().toUpperCase());
+					tcol.setDescription(_Fields.get(i).get(3).toString());
 					if(_Fields.get(i).get(0).equals("false"))
 						tcol.setPrimary(false);
 					else
@@ -209,19 +209,14 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 		if ("addfield".equals(arg0.getActionCommand())) {
 
-			String primary;
+			Boolean primary =jChb_Primary.isSelected();
 			String fieldName = jTf_FieldName.getText().trim();
 			String dataType = jCbb_DataType.getSelectedItem().toString();
 			String description = jTf_Description.getText().trim();
 
-			if (jChb_Primary.isSelected())
-				primary = "true";
-			else
-				primary = "false";
-
 			if (this.CheckAddField(fieldName, dataType, description)) {
 
-				Vector<String> tField = new Vector<String>();
+				Vector<Object> tField = new Vector<Object>();
 
 				tField.add(primary);
 				tField.add(fieldName);

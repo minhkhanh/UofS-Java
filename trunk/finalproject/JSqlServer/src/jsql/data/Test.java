@@ -24,6 +24,7 @@ public class Test {
 	}
 	
 	public static void testInsert() {
+		//generateDatabase();
 		Database database = Database.loadFromFile("test.db");
 		Statement statement = Parser.parseStatement("INSERT INTO Persons (P_Id, LastName, FirstName) VALUES (5, 'Tjessem', 'Jakob')");
 		System.out.println("insert test.");
