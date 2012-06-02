@@ -52,6 +52,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void InitFrame() {
 
+		setResizable(false);
 		setBounds(300, 100, 700, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -185,7 +186,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 				_Fields.add(tField);
 				jTable1.setModel(new DefaultTableModel(_Fields, colNameTable1));
-				
+
 				this.ResetAddField();
 			}
 		}
