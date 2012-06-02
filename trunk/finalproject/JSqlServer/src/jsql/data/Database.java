@@ -80,6 +80,10 @@ public class Database implements Serializable {
 		tables.add(table);
 	}
 	
+	public Table getTable(int index) {
+		return tables.get(index);
+	}
+	
 	public Result executeStatement(Statement statement) {
 		if (statement instanceof Insert) return executeInsert((Insert) statement);
 		return new Result("statement is dont suport!");
