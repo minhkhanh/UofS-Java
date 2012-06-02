@@ -53,6 +53,13 @@ public class Column implements Serializable {
 		this.primary = primary;
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public Class getClassType() {
+		if (type.equalsIgnoreCase("INT")) return IntType.class;
+		if (type.equalsIgnoreCase("STRING")) return StringType.class;
+		return null;
+	}
+	
 	// added by khuong
 	
 	public Column(){

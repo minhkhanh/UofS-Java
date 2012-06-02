@@ -4,8 +4,7 @@
 package jsql.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 /**
  * @author tmkhanh
@@ -17,24 +16,25 @@ public class Row implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;	
-	private List<Object> data;
+	private Vector<Type> data = new Vector<Type>();
 
 	public Row() {
-		data = new ArrayList<Object>();
-//		for (int i = 0; i < column.length; i++) {
-//			data[i] = column[i].getType().newInstance();
-//		}
 	}
+	
+	public Row(Vector<Type> data) {
+		this.data = data;
+	}
+	
 	public Object getDataAt(int index) {
 		return data.get(index);
 	}
-	public void setDataAt(int index, Object obj) {
+	public void setDataAt(int index, Type obj) {
 		data.set(index, obj);
 	}
-	public void addData(Object obj) {
+	public void addData(Type obj) {
 		data.add(obj);
 	}
-	public List<Object> getData() {
+	public Vector<Type> getData() {
 		return data;
 	}
 }

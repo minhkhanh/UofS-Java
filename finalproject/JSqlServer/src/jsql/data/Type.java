@@ -3,11 +3,17 @@
  */
 package jsql.data;
 
+import java.io.Serializable;
+
 /**
  * @author tmkhanh
  *
  */
-public abstract class Type {
+public abstract class Type implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public Type(Object obj) {
 		value = obj;
 	}

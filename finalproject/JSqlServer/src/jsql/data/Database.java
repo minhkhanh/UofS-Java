@@ -108,7 +108,7 @@ public class Database implements Serializable {
 				
 				//check type
 				for (int i=0; i<table.getColumns().size(); ++i) {
-					
+					if (table.getColumns().get(i).getClassType()!=insert.getValues().get(i).getClass()) throw new Exception("insert value systac error");
 				}
 			}
 		} catch (Exception e) {
