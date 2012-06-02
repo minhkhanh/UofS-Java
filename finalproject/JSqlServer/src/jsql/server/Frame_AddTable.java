@@ -215,7 +215,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		
 		// fieldName bi trung
 		for(int i=0; i< _Fields.size(); i++)
-			if(fieldName.equals(_Fields.get(i))){
+			if(fieldName.equals(_Fields.get(i).get(1))){
 				JOptionPane.showMessageDialog(this, "Field Name is exist!!!!",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				return false;
