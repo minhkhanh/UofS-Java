@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import jsql.data.Database;
@@ -36,7 +38,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JLabel lbl_AddrFolder;
 	private JLabel lbl_Port;
 	private JFileChooser jFChooser;
-	private JLabel lbl_Status;
 	private JTable tableLog;
 	private JScrollPane jSP_Log;
 
@@ -49,7 +50,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 	private Vector<String> colNameTableLog = new Vector<String>();
 	private Vector<Vector<String>> _Logs = new Vector<Vector<String>>();
-	private Vector<String> tLog;
 
 	public Frame_Main() {
 		this.InitFrame();
@@ -60,7 +60,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		setResizable(false);
 		setTitle("jSQLServer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 100, 700, 450);
+		setBounds(300, 100, 700, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -125,19 +125,13 @@ public class Frame_Main extends JFrame implements ActionListener {
 		btn_Stop.addActionListener(this);
 		p_Main.add(btn_Stop);
 
-		lbl_Status = new JLabel("Status");
-		lbl_Status.setBounds(43, 100, 161, 14);
-		lbl_Status.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_Status.setText("Chưa chọn file DataBase");
-		p_Main.add(lbl_Status);
-
 		p_Log = new JPanel();
-		p_Log.setBounds(20, 125, 642, 276);
+		p_Log.setBounds(20, 100, 642, 376);
 		p_Log.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "LOG"));
 		p_Main.add(p_Log);
 
-		colNameTableLog.add("STT");
+		colNameTableLog.add("ID");
 		colNameTableLog.add("Time");
 		colNameTableLog.add("Action");
 
@@ -145,12 +139,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tableLog.setFont(new java.awt.Font("Tahoma", 0, 14));
 		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
 
-		// tableLog.getColumnModel().getColumn(0).setPreferredWidth(5);
-		// tableLog.getColumnModel().getColumn(1).setPreferredWidth(10);
-		// tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
-
 		jSP_Log = new javax.swing.JScrollPane();
-		jSP_Log.setBounds(10, 21, 622, 244);
+		jSP_Log.setBounds(10, 21, 622, 344);
 		jSP_Log.setViewportView(tableLog);
 
 		p_Log.setLayout(null);
@@ -196,14 +186,14 @@ public class Frame_Main extends JFrame implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathDataBase = jFChooser.getSelectedFile().getPath();
 				tf_AddrFileDB.setText(_PathDataBase);
-				lbl_Status.setText("Đã chọn file DataBase");
-
-				_DataBase = new Database(_PathDataBase);
+				// _DataBase = new Database(_PathDataBase);
+				PrintLog("Đã chọn File DataBase");
 			} else {
-				if (!_PathDataBase.equals(""))
-					lbl_Status.setText("Đã chọn file DataBase");
-				else
-					lbl_Status.setText("Chưa chọn file DataBase");
+				if (!_PathDataBase.equals("")) {
+					PrintLog("Chọn chọn File DataBase");
+				} else {
+					PrintLog("Đã hủy việc chọn File DataBase");
+				}
 			}
 		}
 
@@ -216,8 +206,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 		if ("listen".equals(arg0.getActionCommand())) {
 			if (tf_Port.getText().trim() != null) {
 				_Port = Integer.parseInt(tf_Port.getText().trim());
-
 				_MyServer = new MyServer(_Port);
+				PrintLog("Đã mở Server");
 			}
 		}
 
@@ -240,15 +230,23 @@ public class Frame_Main extends JFrame implements ActionListener {
 	}
 
 	public void PrintLog(String strAction) {
-		tLog = new Vector<>();
-		
+		Vector<String> tLog = new Vector<>();
+		Calendar c = Calendar.getInstance();
+		String time;
+
 		// add id
 		tLog.add(Integer.toString(_Logs.size() + 1));
+
 		// add time
-		tLog.add("11:00");
+		time = c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.MONTH) + "/"
+				+ c.get(Calendar.YEAR) + "   " + c.get(Calendar.HOUR_OF_DAY)
+				+ ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
+
+		tLog.add(time);
+
 		// add action
 		tLog.add(strAction);
-		
+
 		//
 		_Logs.add(tLog);
 
