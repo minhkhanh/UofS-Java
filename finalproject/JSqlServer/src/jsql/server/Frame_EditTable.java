@@ -31,7 +31,8 @@ public class Frame_EditTable extends JFrame implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void InitFrame() {
 
-		setBounds(300, 100, 700, 450);
+		setResizable(false);
+		setBounds(300, 100, 700, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

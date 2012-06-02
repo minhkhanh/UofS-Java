@@ -46,9 +46,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private MyServer _MyServer;
 	private int _Port;
 	private Frame_ManagerTable _FrameManagerTable;
-	private FileFilter _FileFilter_DB;
+	private FileFilterDb _FileFilterDb;
 	private Database _DataBase;
-	private String _PathDataBase;
+	private String _PathFileDataBase;
 	
 	private Helper _Helper;
 
@@ -152,31 +152,13 @@ public class Frame_Main extends JFrame implements ActionListener {
 		
 		_Helper = new Helper();
 
-		_FileFilter_DB = new FileFilter() {
-			@Override
-			public String getDescription() {
-				return "DataBase";
-			}
-
-			@Override
-			public boolean accept(File f) {
-				String extension = _Helper.getExtension(f);
-				if (extension != null && extension.equals("db")) {
-					return true;
-				}
-
-				if (f.isDirectory()) {
-					return true;
-				}
-
-				return false;
-			}
+		_FileFilterDb = new FileFilterDb() {
 		};
 
 		jFChooser = new JFileChooser();
-		jFChooser.setFileFilter(_FileFilter_DB);
+		jFChooser.setFileFilter(_FileFilterDb);
 
-		_PathDataBase = "";
+		_PathFileDataBase = "";
 	}
 
 	@Override
@@ -184,15 +166,15 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		if ("browse".equals(arg0.getActionCommand())) {
 
-			int returnVal = jFChooser.showDialog(this, "Chọn DataBase");
+			int returnVal = jFChooser.showDialog(this, "Choose DataBase");
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				_PathDataBase = jFChooser.getSelectedFile().getPath();
-				tf_AddrFileDB.setText(_PathDataBase);
+				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
+				tf_AddrFileDB.setText(_PathFileDataBase);
 				// _DataBase = new Database(_PathDataBase);
 				PrintLog("Đã chọn File DataBase");
 			} else {
-				if (!_PathDataBase.equals("")) {
+				if (!_PathFileDataBase.equals("")) {
 					PrintLog("Chọn chọn File DataBase");
 				} else {
 					PrintLog("Đã hủy việc chọn File DataBase");
@@ -203,7 +185,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		if ("managertable".equals(arg0.getActionCommand())) {
 			_FrameManagerTable = new Frame_ManagerTable();
 			_FrameManagerTable.setVisible(true);
-			_FrameManagerTable.setAddrFileDB(_PathDataBase);
+			_FrameManagerTable.setAddrFileDB(_PathFileDataBase);
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {

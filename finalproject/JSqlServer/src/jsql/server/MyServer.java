@@ -19,9 +19,9 @@ public class MyServer implements Runnable {
 	private ObjectOutputStream _OOS;
 	private ObjectInputStream _OIS;
 	private Thread _Thread;
-	public int _Port;
+	private int _Port;
 	
-	Result _Result;
+	private Result _Result;
 
 	public MyServer(int port) {
 

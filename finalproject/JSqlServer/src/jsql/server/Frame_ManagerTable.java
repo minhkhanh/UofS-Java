@@ -9,10 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
+
+import jsql.data.Database;
 
 @SuppressWarnings("serial")
 public class Frame_ManagerTable extends JFrame implements ActionListener {
@@ -24,21 +28,29 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	private JButton btn_DeleteTable;
 	private JButton btn_AddData;
 
-
-	private JTextField tf_AddrFileDB;
+	private JTextField jTf_AddrFileDB;
 	@SuppressWarnings("rawtypes")
-	private JComboBox cbb_ListTable;
-	
+	private JComboBox jCbb_ListTable;
+
 	private Frame_AddTable _FrameAddTable;
 	private Frame_EditTable _FrameEditTable;
+
+	private Database _DataBase;
+	private String _PathFileDataBase;
+	private JButton jBtn_Browse;
+	private JFileChooser jFChooser;
+	private FileFilterDb _FileFilterDb;
+	private JButton jBtn_CreateNewDatabase;
 
 	public Frame_ManagerTable() {
 		this.InitFrame();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void InitFrame() {
 
-		setBounds(300, 100, 700, 450);
+		setResizable(false);
+		setBounds(300, 100, 700, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -50,7 +62,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 		btn_AddTable = new JButton("Add Table");
 		btn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_AddTable.setBounds(25, 221, 131, 30);
+		btn_AddTable.setBounds(10, 107, 131, 30);
 		btn_AddTable.setActionCommand("addtable");
 		btn_AddTable.addActionListener(this);
 		panel_1.add(btn_AddTable);
@@ -60,57 +72,116 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		btn_DeleteTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_DeleteTable.setActionCommand("deletetable");
 		btn_DeleteTable.addActionListener(this);
-		btn_DeleteTable.setBounds(25, 271, 131, 30);
+		btn_DeleteTable.setBounds(10, 160, 131, 30);
 		panel_1.add(btn_DeleteTable);
 
 		btn_AddData = new JButton("Them du lieu");
 		btn_AddData.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_AddData.setActionCommand("adddata");
 		btn_AddData.addActionListener(this);
-		btn_AddData.setBounds(25, 329, 131, 30);
+		btn_AddData.setBounds(10, 214, 131, 30);
 		panel_1.add(btn_AddData);
-		
+
 		JLabel lblFileDatabase = new JLabel("File Database:");
 		lblFileDatabase.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFileDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFileDatabase.setBounds(25, 11, 131, 29);
+		lblFileDatabase.setBounds(10, 11, 103, 29);
 		panel_1.add(lblFileDatabase);
+
+		jTf_AddrFileDB = new JTextField();
+		jTf_AddrFileDB.setText("Duong dan file DB");
+		jTf_AddrFileDB.setEditable(false);
+		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_AddrFileDB.setBounds(123, 11, 387, 30);
+		panel_1.add(jTf_AddrFileDB);
+		jTf_AddrFileDB.setColumns(10);
+
+		jCbb_ListTable = new JComboBox();
+		jCbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jCbb_ListTable.setBounds(151, 160, 103, 30);
+		panel_1.add(jCbb_ListTable);
+
+		jBtn_Browse = new JButton("Browse");
+		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Browse.setActionCommand("browse");
+		jBtn_Browse.setBounds(528, 10, 138, 30);
+		jBtn_Browse.setActionCommand("browse");
+		jBtn_Browse.addActionListener(this);
+		panel_1.add(jBtn_Browse);
 		
-		tf_AddrFileDB = new JTextField();
-		tf_AddrFileDB.setText("Duong dan file DB");
-		tf_AddrFileDB.setEditable(false);
-		tf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tf_AddrFileDB.setBounds(170, 11, 494, 30);
-		panel_1.add(tf_AddrFileDB);
-		tf_AddrFileDB.setColumns(10);
-		
-		cbb_ListTable = new JComboBox();
-		cbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		cbb_ListTable.setBounds(174, 271, 103, 30);
-		panel_1.add(cbb_ListTable);
+		jBtn_CreateNewDatabase = new JButton("Create DataBase");
+		jBtn_CreateNewDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_CreateNewDatabase.setActionCommand("createdb");
+		jBtn_CreateNewDatabase.addActionListener(this);
+		jBtn_CreateNewDatabase.setBounds(528, 58, 138, 30);
+		panel_1.add(jBtn_CreateNewDatabase);
+
+		_FileFilterDb = new FileFilterDb() {
+		};
+		jFChooser = new JFileChooser();
+		jFChooser.setFileFilter(_FileFilterDb);
+		_PathFileDataBase = "";
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		
+		if ("createdb".equals(arg0.getActionCommand())) {
+		}
+
+		if ("browse".equals(arg0.getActionCommand())) {
+
+			int returnVal = jFChooser.showDialog(this, "Choose DataBase");
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
+				jTf_AddrFileDB.setText(_PathFileDataBase);
+				this.LoadDataBase();
+			}
+		}
 
 		if ("addtable".equals(arg0.getActionCommand())) {
-			_FrameAddTable = new Frame_AddTable();
-			_FrameAddTable.setVisible(true);
+			if (this.CheckChooseDataBase()) {
+				_FrameAddTable = new Frame_AddTable();
+				_FrameAddTable.setVisible(true);
+			}
 		}
 
 		if ("deletetable".equals(arg0.getActionCommand())) {
+			if (this.CheckChooseDataBase()) {
+			}
 		}
 
 		if ("adddata".equals(arg0.getActionCommand())) {
-			_FrameEditTable = new Frame_EditTable();
-			_FrameEditTable.setVisible(true);
+
+			if (this.CheckChooseDataBase()) {
+				_FrameEditTable = new Frame_EditTable();
+				_FrameEditTable.setVisible(true);
+			}
 		}
 	}
-	
-	public void setAddrFileDB(String addr){
-		tf_AddrFileDB.setText(addr);
-		
-		cbb_ListTable.setModel(new DefaultComboBoxModel(new String[] {
+
+	public void setAddrFileDB(String addr) {
+		jTf_AddrFileDB.setText(addr);
+
+		jCbb_ListTable.setModel(new DefaultComboBoxModel(new String[] {
 				"HocSinh", "Lop", }));
+	}
+
+	public Boolean CheckChooseDataBase() {
+		if (_PathFileDataBase.equals("")) {
+			JOptionPane.showMessageDialog(this, "Please choose File DataBase!",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+
+			return false;
+		}
+		return true;
+	}
+	
+	public void LoadDataBase(){
+		_DataBase = Database.loadFromFile(_PathFileDataBase);
+		
+		
+		
 	}
 }

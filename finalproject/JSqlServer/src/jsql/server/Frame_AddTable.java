@@ -45,7 +45,6 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JButton jBtn_AddField;
 
 	public Frame_AddTable() {
-		setTitle("Add Table");
 		this.InitFrame();
 	}
 
