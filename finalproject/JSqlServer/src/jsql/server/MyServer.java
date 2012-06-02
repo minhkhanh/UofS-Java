@@ -22,7 +22,6 @@ public class MyServer implements Runnable {
 	public MyServer(int port) {
 
 		_Port = port;
-		_Thread = new Thread(this);
 
 		try {
 			_ServerSocket = new ServerSocket(_Port);
