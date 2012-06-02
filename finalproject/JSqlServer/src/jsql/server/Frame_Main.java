@@ -35,12 +35,12 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JPanel jP_Log;
 	private JTextField tf_AddrFileDB;
 	private JTextField tf_Port;
-	private JButton btn_Browse;
-	private JButton btn_ManagerTable;
-	private JButton btn_Listen;
-	private JButton btn_Stop;
-	private JLabel lbl_AddrFolder;
-	private JLabel lbl_Port;
+	private JButton jBtn_Browse;
+	private JButton jBtn_ManagerTable;
+	private JButton jBtn_Listen;
+	private JButton jBtn_Stop;
+	private JLabel jLbl_AddrFolder;
+	private JLabel jLbl_Port;
 	private JFileChooser jFChooser;
 	private JTable tableLog;
 	private JScrollPane jSP_Log;
@@ -72,17 +72,17 @@ public class Frame_Main extends JFrame implements ActionListener {
 		contentPane.add(jP_Main, BorderLayout.CENTER);
 		jP_Main.setLayout(null);
 
-		lbl_AddrFolder = new JLabel("File DataBase:");
-		lbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_AddrFolder.setBounds(20, 11, 100, 30);
-		jP_Main.add(lbl_AddrFolder);
+		jLbl_AddrFolder = new JLabel("File DataBase:");
+		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
+		jLbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jLbl_AddrFolder.setBounds(20, 11, 100, 30);
+		jP_Main.add(jLbl_AddrFolder);
 
-		lbl_Port = new JLabel("Port:");
-		lbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_Port.setBounds(10, 54, 110, 30);
-		jP_Main.add(lbl_Port);
+		jLbl_Port = new JLabel("Port:");
+		jLbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
+		jLbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jLbl_Port.setBounds(10, 54, 110, 30);
+		jP_Main.add(jLbl_Port);
 
 		tf_AddrFileDB = new JTextField();
 		tf_AddrFileDB.setEditable(false);
@@ -99,33 +99,33 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tf_Port.setColumns(10);
 		jP_Main.add(tf_Port);
 
-		btn_Browse = new JButton("Browse");
-		btn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_Browse.setBounds(390, 11, 131, 30);
-		btn_Browse.setActionCommand("browse");
-		btn_Browse.addActionListener(this);
-		jP_Main.add(btn_Browse);
+		jBtn_Browse = new JButton("Browse");
+		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Browse.setBounds(390, 11, 131, 30);
+		jBtn_Browse.setActionCommand("browse");
+		jBtn_Browse.addActionListener(this);
+		jP_Main.add(jBtn_Browse);
 
-		btn_ManagerTable = new JButton("Manager Table");
-		btn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_ManagerTable.setBounds(531, 11, 131, 30);
-		btn_ManagerTable.setActionCommand("managertable");
-		btn_ManagerTable.addActionListener(this);
-		jP_Main.add(btn_ManagerTable);
+		jBtn_ManagerTable = new JButton("Manager Table");
+		jBtn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_ManagerTable.setBounds(531, 11, 131, 30);
+		jBtn_ManagerTable.setActionCommand("managertable");
+		jBtn_ManagerTable.addActionListener(this);
+		jP_Main.add(jBtn_ManagerTable);
 
-		btn_Listen = new JButton("Listen");
-		btn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_Listen.setBounds(390, 54, 131, 30);
-		btn_Listen.setActionCommand("listen");
-		btn_Listen.addActionListener(this);
-		jP_Main.add(btn_Listen);
+		jBtn_Listen = new JButton("Listen");
+		jBtn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Listen.setBounds(390, 54, 131, 30);
+		jBtn_Listen.setActionCommand("listen");
+		jBtn_Listen.addActionListener(this);
+		jP_Main.add(jBtn_Listen);
 
-		btn_Stop = new JButton("Stop");
-		btn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_Stop.setBounds(531, 54, 131, 30);
-		btn_Stop.setActionCommand("stop");
-		btn_Stop.addActionListener(this);
-		jP_Main.add(btn_Stop);
+		jBtn_Stop = new JButton("Stop");
+		jBtn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Stop.setBounds(531, 54, 131, 30);
+		jBtn_Stop.setActionCommand("stop");
+		jBtn_Stop.addActionListener(this);
+		jP_Main.add(jBtn_Stop);
 
 		jP_Log = new JPanel();
 		jP_Log.setBounds(20, 100, 642, 376);
@@ -140,6 +140,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tableLog = new JTable();
 		tableLog.setFont(new java.awt.Font("Tahoma", 0, 14));
 		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
+		tableLog.getColumnModel().getColumn(0).setPreferredWidth(1);
+		tableLog.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
 
 		jSP_Log = new javax.swing.JScrollPane();
 		jSP_Log.setBounds(10, 21, 622, 344);
@@ -191,7 +194,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
-			_MyServer.stop();
+			//_MyServer.stop();
 			PrintLog("Đã dừng server");
 		}
 	}

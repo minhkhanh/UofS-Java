@@ -18,7 +18,7 @@ import jsql.parse.Statement;
 
 /**
  * @author tmkhanh
- *
+ * 
  */
 public class Database implements Serializable {
 
@@ -28,17 +28,18 @@ public class Database implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<Table> tables;
-	
+
 	private transient String filePath;
-	
+
 	public Database(String filePath) {
 		tables = new ArrayList<Table>();
 		this.filePath = filePath;
 	}
-	
+
 	public static Database loadFromFile(String filePath) {
-		File file = new File(filePath); 
-		if (!file.exists()) return null;
+		File file = new File(filePath);
+		if (!file.exists())
+			return null;
 		try {
 			FileInputStream fos = new FileInputStream(filePath);
 			ObjectInputStream in = new ObjectInputStream(fos);
@@ -54,7 +55,7 @@ public class Database implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public void saveToFile() {
 		try {
 			FileOutputStream fos = new FileOutputStream(filePath);
@@ -74,54 +75,76 @@ public class Database implements Serializable {
 	public void setTables(List<Table> tables) {
 		this.tables = tables;
 	}
-	
+
 	public void addTable(Table table) {
-		if (table==null) return;
+		if (table == null)
+			return;
 		tables.add(table);
 		this.saveToFile();
 	}
-	
+
 	public Table getTable(int index) {
 		return tables.get(index);
 	}
-	
+
 	public Result executeStatement(Statement statement) {
-		if (statement instanceof Insert) return executeInsert((Insert) statement);
+		if (statement instanceof Insert)
+			return executeInsert((Insert) statement);
 		return new Result("statement is dont suport!");
 	}
-	
+
 	private Result executeInsert(Insert insert) {
 		try {
-			if (insert==null) throw new Exception("insert is null!");
+			if (insert == null)
+				throw new Exception("insert is null!");
 			Table table = null;
 			for (Table t : tables) {
-				if (t.getName()==insert.getTable()) {
+				if (t.getName() == insert.getTable()) {
 					table = t;
 					break;
 				}
 			}
-			if (table==null) throw new Exception("table is not exit!");
-			if (table.getColumns().size()<insert.getValues().size()) throw new Exception("values>table!");
-			if (insert.getColumns().size()==0) {
-				//ko chi ra column
-				if (table.getColumns().size()!=insert.getValues().size()) throw new Exception("values!=table!");
-				
-				//check type
-				for (int i=0; i<table.getColumns().size(); ++i) {
-					if (table.getColumns().get(i).getClassType()!=insert.getValues().get(i).getClass()) throw new Exception("insert value systac error");
+			if (table == null)
+				throw new Exception("table is not exit!");
+			if (table.getColumns().size() < insert.getValues().size())
+				throw new Exception("values>table!");
+			if (insert.getColumns().size() == 0) {
+				// ko chi ra column
+				if (table.getColumns().size() != insert.getValues().size())
+					throw new Exception("values!=table!");
+
+				// check type
+				for (int i = 0; i < table.getColumns().size(); ++i) {
+					if (table.getColumns().get(i).getClassType() != insert
+							.getValues().get(i).getClass())
+						throw new Exception("insert value systac error");
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			//return new Result("insert error!");
+			// return new Result("insert error!");
 		}
 		return new Result("insert error!");
 	}
-	
-	// add bay Khuong
-	
-	public void DeleteTable(int idx){
+
+	// added by Khuong
+	public void DeleteTable(int idx) {
 		tables.remove(idx);
 		this.saveToFile();
+	}
+
+	public void DeleteTable(String tableName) {
+		for (int i = 0; i < tables.size(); i++)
+			if (tables.get(i).getName().equals(tableName))
+				tables.remove(i);
+		this.saveToFile();
+	}
+
+	public Table getTable(String tableName) {
+
+		for (int i = 0; i < tables.size(); i++)
+			if (tables.get(i).getName().equals(tableName))
+				return tables.get(i);
+		return null;
 	}
 }
