@@ -177,7 +177,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 			if (this.CheckAddField(fieldName, dataType, description)) {
 
-				Vector<String> tField = new Vector<>();
+				Vector<String> tField = new Vector<String>();
 
 				tField.add(primary);
 				tField.add(fieldName);

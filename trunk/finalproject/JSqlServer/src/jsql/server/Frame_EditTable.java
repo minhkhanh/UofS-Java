@@ -64,11 +64,11 @@ public class Frame_EditTable extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		switch (arg0.getActionCommand()) {
-		case "ok":
-			// tien hanh them bang dua tren thong tin da nhap
-			break;
-		}
+//		switch (arg0.getActionCommand()) {
+//		case "ok":
+//			// tien hanh them bang dua tren thong tin da nhap
+//			break;
+//		}
 	}
 
 }

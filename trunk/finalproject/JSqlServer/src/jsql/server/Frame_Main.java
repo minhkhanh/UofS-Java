@@ -222,7 +222,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	}
 
 	public void PrintLog(String strAction) {
-		Vector<String> tLog = new Vector<>();
+		Vector<String> tLog = new Vector<String>();
 		Calendar c = Calendar.getInstance();
 		String time;
 
