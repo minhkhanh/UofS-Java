@@ -40,12 +40,12 @@ public class Test {
 		table.setColumns(listCol);
 		List<Row> rows = new ArrayList<Row>();
 		Row row = new Row();
-		row.addData(1);
-		row.addData("Khánh");
+		row.addData(new IntType(1));
+		row.addData(new StringType("Khánh"));
 		rows.add(row);
 		row = new Row();
-		row.addData(2);
-		row.addData("Trần");
+		row.addData(new IntType(2));
+		row.addData(new StringType("Trần"));
 		rows.add(row);
 		table.setRows(rows);
 		database.addTable(table);
