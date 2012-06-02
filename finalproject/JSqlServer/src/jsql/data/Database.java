@@ -91,9 +91,23 @@ public class Database implements Serializable {
 	
 	private Result executeInsert(Insert insert) {
 		try {
-			for (Table table : tables) {
-				if (table.getName()==insert.getTable()) {
-					//return table.e;
+			if (insert==null) throw new Exception("insert is null!");
+			Table table = null;
+			for (Table t : tables) {
+				if (t.getName()==insert.getTable()) {
+					table = t;
+					break;
+				}
+			}
+			if (table==null) throw new Exception("table is not exit!");
+			if (table.getColumns().size()<insert.getValues().size()) throw new Exception("values>table!");
+			if (insert.getColumns().size()==0) {
+				//ko chi ra column
+				if (table.getColumns().size()!=insert.getValues().size()) throw new Exception("values!=table!");
+				
+				//check type
+				for (int i=0; i<table.getColumns().size(); ++i) {
+					
 				}
 			}
 		} catch (Exception e) {
