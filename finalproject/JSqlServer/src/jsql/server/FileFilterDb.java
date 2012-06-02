@@ -4,6 +4,10 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+/**
+ * @author DWater
+ *
+ */
 public abstract class FileFilterDb extends FileFilter {
 	
 	@Override

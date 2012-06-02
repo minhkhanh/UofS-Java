@@ -23,6 +23,10 @@ import java.util.Vector;
 
 import jsql.data.Database;
 
+/**
+ * @author DWater
+ *
+ */
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
 
@@ -50,11 +54,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private Database _DataBase;
 	private String _PathFileDataBase;
 
-	private Helper _Helper;
-
 	public Frame_Main() {
 		this.InitFrame();
-		this.Init();
 	}
 
 	public void InitFrame() {
@@ -146,18 +147,12 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
-	}
-
-	public void Init() {
-
-		_Helper = new Helper();
 
 		_FileFilterDb = new FileFilterDb() {
 		};
 
 		jFChooser = new JFileChooser();
 		jFChooser.setFileFilter(_FileFilterDb);
-
 		_PathFileDataBase = "";
 	}
 

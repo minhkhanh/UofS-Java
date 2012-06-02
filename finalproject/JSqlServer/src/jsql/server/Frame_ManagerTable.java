@@ -21,6 +21,10 @@ import javax.swing.JComboBox;
 import jsql.data.Database;
 import jsql.data.Table;
 
+/**
+ * @author DWater
+ *
+ */
 @SuppressWarnings("serial")
 public class Frame_ManagerTable extends JFrame implements ActionListener {
 
@@ -36,7 +40,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	private JComboBox jCbb_ListTable;
 
 	private Frame_AddTable _FrameAddTable;
-	private Frame_EditTable _FrameEditTable;
+	private Frame_AddData _FrameEditTable;
 
 	private Database _DataBase;
 	private String _PathFileDataBase;
@@ -171,7 +175,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		if ("adddata".equals(arg0.getActionCommand())) {
 
 			if (this.CheckChooseDataBase()) {
-				_FrameEditTable = new Frame_EditTable();
+				_FrameEditTable = new Frame_AddData();
 				_FrameEditTable.setVisible(true);
 			}
 		}
