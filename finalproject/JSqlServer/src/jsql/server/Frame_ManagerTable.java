@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 
 import jsql.data.Database;
+import jsql.data.Table;
 
 @SuppressWarnings("serial")
 public class Frame_ManagerTable extends JFrame implements ActionListener {
@@ -89,7 +92,6 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		panel_1.add(lblFileDatabase);
 
 		jTf_AddrFileDB = new JTextField();
-		jTf_AddrFileDB.setText("Duong dan file DB");
 		jTf_AddrFileDB.setEditable(false);
 		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_AddrFileDB.setBounds(123, 11, 387, 30);
@@ -108,7 +110,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		jBtn_Browse.setActionCommand("browse");
 		jBtn_Browse.addActionListener(this);
 		panel_1.add(jBtn_Browse);
-		
+
 		jBtn_CreateNewDatabase = new JButton("Create DataBase");
 		jBtn_CreateNewDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_CreateNewDatabase.setActionCommand("createdb");
@@ -125,7 +127,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
+
 		if ("createdb".equals(arg0.getActionCommand())) {
 		}
 
@@ -142,13 +144,27 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 		if ("addtable".equals(arg0.getActionCommand())) {
 			if (this.CheckChooseDataBase()) {
-				_FrameAddTable = new Frame_AddTable();
+				_FrameAddTable = new Frame_AddTable(_PathFileDataBase);
 				_FrameAddTable.setVisible(true);
 			}
 		}
 
 		if ("deletetable".equals(arg0.getActionCommand())) {
-			if (this.CheckChooseDataBase()) {
+			if (this.CheckChooseDataBase()
+					&& jCbb_ListTable.getModel().getSize() > 0) {
+
+				int ch = JOptionPane.showConfirmDialog(this, "Delete table \""
+						+ jCbb_ListTable.getSelectedItem().toString() + "\""
+						+ " Are you sure??", "Warning",
+						JOptionPane.YES_NO_OPTION);
+				if (ch == 1)
+					return;
+				// delete table
+				_DataBase.DeleteTable(jCbb_ListTable.getSelectedIndex());
+				JOptionPane.showMessageDialog(this, "Deleted successful",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+
+				this.LoadDataBase();
 			}
 		}
 
@@ -161,13 +177,6 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		}
 	}
 
-	public void setAddrFileDB(String addr) {
-		jTf_AddrFileDB.setText(addr);
-
-		jCbb_ListTable.setModel(new DefaultComboBoxModel(new String[] {
-				"HocSinh", "Lop", }));
-	}
-
 	public Boolean CheckChooseDataBase() {
 		if (_PathFileDataBase.equals("")) {
 			JOptionPane.showMessageDialog(this, "Please choose File DataBase!",
@@ -177,11 +186,20 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		}
 		return true;
 	}
-	
-	public void LoadDataBase(){
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void LoadDataBase() {
 		_DataBase = Database.loadFromFile(_PathFileDataBase);
-		
-		
-		
+
+		// load danh sach table len
+		List<Table> table = _DataBase.getTables();
+		String[] obj = new String[table.size()];
+
+		for (int i = 0; i < table.size(); i++) {
+			obj[i] = table.get(i).getName();
+		}
+
+		jCbb_ListTable.setModel(new DefaultComboBoxModel(obj));
+
 	}
 }

@@ -49,7 +49,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private FileFilterDb _FileFilterDb;
 	private Database _DataBase;
 	private String _PathFileDataBase;
-	
+
 	private Helper _Helper;
 
 	public Frame_Main() {
@@ -149,7 +149,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	}
 
 	public void Init() {
-		
+
 		_Helper = new Helper();
 
 		_FileFilterDb = new FileFilterDb() {
@@ -185,7 +185,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 		if ("managertable".equals(arg0.getActionCommand())) {
 			_FrameManagerTable = new Frame_ManagerTable();
 			_FrameManagerTable.setVisible(true);
-			_FrameManagerTable.setAddrFileDB(_PathFileDataBase);
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {
@@ -197,8 +196,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
-			// _MyServer.stop();
-
+			_MyServer.stop();
 			PrintLog("Đã dừng server");
 		}
 	}

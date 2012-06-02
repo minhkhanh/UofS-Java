@@ -116,4 +116,11 @@ public class Database implements Serializable {
 		}
 		return new Result("insert error!");
 	}
+	
+	// add bay Khuong
+	
+	public void DeleteTable(int idx){
+		tables.remove(idx);
+		this.saveToFile();
+	}
 }
