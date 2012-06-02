@@ -13,8 +13,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+/**
+ * @author DWater
+ *
+ */
 @SuppressWarnings("serial")
-public class Frame_EditTable extends JFrame implements ActionListener {
+public class Frame_AddData extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JPanel panel_1;
@@ -24,7 +28,7 @@ public class Frame_EditTable extends JFrame implements ActionListener {
 	private JComboBox cbb_ListTable;
 	private JLabel lbl_ChoseTable;
 
-	public Frame_EditTable() {
+	public Frame_AddData() {
 		this.InitFrame();
 	}
 

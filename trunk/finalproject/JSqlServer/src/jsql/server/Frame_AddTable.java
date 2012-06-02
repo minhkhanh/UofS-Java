@@ -25,6 +25,10 @@ import jsql.data.Column;
 import jsql.data.Database;
 import jsql.data.Table;
 
+/**
+ * @author DWater
+ *
+ */
 @SuppressWarnings("serial")
 public class Frame_AddTable extends JFrame implements ActionListener {
 
@@ -171,8 +175,8 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 			String tableName = jTf_TableName.getText().trim();
 
 			if (CheckAddTable(tableName)) {
+				
 				// them table moi vao database
-
 				Table table = new Table();
 				List<Column> colums = new ArrayList<Column>();
 				Column tcol;
@@ -234,7 +238,6 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 	public Boolean CheckAddField(String fieldName, String dataType,
 			String description) {
-
 		// fieldName bi trung
 		for (int i = 0; i < _Fields.size(); i++)
 			if (fieldName.equals(_Fields.get(i).get(1))) {
@@ -277,7 +280,6 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	}
 
 	public Boolean CheckAddTable(String tableName) {
-
 		// table da co
 		List<Table> tables = _DataBase.getTables();
 		for (int i = 0; i < tables.size(); i++) {

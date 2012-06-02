@@ -12,6 +12,10 @@ import java.util.logging.Logger;
 
 import jsql.data.Result;
 
+/**
+ * @author DWater
+ *
+ */
 @SuppressWarnings("unused")
 public class MyServer implements Runnable {
 	private ServerSocket _ServerSocket;
