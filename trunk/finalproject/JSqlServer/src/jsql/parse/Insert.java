@@ -2,6 +2,8 @@ package jsql.parse;
 
 import java.util.Vector;
 
+import jsql.data.Type;
+
 public class Insert implements Statement {
 
 	/**
@@ -57,6 +59,7 @@ public class Insert implements Statement {
 			}
 			Type type = Type.createType(sqlStatement);
 			ins.addValue(type);
+			if (ins.columns.size()>0 && ins.values.size()!=ins.columns.size()) throw new Exception("syntac error");
 			return ins;
 		} catch (Exception e) {
 			e.printStackTrace();
