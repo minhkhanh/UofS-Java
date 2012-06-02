@@ -4,65 +4,222 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
+import java.awt.FlowLayout;
+import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
 public class Frame_AddTable extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-	private JPanel panel_1;
+	private JPanel jP_Main;
+	private JPanel jP_Table;
+	private JPanel jP_AddField;
+	private JTable jTable1;
+	private JScrollPane jSP1;
+	private Vector<String> colNameTable1 = new Vector<String>();
+	private Vector<Vector<String>> _Fields = new Vector<Vector<String>>();
 
-	private JButton btn_Ok;
-	private JLabel lbl_NameTable;
-	private JTextField tf_NameTable;
+	private JButton jBtn_AddTable;
+	private JLabel jLbl_NameTable;
+	private JTextField jTf_NameTable;
+	private JLabel jLbl_FieldNam;
+	private JLabel jLbl_DataType;
+	private JLabel jLbl_Description;
+	private JCheckBox jChb_Primary;
+	private JTextField jTf_FieldName;
+	private JTextField jTf_Description;
+	private JComboBox<?> jCbb_DataType;
+	private JButton jBtn_AddField;
 
 	public Frame_AddTable() {
 		this.InitFrame();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void InitFrame() {
 
-		setBounds(300, 100, 700, 450);
+		setBounds(300, 100, 700, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(null);
+		jP_Main = new JPanel();
+		contentPane.add(jP_Main, BorderLayout.CENTER);
+		jP_Main.setLayout(null);
 
-		btn_Ok = new JButton("OK");
-		btn_Ok.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn_Ok.setBounds(253, 11, 131, 30);
-		btn_Ok.setActionCommand("ok");
-		panel_1.add(btn_Ok);
+		jBtn_AddTable = new JButton("OK");
+		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_AddTable.setBounds(308, 11, 94, 30);
+		jBtn_AddTable.setActionCommand("addtable");
+		jBtn_AddTable.addActionListener(this);
+		jP_Main.add(jBtn_AddTable);
 
-		lbl_NameTable = new JLabel("Ten Bang:");
-		lbl_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_NameTable.setBounds(10, 73, 77, 30);
-		panel_1.add(lbl_NameTable);
+		jLbl_NameTable = new JLabel("Name Table:");
+		jLbl_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jLbl_NameTable.setBounds(20, 11, 77, 30);
+		jP_Main.add(jLbl_NameTable);
 
-		tf_NameTable = new JTextField();
-		tf_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tf_NameTable.setBounds(97, 74, 173, 30);
-		tf_NameTable.setColumns(10);
-		panel_1.add(tf_NameTable);
+		jTf_NameTable = new JTextField();
+		jTf_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_NameTable.setBounds(107, 12, 173, 30);
+		jTf_NameTable.setColumns(10);
+		jP_Main.add(jTf_NameTable);
+
+		jP_Table = new JPanel();
+		jP_Table.setBounds(20, 52, 642, 254);
+		jP_Table.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "TABLE"));
+		jP_Main.add(jP_Table);
+
+		colNameTable1.add("Primary Key");
+		colNameTable1.add("Field Name");
+		colNameTable1.add("Data Type");
+		colNameTable1.add("Description");
+
+		jTable1 = new JTable();
+		jTable1.setFont(new java.awt.Font("Tahoma", 0, 14));
+		jTable1.setModel(new DefaultTableModel(_Fields, colNameTable1));
+
+		jSP1 = new javax.swing.JScrollPane();
+		jSP1.setBounds(10, 21, 622, 222);
+		jSP1.setViewportView(jTable1);
+
+		jP_Table.setLayout(null);
+		jP_Table.add(jSP1);
+
+		jP_AddField = new JPanel();
+		jP_AddField.setBounds(20, 329, 642, 137);
+		jP_AddField.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "ADD FIELD"));
+		jP_Main.add(jP_AddField);
+		jP_AddField.setLayout(null);
+
+		jLbl_DataType = new JLabel("Data Type:");
+		jLbl_DataType.setBounds(419, 55, 69, 30);
+		jP_AddField.add(jLbl_DataType);
+		jLbl_DataType.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		jLbl_FieldNam = new JLabel("Field Name:");
+		jLbl_FieldNam.setBounds(132, 55, 70, 30);
+		jP_AddField.add(jLbl_FieldNam);
+		jLbl_FieldNam.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		jLbl_Description = new JLabel("Description:");
+		jLbl_Description.setBounds(132, 96, 73, 30);
+		jP_AddField.add(jLbl_Description);
+		jLbl_Description.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		jChb_Primary = new JCheckBox("Primary Key");
+		jChb_Primary.setBounds(132, 22, 99, 25);
+		jP_AddField.add(jChb_Primary);
+		jChb_Primary.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		jTf_FieldName = new JTextField();
+		jTf_FieldName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_FieldName.setColumns(10);
+		jTf_FieldName.setBounds(212, 55, 173, 30);
+		jP_AddField.add(jTf_FieldName);
+
+		jTf_Description = new JTextField();
+		jTf_Description.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_Description.setColumns(10);
+		jTf_Description.setBounds(212, 97, 420, 30);
+		jP_AddField.add(jTf_Description);
+
+		jCbb_DataType = new JComboBox();
+		jCbb_DataType.setModel(new DefaultComboBoxModel(new String[] { "int",
+				"string", }));
+		jCbb_DataType.setBounds(498, 57, 134, 30);
+		jP_AddField.add(jCbb_DataType);
+
+		jBtn_AddField = new JButton("Add Field");
+		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_AddField.setActionCommand("ok");
+		jBtn_AddField.setBounds(10, 33, 94, 30);
+		jBtn_AddField.setActionCommand("addfield");
+		jBtn_AddField.addActionListener(this);
+		jP_AddField.add(jBtn_AddField);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		switch (arg0.getActionCommand()) {
-		case "ok":
-			// tien hanh them bang dua tren thong tin da nhap
-			break;
+		if ("addtable".equals(arg0.getActionCommand())) {
+		}
+
+		if ("addfield".equals(arg0.getActionCommand())) {
+
+			String primary;
+			String fieldName = jTf_FieldName.getText().trim();
+			String dataType = jCbb_DataType.getSelectedItem().toString();
+			String description = jTf_Description.getText().trim();
+
+			if (jChb_Primary.isSelected())
+				primary = "true";
+			else
+				primary = "false";
+
+			if (this.CheckAddField(fieldName, dataType, description)) {
+
+				Vector<String> tField = new Vector<>();
+
+				tField.add(primary);
+				tField.add(fieldName);
+				tField.add(dataType);
+				tField.add(description);
+
+				_Fields.add(tField);
+				jTable1.setModel(new DefaultTableModel(_Fields, colNameTable1));
+				
+				this.ResetAddField();
+			}
 		}
 	}
 
+	public Boolean CheckAddField(String fieldName, String dataType,
+			String description) {
+		if (fieldName.equals("")) {
+			JOptionPane.showMessageDialog(this, "Please Enter Field Name!",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		if (dataType.equals("")) {
+			JOptionPane.showMessageDialog(this, "Please Choose Data Type!",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		if (description.equals("")) {
+			int ch = JOptionPane.showConfirmDialog(this,
+					"You don't enter Description! Do you want continue?",
+					"Warning", JOptionPane.YES_NO_OPTION);
+			if (ch == 1)
+				return false;
+		}
+
+		return true;
+	}
+
+	public void ResetAddField() {
+		jChb_Primary.setSelected(false);
+		jTf_FieldName.setText("");
+		jTf_Description.setText("");
+		jCbb_DataType.setSelectedIndex(0);
+	}
 }
