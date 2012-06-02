@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import jsql.data.Result;
+
 @SuppressWarnings("unused")
 public class MyServer implements Runnable {
 	private ServerSocket _ServerSocket;
@@ -18,21 +20,22 @@ public class MyServer implements Runnable {
 	private ObjectInputStream _OIS;
 	private Thread _Thread;
 	public int _Port;
+	
+	Result _Result;
 
 	public MyServer(int port) {
 
 		_Port = port;
+		_Result = new Result("");
 
 		try {
 			_ServerSocket = new ServerSocket(_Port);
 			System.out.println("Khởi chạy máy chủ thành công");
 
 			// ?? 1 client hay nhieu client
-			// while (true) {
 			_Socket = _ServerSocket.accept();
 			_Thread = new Thread(this);
 			_Thread.start();
-			// }
 		} catch (IOException ex) {
 			Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE, null,
 					ex);
@@ -48,11 +51,15 @@ public class MyServer implements Runnable {
 			_OIS = new ObjectInputStream(_Socket.getInputStream());
 
 			while (true) {
-				// Đọc dữ liệu từ Client gửi tới -> Xử lý
+				// doc cau truy van cua client	
+				_Result = (Result)_OIS.readObject();
 
-				// Ghi ra ObjectOutput để trả về client
-				// _OOS.writeBytes("SSS");
-				// _OOS.flush();
+				// thuc hien cau truy van
+				
+				
+				// tra ket qua ve client
+				_OOS.writeObject(_Result);
+				_OOS.flush();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

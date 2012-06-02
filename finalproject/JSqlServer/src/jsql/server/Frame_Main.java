@@ -1,15 +1,23 @@
 package jsql.server;
 
 import java.awt.BorderLayout;
+import java.awt.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.text.html.ListView;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.io.File;
+import java.util.Vector;
 
 import jsql.data.Database;
 
@@ -17,8 +25,9 @@ import jsql.data.Database;
 public class Frame_Main extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-	private JPanel panel_1;
-	private JTextField tf_AddrFolder;
+	private JPanel p_Main;
+	private JPanel p_Log;
+	private JTextField tf_AddrFileDB;
 	private JTextField tf_Port;
 	private JButton btn_Browse;
 	private JButton btn_ManagerTable;
@@ -28,6 +37,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JLabel lbl_Port;
 	private JFileChooser jFChooser;
 	private JLabel lbl_Status;
+	private JTable tableLog;
+	private JScrollPane jSP_Log;
 
 	private MyServer _MyServer;
 	private int _Port;
@@ -35,6 +46,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private FileFilter _FileFilter_DB;
 	private Database _DataBase;
 	private String _PathDataBase;
+
+	private Vector<String> colNameTableLog = new Vector<String>();
+	private Vector<Vector<String>> _Logs = new Vector<Vector<String>>();
+	private Vector<String> tLog;
 
 	public Frame_Main() {
 		this.InitFrame();
@@ -51,76 +66,95 @@ public class Frame_Main extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(null);
+		p_Main = new JPanel();
+		contentPane.add(p_Main, BorderLayout.CENTER);
+		p_Main.setLayout(null);
 
-		lbl_AddrFolder = new JLabel("Thư mục dữ liệu:");
+		lbl_AddrFolder = new JLabel("File DataBase:");
 		lbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_AddrFolder.setBounds(10, 11, 110, 30);
-		panel_1.add(lbl_AddrFolder);
+		lbl_AddrFolder.setBounds(20, 11, 100, 30);
+		p_Main.add(lbl_AddrFolder);
 
 		lbl_Port = new JLabel("Port:");
 		lbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lbl_Port.setBounds(10, 54, 110, 30);
-		panel_1.add(lbl_Port);
+		p_Main.add(lbl_Port);
 
-		tf_AddrFolder = new JTextField();
-		tf_AddrFolder.setEditable(false);
-		tf_AddrFolder.setText("");
-		tf_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tf_AddrFolder.setBounds(130, 12, 239, 30);
-		tf_AddrFolder.setColumns(10);
-		panel_1.add(tf_AddrFolder);
+		tf_AddrFileDB = new JTextField();
+		tf_AddrFileDB.setEditable(false);
+		tf_AddrFileDB.setText("");
+		tf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tf_AddrFileDB.setBounds(130, 12, 239, 30);
+		tf_AddrFileDB.setColumns(10);
+		p_Main.add(tf_AddrFileDB);
 
 		tf_Port = new JTextField();
 		tf_Port.setText("3456");
 		tf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tf_Port.setBounds(130, 55, 120, 30);
 		tf_Port.setColumns(10);
-		panel_1.add(tf_Port);
+		p_Main.add(tf_Port);
 
 		btn_Browse = new JButton("Browse");
 		btn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_Browse.setBounds(390, 11, 131, 30);
 		btn_Browse.setActionCommand("browse");
 		btn_Browse.addActionListener(this);
-		panel_1.add(btn_Browse);
+		p_Main.add(btn_Browse);
 
 		btn_ManagerTable = new JButton("Manager Table");
 		btn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_ManagerTable.setBounds(531, 11, 131, 30);
 		btn_ManagerTable.setActionCommand("managertable");
 		btn_ManagerTable.addActionListener(this);
-		panel_1.add(btn_ManagerTable);
+		p_Main.add(btn_ManagerTable);
 
 		btn_Listen = new JButton("Listen");
 		btn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_Listen.setBounds(390, 54, 131, 30);
 		btn_Listen.setActionCommand("listen");
 		btn_Listen.addActionListener(this);
-		panel_1.add(btn_Listen);
+		p_Main.add(btn_Listen);
 
 		btn_Stop = new JButton("Stop");
 		btn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_Stop.setBounds(531, 54, 131, 30);
 		btn_Stop.setActionCommand("stop");
 		btn_Stop.addActionListener(this);
-		panel_1.add(btn_Stop);
+		p_Main.add(btn_Stop);
 
 		lbl_Status = new JLabel("Status");
 		lbl_Status.setBounds(43, 100, 161, 14);
 		lbl_Status.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lbl_Status.setText("Chưa chọn file DataBase");
-		panel_1.add(lbl_Status);
+		p_Main.add(lbl_Status);
 
-		JPanel panel_1_1 = new JPanel();
-		panel_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0,
-				0)));
-		panel_1_1.setBounds(10, 128, 654, 253);
-		panel_1.add(panel_1_1);
+		p_Log = new JPanel();
+		p_Log.setBounds(20, 125, 642, 276);
+		p_Log.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "LOG"));
+		p_Main.add(p_Log);
+
+		colNameTableLog.add("STT");
+		colNameTableLog.add("Time");
+		colNameTableLog.add("Action");
+
+		tableLog = new JTable();
+		tableLog.setFont(new java.awt.Font("Tahoma", 0, 14));
+		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
+
+		// tableLog.getColumnModel().getColumn(0).setPreferredWidth(5);
+		// tableLog.getColumnModel().getColumn(1).setPreferredWidth(10);
+		// tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
+
+		jSP_Log = new javax.swing.JScrollPane();
+		jSP_Log.setBounds(10, 21, 622, 244);
+		jSP_Log.setViewportView(tableLog);
+
+		p_Log.setLayout(null);
+		p_Log.add(jSP_Log);
 	}
 
 	public void Init() {
@@ -161,7 +195,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathDataBase = jFChooser.getSelectedFile().getPath();
-				tf_AddrFolder.setText(_PathDataBase);
+				tf_AddrFileDB.setText(_PathDataBase);
 				lbl_Status.setText("Đã chọn file DataBase");
 
 				_DataBase = new Database(_PathDataBase);
@@ -176,6 +210,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		if ("managertable".equals(arg0.getActionCommand())) {
 			_FrameManagerTable = new Frame_ManagerTable();
 			_FrameManagerTable.setVisible(true);
+			_FrameManagerTable.setAddrFileDB(_PathDataBase);
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {
@@ -187,7 +222,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
-			_MyServer.stop();
+			// _MyServer.stop();
+
+			PrintLog("Đã dừng server");
 		}
 	}
 
@@ -200,5 +237,21 @@ public class Frame_Main extends JFrame implements ActionListener {
 			ext = s.substring(i + 1).toLowerCase();
 		}
 		return ext;
+	}
+
+	public void PrintLog(String strAction) {
+		tLog = new Vector<>();
+		
+		// add id
+		tLog.add(Integer.toString(_Logs.size() + 1));
+		// add time
+		tLog.add("11:00");
+		// add action
+		tLog.add(strAction);
+		
+		//
+		_Logs.add(tLog);
+
+		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
 	}
 }
