@@ -32,10 +32,9 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JScrollPane jSP1;
 	private Vector<String> colNameTable1 = new Vector<String>();
 	private Vector<Vector<String>> _Fields = new Vector<Vector<String>>();
-
 	private JButton jBtn_AddTable;
 	private JLabel jLbl_NameTable;
-	private JTextField jTf_NameTable;
+	private JTextField jTf_TableName;
 	private JLabel jLbl_FieldNam;
 	private JLabel jLbl_DataType;
 	private JLabel jLbl_Description;
@@ -46,6 +45,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JButton jBtn_AddField;
 
 	public Frame_AddTable() {
+		setTitle("Add Table");
 		this.InitFrame();
 	}
 
@@ -70,16 +70,16 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		jBtn_AddTable.addActionListener(this);
 		jP_Main.add(jBtn_AddTable);
 
-		jLbl_NameTable = new JLabel("Name Table:");
+		jLbl_NameTable = new JLabel("Table name:");
 		jLbl_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_NameTable.setBounds(20, 11, 77, 30);
 		jP_Main.add(jLbl_NameTable);
 
-		jTf_NameTable = new JTextField();
-		jTf_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTf_NameTable.setBounds(107, 12, 173, 30);
-		jTf_NameTable.setColumns(10);
-		jP_Main.add(jTf_NameTable);
+		jTf_TableName = new JTextField();
+		jTf_TableName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_TableName.setBounds(107, 12, 173, 30);
+		jTf_TableName.setColumns(10);
+		jP_Main.add(jTf_TableName);
 
 		jP_Table = new JPanel();
 		jP_Table.setBounds(20, 52, 642, 254);
@@ -161,6 +161,17 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("addtable".equals(arg0.getActionCommand())) {
+
+			String tableName = jTf_TableName.getText().trim();
+
+			if(CheckAddTable(tableName)){
+				//them table moi vao database
+							
+				JOptionPane.showMessageDialog(this, "Added table: \"" + tableName +"\"" + " successful",
+						"OK", JOptionPane.INFORMATION_MESSAGE);
+				
+				this.ResetAddTable();
+			}
 		}
 
 		if ("addfield".equals(arg0.getActionCommand())) {
@@ -222,5 +233,38 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		jTf_FieldName.setText("");
 		jTf_Description.setText("");
 		jCbb_DataType.setSelectedIndex(0);
+	}
+
+	public Boolean CheckAddTable(String tableName) {
+
+		// table da co
+		if (tableName == "aa") {
+			JOptionPane.showMessageDialog(this, "TableName is exist",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		// chua nhap ten table
+		if (tableName.equals("")) {
+			JOptionPane.showMessageDialog(this, "Please enter TableName",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		
+		// chua them field nao
+		if(_Fields.size() <1){
+			JOptionPane.showMessageDialog(this, "Please add Fields",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		return true;
+	}
+
+	public void ResetAddTable() {
+		this.ResetAddField();
+		jTf_TableName.setText("");
+		_Fields.removeAllElements();
+		jTable1.setModel(new DefaultTableModel(_Fields, colNameTable1));
 	}
 }
