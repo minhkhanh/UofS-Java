@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
@@ -25,7 +26,7 @@ import jsql.data.Database;
 
 /**
  * @author DWater
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
@@ -52,13 +53,13 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private int _Port;
 	private Frame_ManagerTable _FrameManagerTable;
 	private FileFilterDb _FileFilterDb;
-	private Database _DataBase;
 	private String _PathFileDataBase;
 
 	public Frame_Main() {
 		this.InitFrame();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void InitFrame() {
 		setResizable(false);
 		setTitle("jSQLServer");
@@ -159,6 +160,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jFChooser.setFileFilter(_FileFilterDb);
 		_PathFileDataBase = "";
 		_MyServer = new MyServer(3456);
+		_ThreadServer = new Thread(_MyServer);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -172,7 +174,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
 				tf_AddrFileDB.setText(_PathFileDataBase);
-				 _DataBase = Database.loadFromFile(_PathFileDataBase);
+				_MyServer.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 				PrintLog("Đã chọn File DataBase");
 			} else {
 				if (!_PathFileDataBase.equals("")) {
@@ -190,13 +192,18 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		if ("listen".equals(arg0.getActionCommand())) {
 			if (tf_Port.getText().trim() != null) {
-				
+
 				_Port = Integer.parseInt(tf_Port.getText().trim());
-				
-				_MyServer.SetPort(_Port);				
+
+				if(_ThreadServer.isAlive()){
+					_MyServer.stop();
+					_ThreadServer.stop();
+					PrintLog("Đã dừng server");
+				}
+				_MyServer.SetPort(_Port);
 				_ThreadServer = new Thread(_MyServer);
 				_ThreadServer.start();
-				PrintLog("Đã mở Server");
+				PrintLog("Server is running in port: " + Integer.toString(_Port));
 			}
 		}
 
