@@ -178,7 +178,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 				
 				// them table moi vao database
 				Table table = new Table();
-				List<Column> colums = new ArrayList<Column>();
+				Vector<Column> colums = new Vector<Column>();
 				Column tcol;
 				
 				for (int i = 0; i < _Fields.size(); i++) {
