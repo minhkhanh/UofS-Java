@@ -42,9 +42,10 @@ public class MyServer implements Runnable {
 			Frame_Main.PrintLog("Khởi chạy máy chủ thành công");
 			Frame_Main.PrintLog("Server is running in port: "
 					+ Integer.toString(_ServerSocket.getLocalPort()));
-
-			new ThreadSocket(_ServerSocket.accept()).start();
-
+			
+			while (true) {
+				new ThreadSocket(_ServerSocket.accept()).start();
+			}
 		} catch (IOException ex) {
 			Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE, null,
 					ex);
@@ -54,6 +55,7 @@ public class MyServer implements Runnable {
 	public void stop() {
 		try {
 			_ServerSocket.close();
+			Frame_Main.PrintLog("Server is stopped");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

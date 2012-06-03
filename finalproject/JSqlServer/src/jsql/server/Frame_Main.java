@@ -184,10 +184,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 				_Port = Integer.parseInt(tf_Port.getText().trim());
 
-				if(_ThreadServer.isAlive()){
+				if (_ThreadServer.isAlive()) {
 					_MyServer.stop();
 					_ThreadServer.stop();
-					PrintLog("Đã dừng server");
 				}
 				_MyServer.SetPort(_Port);
 				_ThreadServer = new Thread(_MyServer);
@@ -198,7 +197,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 		if ("stop".equals(arg0.getActionCommand())) {
 			_MyServer.stop();
 			_ThreadServer.stop();
-			PrintLog("Đã dừng server");
 		}
 	}
 
