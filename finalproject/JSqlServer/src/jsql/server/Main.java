@@ -4,11 +4,15 @@ import java.awt.EventQueue;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import jsql.data.Database;
+
 /**
  * @author DWater
  *
  */
 public class Main {
+	
+	private static Database _DataBase;
 	
 	public static void main(String[] args) {
 		
@@ -36,6 +40,14 @@ public class Main {
                 new Frame_Main().setVisible(true);
             }
         });
+	}
+	
+	public static Database  GetDataBase(){
+		return _DataBase;
+	}
+	
+	public static void  SetDataBase(Database database){
+		_DataBase = database;
 	}
 
 }
