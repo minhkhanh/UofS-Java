@@ -1,5 +1,6 @@
 package jsql.server;
 
+import java.awt.Event;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import jsql.data.Result;
 
 /**
  * @author DWater
- *
+ * 
  */
 @SuppressWarnings("unused")
 public class MyServer implements Runnable {
@@ -22,56 +23,65 @@ public class MyServer implements Runnable {
 	private Socket _Socket;
 	private ObjectOutputStream _OOS;
 	private ObjectInputStream _OIS;
-	private Thread _Thread;
 	private int _Port;
-	
 	private Result _Result;
+	private Boolean _IsConnect;
 
 	public MyServer(int port) {
-
 		_Port = port;
 		_Result = new Result("");
-
-		try {
-			_ServerSocket = new ServerSocket(_Port);
-			System.out.println("Khởi chạy máy chủ thành công");
-
-			// ?? 1 client hay nhieu client
-			_Socket = _ServerSocket.accept();
-			_Thread = new Thread(this);
-			_Thread.start();
-		} catch (IOException ex) {
-			Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE, null,
-					ex);
-		}
+		_IsConnect = false;
 	}
+
+	public void SetPort(int port) {
+		_Port = port;
+	}
+	
+	
 
 	@Override
 	public void run() {
-		try {
-			Thread.sleep(100);
 
-			_OOS = new ObjectOutputStream(_Socket.getOutputStream());
-			_OIS = new ObjectInputStream(_Socket.getInputStream());
+		if (_IsConnect) {
+			try {
+				Thread.sleep(100);
 
-			while (true) {
-				// doc cau truy van cua client	
-				_Result = (Result)_OIS.readObject();
+				_OOS = new ObjectOutputStream(_Socket.getOutputStream());
+				_OIS = new ObjectInputStream(_Socket.getInputStream());
 
-				// thuc hien cau truy van
-				
-				
-				// tra ket qua ve client
-				_OOS.writeObject(_Result);
-				_OOS.flush();
+				while (true) {
+					// doc cau truy van cua client
+					_Result = (Result) _OIS.readObject();
+
+					// thuc hien cau truy van
+
+					// tra ket qua ve client
+					_OOS.writeObject(_Result);
+					_OOS.flush();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			try {
+				_ServerSocket = new ServerSocket(_Port);
+				System.out.println("Khởi chạy máy chủ thành công");
+
+				// ?? 1 client hay nhieu client
+				_Socket = _ServerSocket.accept();
+				_IsConnect = true;
+				Frame_Main.PrintLog(_Socket.getInetAddress() +" connected to Server ^_^");
+			} catch (IOException ex) {
+				Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE,
+						null, ex);
+			}
 		}
+
 	}
 
 	public void stop() {
 		try {
+			_IsConnect = false;
 			_ServerSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

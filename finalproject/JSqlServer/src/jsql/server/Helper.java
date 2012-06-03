@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
+import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
+
 import jsql.data.Database;
+import jsql.data.IntType;
 import jsql.data.Table;
 import jsql.data.Type;
 
@@ -28,7 +31,7 @@ public class Helper implements Serializable {
 		return obj;
 	}
 
-	// de load vao table
+	// de load vao header table
 	public static Vector<String> GetListFiledName(Table table) {
 
 		Vector<String> obj = new Vector<String>();
@@ -41,13 +44,25 @@ public class Helper implements Serializable {
 	}
 
 	// de load vao table
-	public static Vector<Vector<Type>> GetValues(Table table) {
+	public static Vector<Vector<Object>> GetValues(Table table) {
 
-		Vector<Vector<Type>> obj = new Vector<Vector<Type>>();
-		int nCol = table.getColumns().size();
+		Vector<Vector<Object>> obj = new Vector<Vector<Object>>();
+		Vector<Object> tRow;
+		int nCol;
+		int nRow;
 
-		for (int i = 0; i < table.getRows().size(); i++) {
-			obj.add(table.getRow(i).getData());
+		nCol = table.getColumns().size();
+		nRow = table.getRows().size();
+
+		for (int i = 0; i < nRow; i++) {
+			
+			tRow = new Vector<Object>();
+			
+			for (int j = 0; j < nCol; j++) {
+				tRow.add(table.getRow(i).getDataAt(j).getValue());
+			}
+			
+			obj.add(tRow);
 		}
 
 		return obj;
