@@ -42,12 +42,13 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JLabel jLbl_AddrFolder;
 	private JLabel jLbl_Port;
 	private JFileChooser jFChooser;
-	private JTable tableLog;
+	private static JTable tableLog;
 	private JScrollPane jSP_Log;
-	private Vector<String> colNameTableLog = new Vector<String>();
-	private Vector<Vector<String>> _Logs = new Vector<Vector<String>>();
+	private static Vector<String> colNameTableLog = new Vector<String>();
+	private static Vector<Vector<String>> _Logs = new Vector<Vector<String>>();
 
 	private MyServer _MyServer;
+	private Thread _ThreadServer;
 	private int _Port;
 	private Frame_ManagerTable _FrameManagerTable;
 	private FileFilterDb _FileFilterDb;
@@ -157,8 +158,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jFChooser = new JFileChooser();
 		jFChooser.setFileFilter(_FileFilterDb);
 		_PathFileDataBase = "";
+		_MyServer = new MyServer(3456);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
@@ -169,7 +172,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
 				tf_AddrFileDB.setText(_PathFileDataBase);
-				// _DataBase = new Database(_PathDataBase);
+				 _DataBase = Database.loadFromFile(_PathFileDataBase);
 				PrintLog("Đã chọn File DataBase");
 			} else {
 				if (!_PathFileDataBase.equals("")) {
@@ -187,19 +190,24 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		if ("listen".equals(arg0.getActionCommand())) {
 			if (tf_Port.getText().trim() != null) {
+				
 				_Port = Integer.parseInt(tf_Port.getText().trim());
-				_MyServer = new MyServer(_Port);
+				
+				_MyServer.SetPort(_Port);				
+				_ThreadServer = new Thread(_MyServer);
+				_ThreadServer.start();
 				PrintLog("Đã mở Server");
 			}
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
-			//_MyServer.stop();
+			_MyServer.stop();
+			_ThreadServer.stop();
 			PrintLog("Đã dừng server");
 		}
 	}
 
-	public void PrintLog(String strAction) {
+	public static void PrintLog(String strAction) {
 		Vector<String> tLog = new Vector<String>();
 		Calendar c = Calendar.getInstance();
 		String time;

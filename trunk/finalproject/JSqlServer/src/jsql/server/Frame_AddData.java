@@ -20,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import jsql.data.Database;
+import jsql.data.Table;
+
 import javax.swing.JLayeredPane;
 import javax.swing.JTabbedPane;
 import java.awt.event.ItemListener;
@@ -40,13 +42,14 @@ public class Frame_AddData extends JFrame implements ActionListener {
 	private JTable jTableNewData;
 	private JScrollPane jSP1;
 	private JScrollPane jSP2;
-	private Vector<String> colNameTable1 = new Vector<String>();
-	private Vector<Vector<?>> _Fields = new Vector<Vector<?>>();
+	private Vector<String> _ColNameTable1 = new Vector<String>();
+	private Vector<Vector<Object>> _Values = new Vector<Vector<Object>>();
+	private Vector<Vector<Object>> _NewValue = new Vector<Vector<Object>>();
 	private JButton jBtn_Ok;
 	@SuppressWarnings("rawtypes")
 	private JComboBox jCbb_ListTable;
 	private JLabel jLbl_ChoseTable;
-	
+
 	private JButton jBtn_AddTable;
 	private JLabel jLbl_NameTable;
 	private JTextField jTf_TableName;
@@ -54,6 +57,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 	private JButton jBtn_AddField;
 
 	private Database _DataBase;
+	private JTextField textField;
 
 	public Frame_AddData(String pathdb) {
 		_DataBase = Database.loadFromFile(pathdb);
@@ -111,11 +115,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
 				.GetListTableName(_DataBase)));
-		colNameTable1 = Helper.GetListFiledName(_DataBase
-				.getTable(jCbb_ListTable.getSelectedIndex()));
-		jTable1.setModel(new DefaultTableModel(Helper.GetValues(_DataBase
-				.getTable(jCbb_ListTable.getSelectedIndex())), colNameTable1));
-		
+
 		jP_AddData = new JPanel();
 		jP_AddData.setBounds(20, 283, 642, 183);
 		jP_AddData.setBorder(javax.swing.BorderFactory.createTitledBorder(
@@ -124,7 +124,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jP_AddData.setLayout(null);
 
 		jLbl_DataType = new JLabel("Data Type:");
-		jLbl_DataType.setBounds(419, 55, 69, 30);
+		jLbl_DataType.setBounds(196, 123, 69, 30);
 		jP_AddData.add(jLbl_DataType);
 		jLbl_DataType.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
@@ -135,8 +135,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jBtn_AddField.setActionCommand("addfield");
 		jBtn_AddField.addActionListener(this);
 		jP_AddData.add(jBtn_AddField);
-		
-		
+
 		jTableNewData = new JTable();
 		jTableNewData.setFont(new java.awt.Font("Tahoma", 0, 14));
 
@@ -146,22 +145,50 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		jP_AddData.setLayout(null);
 		jP_AddData.add(jSP2);
-		
-		jTableNewData.setModel(new DefaultTableModel(Helper.GetValues(_DataBase
-				.getTable(jCbb_ListTable.getSelectedIndex())), colNameTable1));
+
+		_ColNameTable1 = Helper.GetListFiledName(_DataBase
+				.getTable(jCbb_ListTable.getSelectedIndex()));
+		_Values = Helper.GetValues(_DataBase.getTable(jCbb_ListTable
+				.getSelectedIndex()));
+
+		jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
+		jTableNewData
+				.setModel(new DefaultTableModel(_NewValue, _ColNameTable1));
+
+		textField = new JTextField();
+		textField.setBounds(319, 123, 195, 36);
+		jP_AddData.add(textField);
+		textField.setColumns(10);
+		textField.setText("Sdfd");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("changetable".equals(arg0.getActionCommand())) {
-			colNameTable1 = Helper.GetListFiledName(_DataBase
-					.getTable(jCbb_ListTable.getSelectedIndex()));
-			jTable1.setModel(new DefaultTableModel(Helper.GetValues(_DataBase
-					.getTable(jCbb_ListTable.getSelectedIndex())), colNameTable1));
-			
-			
+
+			Table table = _DataBase.getTable(jCbb_ListTable.getSelectedIndex());
+			_Values = Helper.GetValues(table);
+
+			_ColNameTable1 = Helper.GetListFiledName(table);
+
+			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
+
+			// THem du lieu
+
+		}
+
+		if ("addfield".equals(arg0.getActionCommand())) {
+
+			Table table = _DataBase.getTable(jCbb_ListTable.getSelectedIndex());
+			_Values = Helper.GetValues(table);
+
+			_ColNameTable1 = Helper.GetListFiledName(table);
+
+			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
+
 			// THem du lieu
 		}
+
 	}
 }
