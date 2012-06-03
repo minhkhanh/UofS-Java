@@ -1,5 +1,8 @@
 package jsql.parse;
-
+/**
+ * @author tmkhanh
+ *
+ */
 public class Parser {
 	public static Statement parseStatement(String sqlStatement) {
 		Statement statement;
