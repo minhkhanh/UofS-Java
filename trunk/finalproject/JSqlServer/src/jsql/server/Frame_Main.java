@@ -163,7 +163,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
 				tf_AddrFileDB.setText(_PathFileDataBase);
-				_MyServer.SetDataBase(Database.loadFromFile(_PathFileDataBase));
+				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 				PrintLog("Đã chọn File DataBase");
 			} else {
 				if (!_PathFileDataBase.equals("")) {
@@ -192,7 +192,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 				_MyServer.SetPort(_Port);
 				_ThreadServer = new Thread(_MyServer);
 				_ThreadServer.start();
-				PrintLog("Server is running in port: " + Integer.toString(_Port));
 			}
 		}
 
