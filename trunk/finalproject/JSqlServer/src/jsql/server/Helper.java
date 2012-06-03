@@ -4,12 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
-import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
-
 import jsql.data.Database;
-import jsql.data.IntType;
 import jsql.data.Table;
-import jsql.data.Type;
 
 /**
  * @author DWater

@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import jsql.data.Database;
 import jsql.data.Result;
+import jsql.parse.Parser;
+import jsql.parse.Statement;
 
 /**
  * @author DWater
@@ -28,6 +30,8 @@ public class MyServer implements Runnable {
 	private Result _Result;
 	private Boolean _IsConnect;
 	private Database _DataBase;
+	private String _QueryOfClient;
+	private Statement _Statement;
 
 	public MyServer(int port) {
 		_Port = port;
@@ -51,9 +55,11 @@ public class MyServer implements Runnable {
 
 				while (true) {
 					// doc cau truy van cua client
-					_Result = (Result) _OIS.readObject();
+					_QueryOfClient = (String) _OIS.readObject();
 
 					// thuc hien cau truy van
+					_Statement = Parser.parseStatement(_QueryOfClient);
+					_Result = _DataBase.executeStatement(_Statement);
 
 					// tra ket qua ve client
 					_OOS.writeObject(_Result);

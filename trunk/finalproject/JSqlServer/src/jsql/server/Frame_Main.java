@@ -1,25 +1,15 @@
 package jsql.server;
 
 import java.awt.BorderLayout;
-import java.awt.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.TableModelListener;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.html.ListView;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Vector;
 
 import jsql.data.Database;
@@ -59,7 +49,6 @@ public class Frame_Main extends JFrame implements ActionListener {
 		this.InitFrame();
 	}
 
-	@SuppressWarnings("deprecation")
 	public void InitFrame() {
 		setResizable(false);
 		setTitle("jSQLServer");
