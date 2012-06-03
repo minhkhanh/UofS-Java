@@ -99,27 +99,16 @@ public class Database implements Serializable {
 				throw new Exception("insert is null!");
 			Table table = null;
 			for (Table t : tables) {
-				if (t.getName() == insert.getTable()) {
+				if (t.getName().equals(insert.getTable())) {
 					table = t;
 					break;
 				}
 			}
 			if (table == null)
 				throw new Exception("table is not exit!");
-			if (table.getColumns().size() < insert.getValues().size())
-				throw new Exception("values>table!");
-			if (insert.getColumns().size() == 0) {
-				// ko chi ra column
-				if (table.getColumns().size() != insert.getValues().size())
-					throw new Exception("values!=table!");
-
-				// check type
-				for (int i = 0; i < table.getColumns().size(); ++i) {
-					if (table.getColumns().get(i).getClassType() != insert
-							.getValues().get(i).getClass())
-						throw new Exception("insert value systac error");
-				}
-			}
+			//if (table.checkInsertInput(insert.getColumns(), insert.getValues())) throw new Exception("check input insert false");
+			table.insertRow(insert.getColumns(), insert.getValues());
+			return new Result("insert row done!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			// return new Result("insert error!");

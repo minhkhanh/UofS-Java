@@ -21,11 +21,17 @@ public class Row implements Serializable {
 	public Row() {
 	}
 	
+	public Row(int numCol) {
+		for (int i = 0; i < numCol; i++) {
+			data.add(null);
+		}
+	}
+	
 	public Row(Vector<Type> data) {
 		this.data = data;
 	}
 	
-	public Object getDataAt(int index) {
+	public Type getDataAt(int index) {
 		return data.get(index);
 	}
 	public void setDataAt(int index, Type obj) {
