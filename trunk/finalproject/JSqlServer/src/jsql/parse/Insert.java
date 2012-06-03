@@ -3,7 +3,10 @@ package jsql.parse;
 import java.util.Vector;
 
 import jsql.data.Type;
-
+/**
+ * @author tmkhanh
+ *
+ */
 public class Insert implements Statement {
 
 	/**
