@@ -31,7 +31,7 @@ public class Helper implements Serializable {
 	// de load vao table
 	public static Vector<String> GetListFiledName(Table table) {
 
-		Vector<String> obj = new Vector<>();
+		Vector<String> obj = new Vector<String>();
 
 		for (int i = 0; i < table.getColumns().size(); i++) {
 			obj.add(table.getColumn(i).getName());
@@ -43,7 +43,7 @@ public class Helper implements Serializable {
 	// de load vao table
 	public static Vector<Vector<Type>> GetValues(Table table) {
 
-		Vector<Vector<Type>> obj = new Vector<>();
+		Vector<Vector<Type>> obj = new Vector<Vector<Type>>();
 		int nCol = table.getColumns().size();
 
 		//for (int i = 0; i < table.getRows().size(); i++) {
