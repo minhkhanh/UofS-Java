@@ -7,11 +7,13 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
@@ -33,15 +35,23 @@ public class Frame_AddData extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JPanel jP_Main;
 	private JPanel jP_Table;
-	private JPanel jP_AddField;
+	private JPanel jP_AddData;
 	private JTable jTable1;
+	private JTable jTableNewData;
 	private JScrollPane jSP1;
+	private JScrollPane jSP2;
 	private Vector<String> colNameTable1 = new Vector<String>();
 	private Vector<Vector<?>> _Fields = new Vector<Vector<?>>();
 	private JButton jBtn_Ok;
 	@SuppressWarnings("rawtypes")
 	private JComboBox jCbb_ListTable;
 	private JLabel jLbl_ChoseTable;
+	
+	private JButton jBtn_AddTable;
+	private JLabel jLbl_NameTable;
+	private JTextField jTf_TableName;
+	private JLabel jLbl_DataType;
+	private JButton jBtn_AddField;
 
 	private Database _DataBase;
 
@@ -84,7 +94,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jP_Main.add(jLbl_ChoseTable);
 
 		jP_Table = new JPanel();
-		jP_Table.setBounds(10, 88, 642, 254);
+		jP_Table.setBounds(10, 88, 642, 184);
 		jP_Table.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "TABLE"));
 		jP_Main.add(jP_Table);
@@ -93,21 +103,51 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jTable1.setFont(new java.awt.Font("Tahoma", 0, 14));
 
 		jSP1 = new javax.swing.JScrollPane();
-		jSP1.setBounds(10, 21, 622, 222);
+		jSP1.setBounds(10, 21, 622, 146);
 		jSP1.setViewportView(jTable1);
 
 		jP_Table.setLayout(null);
 		jP_Table.add(jSP1);
-
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(64, 400, 238, 61);
-		jP_Main.add(tabbedPane);
 
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
 				.GetListTableName(_DataBase)));
 		colNameTable1 = Helper.GetListFiledName(_DataBase
 				.getTable(jCbb_ListTable.getSelectedIndex()));
 		jTable1.setModel(new DefaultTableModel(Helper.GetValues(_DataBase
+				.getTable(jCbb_ListTable.getSelectedIndex())), colNameTable1));
+		
+		jP_AddData = new JPanel();
+		jP_AddData.setBounds(20, 283, 642, 183);
+		jP_AddData.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "ADD FIELD"));
+		jP_Main.add(jP_AddData);
+		jP_AddData.setLayout(null);
+
+		jLbl_DataType = new JLabel("Data Type:");
+		jLbl_DataType.setBounds(419, 55, 69, 30);
+		jP_AddData.add(jLbl_DataType);
+		jLbl_DataType.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		jBtn_AddField = new JButton("Add Field");
+		jBtn_AddField.setBounds(10, 142, 94, 30);
+		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_AddField.setActionCommand("ok");
+		jBtn_AddField.setActionCommand("addfield");
+		jBtn_AddField.addActionListener(this);
+		jP_AddData.add(jBtn_AddField);
+		
+		
+		jTableNewData = new JTable();
+		jTableNewData.setFont(new java.awt.Font("Tahoma", 0, 14));
+
+		jSP2 = new javax.swing.JScrollPane();
+		jSP2.setBounds(10, 21, 622, 55);
+		jSP2.setViewportView(jTableNewData);
+
+		jP_AddData.setLayout(null);
+		jP_AddData.add(jSP2);
+		
+		jTableNewData.setModel(new DefaultTableModel(Helper.GetValues(_DataBase
 				.getTable(jCbb_ListTable.getSelectedIndex())), colNameTable1));
 	}
 
@@ -119,6 +159,9 @@ public class Frame_AddData extends JFrame implements ActionListener {
 					.getTable(jCbb_ListTable.getSelectedIndex()));
 			jTable1.setModel(new DefaultTableModel(Helper.GetValues(_DataBase
 					.getTable(jCbb_ListTable.getSelectedIndex())), colNameTable1));
+			
+			
+			// THem du lieu
 		}
 	}
 }

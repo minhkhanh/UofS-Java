@@ -46,9 +46,9 @@ public class Helper implements Serializable {
 		Vector<Vector<Type>> obj = new Vector<Vector<Type>>();
 		int nCol = table.getColumns().size();
 
-		//for (int i = 0; i < table.getRows().size(); i++) {
-		//	obj.add(table.getRow(i).getData());
-		//}
+		for (int i = 0; i < table.getRows().size(); i++) {
+			obj.add(table.getRow(i).getData());
+		}
 
 		return obj;
 	}
