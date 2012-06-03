@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author tmkhanh
  *
  */
-public abstract class Type implements Serializable {
+public abstract class Type implements Serializable, Comparable<Type> {
 	/**
 	 * 
 	 */

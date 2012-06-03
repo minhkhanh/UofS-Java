@@ -3,8 +3,7 @@
  */
 package jsql.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 import jsql.parse.Parser;
 import jsql.parse.Statement;
@@ -26,7 +25,9 @@ public class Test {
 	public static void testInsert() {
 		//generateDatabase();
 		Database database = Database.loadFromFile("test.db");
-		Statement statement = Parser.parseStatement("INSERT INTO Persons (P_Id, LastName, FirstName) VALUES (5, 'Tjessem', 'Jakob')");
+		Statement statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (5, 'Tjessem')");
+		database.executeStatement(statement);
+		database.saveToFile();
 		System.out.println("insert test.");
 	}
 
@@ -35,11 +36,11 @@ public class Test {
 		
 		Table table = new Table();
 		table.setName("HocSinh");
-		List<Column> listCol = new ArrayList<Column>();
+		Vector<Column> listCol = new Vector<Column>();
 		listCol.add(new Column("MS", "INT"));
 		listCol.add(new Column("TEN", "STRING"));
 		table.setColumns(listCol);
-		List<Row> rows = new ArrayList<Row>();
+		Vector<Row> rows = new Vector<Row>();
 		Row row = new Row();
 		row.addData(new IntType(1));
 		row.addData(new StringType("Khánh"));
@@ -51,6 +52,6 @@ public class Test {
 		table.setRows(rows);
 		database.addTable(table);
 		
-		database.saveToFile();
+		//database.saveToFile();
 	}
 }
