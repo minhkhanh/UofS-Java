@@ -23,7 +23,7 @@ public class Test {
 	}
 	
 	public static void testInsert() {
-		generateDatabase();
+		//generateDatabase();
 		Database database = Database.loadFromFile("test.db");
 		Statement statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (5, 'Tjessem')");
 		database.executeStatement(statement);

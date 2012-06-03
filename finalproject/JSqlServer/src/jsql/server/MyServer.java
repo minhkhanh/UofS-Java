@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import jsql.data.Database;
 import jsql.data.Result;
 
 /**
@@ -26,6 +27,7 @@ public class MyServer implements Runnable {
 	private int _Port;
 	private Result _Result;
 	private Boolean _IsConnect;
+	private Database _DataBase;
 
 	public MyServer(int port) {
 		_Port = port;
@@ -36,8 +38,6 @@ public class MyServer implements Runnable {
 	public void SetPort(int port) {
 		_Port = port;
 	}
-	
-	
 
 	@Override
 	public void run() {
@@ -70,7 +70,8 @@ public class MyServer implements Runnable {
 				// ?? 1 client hay nhieu client
 				_Socket = _ServerSocket.accept();
 				_IsConnect = true;
-				Frame_Main.PrintLog(_Socket.getInetAddress() +" connected to Server ^_^");
+				Frame_Main.PrintLog(_Socket.getInetAddress()
+						+ " connected to Server ^_^");
 			} catch (IOException ex) {
 				Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE,
 						null, ex);
@@ -87,5 +88,10 @@ public class MyServer implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void SetDataBase(Database loadFromFile) {
+		// TODO Auto-generated method stub
+		_DataBase = loadFromFile;
 	}
 }
