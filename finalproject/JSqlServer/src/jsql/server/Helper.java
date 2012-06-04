@@ -28,12 +28,13 @@ public class Helper implements Serializable {
 	}
 
 	// de load vao header table
-	public static Vector<String> GetListFiledName(Table table) {
+	public static Vector<String> GetListFiledAndType(Table table) {
 
 		Vector<String> obj = new Vector<String>();
 
 		for (int i = 0; i < table.getColumns().size(); i++) {
-			obj.add(table.getColumn(i).getName());
+			obj.add(table.getColumn(i).getName() + " ("
+					+ table.getColumn(i).getType() + ")");
 		}
 
 		return obj;
@@ -51,15 +52,35 @@ public class Helper implements Serializable {
 		nRow = table.getRows().size();
 
 		for (int i = 0; i < nRow; i++) {
-			
+
 			tRow = new Vector<Object>();
-			
+
 			for (int j = 0; j < nCol; j++) {
 				tRow.add(table.getRow(i).getDataAt(j).getValue());
 			}
-			
+
 			obj.add(tRow);
 		}
+
+		return obj;
+	}
+
+	// tao row empty de add vao table de thay doi data theo y minh
+	public static Vector<Vector<Object>> CreateRowEmpy(Table table) {
+
+		Vector<Vector<Object>> obj = new Vector<Vector<Object>>();
+		Vector<Object> tRow;
+		int nCol;
+
+		nCol = table.getColumns().size();
+
+		tRow = new Vector<Object>();
+
+		for (int j = 0; j < nCol; j++) {
+			tRow.add(null);
+		}
+
+		obj.add(tRow);
 
 		return obj;
 	}

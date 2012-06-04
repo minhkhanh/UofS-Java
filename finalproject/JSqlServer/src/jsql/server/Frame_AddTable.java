@@ -1,18 +1,15 @@
 package jsql.server;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,7 +21,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 import jsql.data.Column;
-import jsql.data.Database;
 import jsql.data.Table;
 
 /**
@@ -54,10 +50,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JComboBox<?> jCbb_DataType;
 	private JButton jBtn_AddField;
 
-	private Database _DataBase;
-
-	public Frame_AddTable(String pathdb) {
-		_DataBase = Database.loadFromFile(pathdb);
+	public Frame_AddTable() {
 		this.InitFrame();
 	}
 
@@ -199,13 +192,15 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 				table.setName(tableName);
 				table.setColumns(colums);
 
-				_DataBase.addTable(table);
+				Main.GetDataBase().addTable(table);
 
 				JOptionPane.showMessageDialog(this, "Added table: \""
 						+ tableName + "\"" + " successful", "OK",
 						JOptionPane.INFORMATION_MESSAGE);
 
 				this.ResetAddTable();
+				
+				Frame_ManagerTable.Refresh();
 			}
 		}
 
@@ -278,7 +273,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 	public Boolean CheckAddTable(String tableName) {
 		// table da co
-		List<Table> tables = _DataBase.getTables();
+		List<Table> tables = Main.GetDataBase().getTables();
 		for (int i = 0; i < tables.size(); i++) {
 			if (tableName.equals(tables.get(i).getName())) {
 				JOptionPane.showMessageDialog(this, "TableName is exist",

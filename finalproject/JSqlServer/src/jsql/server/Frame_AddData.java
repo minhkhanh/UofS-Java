@@ -26,6 +26,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JTabbedPane;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
 
 /**
  * @author DWater
@@ -53,14 +55,9 @@ public class Frame_AddData extends JFrame implements ActionListener {
 	private JButton jBtn_AddTable;
 	private JLabel jLbl_NameTable;
 	private JTextField jTf_TableName;
-	private JLabel jLbl_DataType;
 	private JButton jBtn_AddField;
 
-	private Database _DataBase;
-	private JTextField textField;
-
-	public Frame_AddData(String pathdb) {
-		_DataBase = Database.loadFromFile(pathdb);
+	public Frame_AddData() {
 		this.InitFrame();
 	}
 
@@ -114,21 +111,16 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jP_Table.add(jSP1);
 
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
-				.GetListTableName(_DataBase)));
+				.GetListTableName(Main.GetDataBase())));
 
 		jP_AddData = new JPanel();
 		jP_AddData.setBounds(20, 283, 642, 183);
-		jP_AddData.setBorder(javax.swing.BorderFactory.createTitledBorder(
-				javax.swing.BorderFactory.createEtchedBorder(), "ADD FIELD"));
+		jP_AddData.setBorder(new TitledBorder(new EtchedBorder(
+				EtchedBorder.LOWERED, null, null), "ADD DATA"));
 		jP_Main.add(jP_AddData);
 		jP_AddData.setLayout(null);
 
-		jLbl_DataType = new JLabel("Data Type:");
-		jLbl_DataType.setBounds(196, 123, 69, 30);
-		jP_AddData.add(jLbl_DataType);
-		jLbl_DataType.setFont(new Font("Tahoma", Font.PLAIN, 14));
-
-		jBtn_AddField = new JButton("Add Field");
+		jBtn_AddField = new JButton("Add");
 		jBtn_AddField.setBounds(10, 142, 94, 30);
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand("ok");
@@ -146,20 +138,14 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jP_AddData.setLayout(null);
 		jP_AddData.add(jSP2);
 
-		_ColNameTable1 = Helper.GetListFiledName(_DataBase
+		_ColNameTable1 = Helper.GetListFiledAndType(Main.GetDataBase()
 				.getTable(jCbb_ListTable.getSelectedIndex()));
-		_Values = Helper.GetValues(_DataBase.getTable(jCbb_ListTable
-				.getSelectedIndex()));
+		_Values = Helper.GetValues(Main.GetDataBase().getTable(
+				jCbb_ListTable.getSelectedIndex()));
 
 		jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
 		jTableNewData
 				.setModel(new DefaultTableModel(_NewValue, _ColNameTable1));
-
-		textField = new JTextField();
-		textField.setBounds(319, 123, 195, 36);
-		jP_AddData.add(textField);
-		textField.setColumns(10);
-		textField.setText("Sdfd");
 	}
 
 	@Override
@@ -167,28 +153,35 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		if ("changetable".equals(arg0.getActionCommand())) {
 
-			Table table = _DataBase.getTable(jCbb_ListTable.getSelectedIndex());
-			_Values = Helper.GetValues(table);
+			Table table = Main.GetDataBase().getTable(
+					jCbb_ListTable.getSelectedIndex());
 
-			_ColNameTable1 = Helper.GetListFiledName(table);
+			_ColNameTable1 = Helper.GetListFiledAndType(table);
+			_Values = Helper.GetValues(table);
+			_NewValue = Helper.CreateRowEmpy(table);
 
 			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
 
-			// THem du lieu
+			jTableNewData.setModel(new DefaultTableModel(_NewValue,
+					_ColNameTable1));
 
 		}
 
 		if ("addfield".equals(arg0.getActionCommand())) {
 
-			Table table = _DataBase.getTable(jCbb_ListTable.getSelectedIndex());
-			_Values = Helper.GetValues(table);
+			// them 1row vao
+			_Values.add(_NewValue.get(0));
 
-			_ColNameTable1 = Helper.GetListFiledName(table);
+			Table table = Main.GetDataBase().getTable(
+					jCbb_ListTable.getSelectedIndex());
+
+			_ColNameTable1 = Helper.GetListFiledAndType(table);
+			_NewValue = Helper.CreateRowEmpy(table);
 
 			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
 
-			// THem du lieu
+			jTableNewData.setModel(new DefaultTableModel(_NewValue,
+					_ColNameTable1));
 		}
-
 	}
 }

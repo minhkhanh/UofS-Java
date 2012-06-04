@@ -97,7 +97,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jBtn_Browse.addActionListener(this);
 		jP_Main.add(jBtn_Browse);
 
-		jBtn_ManagerTable = new JButton("Manager Table");
+		jBtn_ManagerTable = new JButton("Manager DB");
 		jBtn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_ManagerTable.setBounds(531, 11, 131, 30);
 		jBtn_ManagerTable.setActionCommand("managertable");

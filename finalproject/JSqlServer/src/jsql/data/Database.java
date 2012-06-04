@@ -106,7 +106,9 @@ public class Database implements Serializable {
 			}
 			if (table == null)
 				throw new Exception("table is not exit!");
-			//if (table.checkInsertInput(insert.getColumns(), insert.getValues())) throw new Exception("check input insert false");
+			// if (table.checkInsertInput(insert.getColumns(),
+			// insert.getValues())) throw new
+			// Exception("check input insert false");
 			table.insertRow(insert.getColumns(), insert.getValues());
 			return new Result("insert row done!");
 		} catch (Exception e) {
@@ -135,5 +137,15 @@ public class Database implements Serializable {
 			if (tables.get(i).getName().equals(tableName))
 				return tables.get(i);
 		return null;
+	}
+
+	public String GetFilePath() {
+		return filePath;
+	}
+
+	// added by khuong
+	public static void createNewDatabase(String fullpath) {
+		Database db = new Database(fullpath);
+		db.saveToFile();
 	}
 }
