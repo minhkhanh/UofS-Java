@@ -10,6 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import jsql.data.Database;
+import jsql.data.Row;
 import jsql.data.Table;
 
 import javax.swing.JLayeredPane;
@@ -95,7 +97,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jP_Main.add(jLbl_ChoseTable);
 
 		jP_Table = new JPanel();
-		jP_Table.setBounds(10, 88, 642, 184);
+		jP_Table.setBounds(10, 88, 642, 214);
 		jP_Table.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "TABLE"));
 		jP_Main.add(jP_Table);
@@ -104,7 +106,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jTable1.setFont(new java.awt.Font("Tahoma", 0, 14));
 
 		jSP1 = new javax.swing.JScrollPane();
-		jSP1.setBounds(10, 21, 622, 146);
+		jSP1.setBounds(10, 21, 622, 182);
 		jSP1.setViewportView(jTable1);
 
 		jP_Table.setLayout(null);
@@ -114,14 +116,14 @@ public class Frame_AddData extends JFrame implements ActionListener {
 				.GetListTableName(Main.GetDataBase())));
 
 		jP_AddData = new JPanel();
-		jP_AddData.setBounds(20, 283, 642, 183);
+		jP_AddData.setBounds(10, 329, 642, 147);
 		jP_AddData.setBorder(new TitledBorder(new EtchedBorder(
 				EtchedBorder.LOWERED, null, null), "ADD DATA"));
 		jP_Main.add(jP_AddData);
 		jP_AddData.setLayout(null);
 
 		jBtn_AddField = new JButton("Add");
-		jBtn_AddField.setBounds(10, 142, 94, 30);
+		jBtn_AddField.setBounds(10, 100, 94, 30);
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand("ok");
 		jBtn_AddField.setActionCommand("addfield");
@@ -132,16 +134,18 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		jTableNewData.setFont(new java.awt.Font("Tahoma", 0, 14));
 
 		jSP2 = new javax.swing.JScrollPane();
-		jSP2.setBounds(10, 21, 622, 55);
+		jSP2.setBounds(10, 21, 622, 68);
 		jSP2.setViewportView(jTableNewData);
 
 		jP_AddData.setLayout(null);
 		jP_AddData.add(jSP2);
 
-		_ColNameTable1 = Helper.GetListFiledAndType(Main.GetDataBase()
-				.getTable(jCbb_ListTable.getSelectedIndex()));
-		_Values = Helper.GetValues(Main.GetDataBase().getTable(
-				jCbb_ListTable.getSelectedIndex()));
+		Table table = Main.GetDataBase().getTable(
+				jCbb_ListTable.getSelectedIndex());
+
+		_ColNameTable1 = Helper.GetListFiledAndType(table);
+		_Values = Helper.GetValues(table);
+		_NewValue = Helper.CreateRowEmpy(table);
 
 		jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
 		jTableNewData
@@ -150,6 +154,17 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+
+		if ("ok".equals(arg0.getActionCommand())) {
+
+			// luu du lieu xuong database -> close form
+			Main.GetDataBase().saveToFile();
+
+			JOptionPane.showMessageDialog(this, "Saved to DataBase ^_^",
+					"Warning", JOptionPane.INFORMATION_MESSAGE);
+
+			this.dispose();
+		}
 
 		if ("changetable".equals(arg0.getActionCommand())) {
 
@@ -170,12 +185,18 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		if ("addfield".equals(arg0.getActionCommand())) {
 
 			// them 1row vao
-			_Values.add(_NewValue.get(0));
-
 			Table table = Main.GetDataBase().getTable(
 					jCbb_ListTable.getSelectedIndex());
 
-			_ColNameTable1 = Helper.GetListFiledAndType(table);
+			Row tRow = table.getRow(0);
+
+			for (int i = 0; i < tRow.numCol(); i++)
+			{
+			//	jsql.data.Type x = (jsql.data.Type) _NewValue.get(1).get(i);
+				//tRow.setDataAt(i, x);
+			}
+
+			_Values = Helper.GetValues(table);
 			_NewValue = Helper.CreateRowEmpy(table);
 
 			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
@@ -183,5 +204,9 @@ public class Frame_AddData extends JFrame implements ActionListener {
 			jTableNewData.setModel(new DefaultTableModel(_NewValue,
 					_ColNameTable1));
 		}
+	}
+
+	public void SaveToDB() {
+
 	}
 }
