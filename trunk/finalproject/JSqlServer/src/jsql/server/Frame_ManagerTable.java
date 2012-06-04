@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,7 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 
 import jsql.data.Database;
-import jsql.data.Table;
 
 /**
  * @author DWater
@@ -38,17 +36,17 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	private JFileChooser jFChooser;
 	private JTextField jTf_AddrFileDB;
 	@SuppressWarnings("rawtypes")
-	private JComboBox jCbb_ListTable;
+	private static JComboBox jCbb_ListTable;
 
 	private Frame_AddTable _FrameAddTable;
 	private Frame_AddData _FrameAddData;
+	private Frame_CreateNewDB _FrameCreateDB;
 
-	private Database _DataBase;
-	private String _PathFileDataBase;
 	private FileFilterDb _FileFilterDb;
 
 	public Frame_ManagerTable() {
 		this.InitFrame();
+		this.Init();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -80,7 +78,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		jBtn_DeleteTable.setBounds(10, 116, 131, 30);
 		jP_Main.add(jBtn_DeleteTable);
 
-		jBtn_AddData = new JButton("Them du lieu");
+		jBtn_AddData = new JButton("Add Data");
 		jBtn_AddData.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddData.setActionCommand("adddata");
 		jBtn_AddData.addActionListener(this);
@@ -119,18 +117,24 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 		jBtn_CreateNewDatabase.addActionListener(this);
 		jBtn_CreateNewDatabase.setBounds(528, 75, 138, 30);
 		jP_Main.add(jBtn_CreateNewDatabase);
+	}
 
+	public void Init() {
 		_FileFilterDb = new FileFilterDb() {
 		};
 		jFChooser = new JFileChooser();
 		jFChooser.setFileFilter(_FileFilterDb);
-		_PathFileDataBase = "";
+		if (Main.GetDataBase() != null)
+			jTf_AddrFileDB.setText(Main.GetDataBase().GetFilePath());
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("createdb".equals(arg0.getActionCommand())) {
+			_FrameCreateDB = new Frame_CreateNewDB();
+			_FrameCreateDB.setVisible(true);
 		}
 
 		if ("browse".equals(arg0.getActionCommand())) {
@@ -138,15 +142,16 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 			int returnVal = jFChooser.showDialog(this, "Choose DataBase");
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
-				jTf_AddrFileDB.setText(_PathFileDataBase);
-				this.LoadDataBase();
+				String pathFileDataBase = jFChooser.getSelectedFile().getPath();
+				jTf_AddrFileDB.setText(pathFileDataBase);
+				Main.SetDataBase(Database.loadFromFile(pathFileDataBase));
+				this.Refresh();
 			}
 		}
 
 		if ("addtable".equals(arg0.getActionCommand())) {
 			if (this.CheckChooseDataBase()) {
-				_FrameAddTable = new Frame_AddTable(_PathFileDataBase);
+				_FrameAddTable = new Frame_AddTable();
 				_FrameAddTable.setVisible(true);
 			}
 		}
@@ -162,25 +167,26 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 				if (ch == 1)
 					return;
 				// delete table
-				_DataBase.DeleteTable(jCbb_ListTable.getSelectedIndex());
+				Main.GetDataBase().DeleteTable(
+						jCbb_ListTable.getSelectedIndex());
 				JOptionPane.showMessageDialog(this, "Deleted successful",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 
-				this.LoadDataBase();
+				this.Refresh();
 			}
 		}
 
 		if ("adddata".equals(arg0.getActionCommand())) {
 
 			if (this.CheckChooseDataBase()) {
-				_FrameAddData = new Frame_AddData(_PathFileDataBase);
+				_FrameAddData = new Frame_AddData();
 				_FrameAddData.setVisible(true);
 			}
 		}
 	}
 
 	public Boolean CheckChooseDataBase() {
-		if (_PathFileDataBase.equals("")) {
+		if (Main.GetDataBase() == null) {
 			JOptionPane.showMessageDialog(this, "Please choose File DataBase!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 
@@ -190,11 +196,9 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void LoadDataBase() {
-		_DataBase = Database.loadFromFile(_PathFileDataBase);
-
+	public static void Refresh() {
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
-				.GetListTableName(_DataBase)));
+				.GetListTableName(Main.GetDataBase())));
 
 	}
 }
