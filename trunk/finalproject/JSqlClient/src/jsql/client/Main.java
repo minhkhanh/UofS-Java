@@ -43,7 +43,7 @@ public class Main extends JFrame implements ActionListener{
         jLabel1.setText("JSql Server Address:");
 
         jTF_IP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTF_IP.setText("172.0.0.1:3456");
+        jTF_IP.setText("localhost:3456");
         jTF_IP.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jB_Connect.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -89,7 +89,7 @@ public class Main extends JFrame implements ActionListener{
 
             },
             new String [] {
-                "Họ tên", "Tuổi"
+                "Name", "Age"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -183,8 +183,7 @@ public class Main extends JFrame implements ActionListener{
 					String ip = jTF_IP.getText().substring(0, mid);
 					int port = Integer.parseInt(jTF_IP.getText().substring(mid + 1, jTF_IP.getText().length()));
 					
-					//socClient = new Socket(ip, port);
-					socClient = new Socket("localhost",port);
+					socClient = new Socket(ip, port);
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					System.out.println("UnknownHostException: " + e1.getMessage());
