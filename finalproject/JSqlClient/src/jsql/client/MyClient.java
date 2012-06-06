@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JOptionPane;
+
 public class MyClient implements Runnable{
 	
 	private String IP;
@@ -19,13 +21,15 @@ public class MyClient implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			client = new Socket(this.IP, this.port);
+			client = new Socket(IP, port);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Can not connect to Server!", "Error", 1);
 		}
 	}
 	
@@ -36,6 +40,10 @@ public class MyClient implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isConnected(){
+		return client.isConnected();
 	}
 
 }
