@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -133,8 +135,30 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("createdb".equals(arg0.getActionCommand())) {
-			_FrameCreateDB = new Frame_CreateNewDB();
-			_FrameCreateDB.setVisible(true);
+			//_FrameCreateDB = new Frame_CreateNewDB();
+			//_FrameCreateDB.setVisible(true);
+			JFileChooser fc = new JFileChooser();
+			fc.setFileFilter(new FileFilter() {
+				
+				@Override
+				public String getDescription() {
+					return "JSql File (*.db)";
+				}
+				
+				@Override
+				public boolean accept(File f) {
+					if(f == null) return false;  
+					if(f.isDirectory()) return true;
+					return f.getName().toLowerCase().endsWith(".db");  
+				}
+			});
+			int returnVal = fc.showDialog(this, "Choose");
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String _PathFileDataBase = fc.getSelectedFile().getPath();
+				System.out.println("choose: " + _PathFileDataBase);
+				//jTF_Target.setText(_PathFileDataBase);
+				// Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
+			}
 		}
 
 		if ("browse".equals(arg0.getActionCommand())) {

@@ -100,18 +100,19 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 		if ("CNDB_Browse".equals(arg0.getActionCommand())) {
 
-			// chon thu muc de luu database
-			// int returnVal = jFChooser.showDialog(this, "Choose");
-			// if (returnVal == JFileChooser.APPROVE_OPTION) {
-			// _PathFileDataBase = jFChooser.getSelectedFile().getPath();
-			// tf_AddrFileDB.setText(_PathFileDataBase);
-			// Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
-			// }
+			 //chon thu muc de luu database
+			jFChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			 int returnVal = jFChooser.showDialog(this, "Choose");
+			 if (returnVal == JFileChooser.APPROVE_OPTION) {
+				 String _PathFileDataBase = jFChooser.getSelectedFile().getPath();
+				 jTF_Target.setText(_PathFileDataBase);
+				 //Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
+			 }
 		}
 
 		if ("CNDB_Create".equals(arg0.getActionCommand())) {
 
-			String target = jTF_Target.getName().trim();
+			String target = jTF_Target.getText().trim();
 			String name = jTf_Name.getText().trim();
 
 			// database bi trung ten
