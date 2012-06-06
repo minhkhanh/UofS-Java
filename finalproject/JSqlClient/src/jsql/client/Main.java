@@ -4,10 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
+@SuppressWarnings("serial")
 public class Main extends JFrame implements ActionListener{
 
 	private JButton jB_Connect;
@@ -185,8 +183,10 @@ public class Main extends JFrame implements ActionListener{
 					
 					client = new MyClient(ip, port);
 					client.run();
-					jB_Connect.setEnabled(false);
-					jB_Discon.setEnabled(true);
+					if(client.isConnected() == true){
+						jB_Connect.setEnabled(false);
+						jB_Discon.setEnabled(true);
+					}
 			}
 		}
 		
