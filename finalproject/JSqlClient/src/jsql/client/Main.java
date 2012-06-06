@@ -22,7 +22,7 @@ public class Main extends JFrame implements ActionListener{
     private JTextField jTF_IP;
     private JTable jTable1;
     
-    private Socket socClient;
+    private MyClient client;
 	
 	public Main(){
 		jLabel1 = new javax.swing.JLabel();
@@ -53,6 +53,7 @@ public class Main extends JFrame implements ActionListener{
 
         jB_Discon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jB_Discon.setText("Disconnect");
+        jB_Discon.setEnabled(false);
         jB_Discon.setActionCommand("Disconnect");
         jB_Discon.addActionListener(this);
 
@@ -178,29 +179,21 @@ public class Main extends JFrame implements ActionListener{
 		
 		if("Connect".equals(e.getActionCommand())){
 			if(jTF_IP.getText() != null){
-				try {
 					int mid = jTF_IP.getText().lastIndexOf(":");
 					String ip = jTF_IP.getText().substring(0, mid);
 					int port = Integer.parseInt(jTF_IP.getText().substring(mid + 1, jTF_IP.getText().length()));
 					
-					socClient = new Socket(ip, port);
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("UnknownHostException: " + e1.getMessage());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("IOException connect: " + e1.getMessage());
-				}
+					client = new MyClient(ip, port);
+					client.run();
+					jB_Connect.setEnabled(false);
+					jB_Discon.setEnabled(true);
 			}
 		}
 		
 		if("Disconnect".equals(e.getActionCommand())){
-			try {
-				socClient.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				System.out.println("IOException disconnect: " + e1.getMessage());
-			}
+				client.stop();
+				jB_Connect.setEnabled(true);
+				jB_Discon.setEnabled(false);
 		}
 
 		if("Execute".equals(e.getActionCommand())){
