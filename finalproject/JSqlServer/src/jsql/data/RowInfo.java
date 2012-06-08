@@ -1,16 +1,12 @@
 /**
  * 
  */
-package jsql.execute;
+package jsql.data;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
-import jsql.data.Column;
-import jsql.data.Row;
-import jsql.data.Type;
 
 /**
  * @author tmkhanh
@@ -18,12 +14,12 @@ import jsql.data.Type;
  */
 public class RowInfo {
 	private Hashtable<String, Integer> hashData;
-	private List<String> columnName;
+	private Vector<String> columnName;
 	private Vector<Type> columnVaule;
 	
 	public RowInfo() {
 		hashData = new Hashtable<String, Integer>();
-		columnName = new ArrayList<String>();
+		columnName = new Vector<String>();
 		columnVaule = new Vector<Type>();
 	}
 	public RowInfo(List<Column> columns) {
@@ -71,6 +67,18 @@ public class RowInfo {
 			return columnVaule.get(index);
 		} else
 			return null;
+	}
+	public int getColumnIndex(String name) {
+		boolean exist = false;
+
+		if (name != null)
+			exist = hashData.containsKey(name);
+
+		if (exist) {
+			int index = ((Integer) hashData.get(name)).intValue();
+			return index;
+		} else
+			return -1;
 	}
 }
 

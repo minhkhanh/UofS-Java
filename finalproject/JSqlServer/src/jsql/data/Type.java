@@ -24,6 +24,10 @@ public abstract class Type implements Serializable, Comparable<Type> {
 	public void setValue(Object obj) {
 		value = obj;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		return value.equals(obj);
+	}
 	
 	public static Type createType(String val) throws Exception {
 		if (val.charAt(0)=='\''&&val.charAt(0)=='\'')
