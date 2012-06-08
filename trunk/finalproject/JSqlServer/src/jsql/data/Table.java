@@ -3,6 +3,11 @@ package jsql.data;
 import java.io.Serializable;
 import java.util.Vector;
 
+import jsql.parse.Delete;
+import jsql.parse.Insert;
+import jsql.parse.Update;
+import jsql.parse.UpdateChange;
+
 public class Table implements Serializable {
 
 	/**
@@ -96,6 +101,10 @@ public class Table implements Serializable {
 		rows.add(row);
 	}
 	
+	private void removeRow(Row row) {
+		rows.remove(row);
+	}
+	
 	private boolean checkInsertInput(Vector<String> columnsName, Vector<Type> values) {
 		if (columns.size() < values.size()) return false;
 		if (columnsName.size() == 0) {
@@ -114,7 +123,9 @@ public class Table implements Serializable {
 		return true;
 	}
 
-	void insertRow(Vector<String> columnsName, Vector<Type> values) throws Exception {
+	void executeInsert(Insert insert) throws Exception {
+		Vector<String> columnsName = insert.getColumns();
+		Vector<Type> values = insert.getValues();
 		if (!checkInsertInput(columnsName, values)) throw new Exception("check input insert false");
 		if (columnsName.size()==0) {
 			addRow(new Row(values));
@@ -127,5 +138,50 @@ public class Table implements Serializable {
 			row.setDataAt(index, values.get(i));
 		}
 		addRow(row);
+	}
+	int executeDelete(Delete del) throws Exception {
+		int iCount = 0;
+		if (del.getWhere()==null) {
+			iCount = rows.size();
+			rows.clear();
+			return iCount;
+		}
+		RowInfo rowInfo = new RowInfo(columns);
+		for (int i = 0; i < rows.size(); ) {
+			Row row = rows.get(i);
+			rowInfo.setRow(row);
+			if (del.getWhere().filterByExpression(rowInfo, del.getDatabase())) {
+				removeRow(row);
+				++iCount;
+			} else ++i;
+		}
+		return iCount;
+	}
+
+	public int executeUpdate(Update update) throws Exception {
+		int iCount = 0;
+		RowInfo rowInfo = new RowInfo(columns);
+		for (int i = 0; i < rows.size(); ++i) {
+			rowInfo.setRow(rows.get(i));
+			if (update.getWhere() == null
+					|| update.getWhere().filterByExpression(rowInfo,
+							update.getDatabase())) {
+				Row row = new Row(rows.get(i));
+				for (UpdateChange change : update.getChange()) {
+					row.setDataAt(rowInfo.getColumnIndex((String) change
+							.getColumn().getBaseValue()), change.getValue());
+				}
+				if (updateRow(i, row))
+					++iCount;
+			}
+			;
+		}
+		return iCount;
+	}
+
+	private boolean updateRow(int index, Row row) {
+		//check key
+		rows.set(index, row);
+		return true;
 	}
 }

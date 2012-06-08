@@ -6,6 +6,7 @@ package jsql.execute;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import jsql.data.RowInfo;
 import jsql.jparse.Constant;
 import jsql.jparse.Exp;
 import jsql.jparse.Expression;

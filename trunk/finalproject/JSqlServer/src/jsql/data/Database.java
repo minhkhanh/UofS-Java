@@ -13,8 +13,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import jsql.parse.Delete;
 import jsql.parse.Insert;
+import jsql.parse.Select;
 import jsql.parse.Statement;
+import jsql.parse.Update;
 
 /**
  * @author tmkhanh
@@ -26,6 +29,9 @@ public class Database implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static final String INT = "INT";
+	public static final String STRING = "STRING";
 
 	private List<Table> tables;
 
@@ -86,11 +92,90 @@ public class Database implements Serializable {
 	public Table getTable(int index) {
 		return tables.get(index);
 	}
+	
+	public boolean haveTable(String name) {
+		for (Table table : tables) {
+			if (table.getName().equals(name)) return true;
+		}
+		return false;
+	}
 
 	public Result executeStatement(Statement statement) {
 		if (statement instanceof Insert)
 			return executeInsert((Insert) statement);
+		if (statement instanceof Delete)
+			return executeDelete((Delete) statement);
+		if (statement instanceof Update)
+			return executeUpdate((Update) statement);
+		if (statement instanceof Select)
+			return executeSelect((Select) statement);		
 		return new Result("statement is dont suport!");
+	}
+
+	private Result executeSelect(Select select) {
+		try {
+			if (select == null)
+				throw new Exception("select is null!");
+			
+			select.setDatabase(this);
+			return select.executeQuery();		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(e.getMessage());
+		}
+	}
+
+	private Result executeUpdate(Update update) {
+		try {
+			if (update == null)
+				throw new Exception("update is null!");
+			Table table = null;
+			for (Table t : tables) {
+				if (t.getName().equals(update.getTable())) {
+					table = t;
+					break;
+				}
+			}
+			if (table == null)
+				throw new Exception("table is not exit!");
+			
+			update.setDatabase(this);
+			int num = table.executeUpdate(update);
+			
+			System.out.println("update " + num + " row done!");
+			return new Result("update " + num + " row done!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("update error!");
+		return new Result("update error!");
+	}
+
+	private Result executeDelete(Delete del) {
+		try {
+			if (del == null)
+				throw new Exception("delete is null!");
+			Table table = null;
+			for (Table t : tables) {
+				if (t.getName().equals(del.getTable())) {
+					table = t;
+					break;
+				}
+			}
+			if (table == null)
+				throw new Exception("table is not exit!");
+			
+			del.setDatabase(this);
+			int num = table.executeDelete(del);
+			
+			System.out.println("delete " + num + " row done!");
+			return new Result("delete " + num + " row done!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("delete error!");
+		return new Result("delete error!");
 	}
 
 	private Result executeInsert(Insert insert) {
@@ -109,12 +194,15 @@ public class Database implements Serializable {
 			// if (table.checkInsertInput(insert.getColumns(),
 			// insert.getValues())) throw new
 			// Exception("check input insert false");
-			table.insertRow(insert.getColumns(), insert.getValues());
+			insert.setDatabase(this);
+			table.executeInsert(insert);
+			System.out.println("insert row done!");
 			return new Result("insert row done!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			// return new Result("insert error!");
 		}
+		System.out.println("insert row error!");
 		return new Result("insert error!");
 	}
 
