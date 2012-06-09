@@ -155,6 +155,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	
 	public void Init(){
 		jBtn_Listen.setEnabled(false);
+		jBtn_Stop.setEnabled(false);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -170,6 +171,11 @@ public class Frame_Main extends JFrame implements ActionListener {
 				tf_AddrFileDB.setText(_PathFileDataBase);
 				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 				PrintLog("Đã chọn File DataBase");
+				
+
+				jBtn_Listen.setEnabled(true);
+				jBtn_Stop.setEnabled(false);
+				
 			} else {
 				if (!_PathFileDataBase.equals("")) {
 					PrintLog("Chọn chọn File DataBase");
@@ -196,12 +202,20 @@ public class Frame_Main extends JFrame implements ActionListener {
 				_MyServer.SetPort(_Port);
 				_ThreadServer = new Thread(_MyServer);
 				_ThreadServer.start();
+				
+
+				jBtn_Listen.setEnabled(false);
+				jBtn_Stop.setEnabled(true);
 			}
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
 			_MyServer.stop();
 			_ThreadServer.stop();
+			
+
+			jBtn_Listen.setEnabled(true);
+			jBtn_Stop.setEnabled(false);
 		}
 	}
 
