@@ -25,16 +25,35 @@ public class QueryRow {
 	public Hashtable<ColumnConstant, Integer> getColumns() {
 		return columns;
 	}
-	public Type getData(ColumnConstant col) {
+	public Type getData(ColumnConstant col) throws Exception {
 		Enumeration<ColumnConstant> listCol  = columns.keys();
+		Integer index = null;
 		while (listCol.hasMoreElements()) {
 			ColumnConstant columnConstant = (ColumnConstant) listCol
 					.nextElement();
 			if (columnConstant.equals(col)) {
-				int iIndex = columns.get(columnConstant);
-				return row.getDataAt(iIndex);
+				Integer i = columns.get(columnConstant);
+				if(index!=null && i !=null) throw new Exception("loi column khong dam bao duy nhat, thu dung alias");
+				index = i;
 			}
 		}
+		if (index!=null) return row.getDataAt(index);
 		return null;
 	}
+	public Integer getColumnIndex(ColumnConstant col) throws Exception {
+		Enumeration<ColumnConstant> listCol  = columns.keys();
+		Integer index = null;
+		while (listCol.hasMoreElements()) {
+			ColumnConstant columnConstant = (ColumnConstant) listCol
+					.nextElement();
+			if (columnConstant.equals(col)) {
+				Integer i = columns.get(columnConstant);
+				if(index!=null && i !=null) throw new Exception("loi column khong dam bao duy nhat, thu dung alias");
+				index = i;
+			}
+		}
+		return index;
+	}
 }
+
+

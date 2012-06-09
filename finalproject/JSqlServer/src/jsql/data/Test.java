@@ -45,7 +45,10 @@ public class Test {
 		
 		//statement = Parser.parseStatement("SELECT Persons.LastName, SUM(Persons.FirstName), Orders.OrderNo FROM Persons RIGHT JOIN Orders ON Persons.P_Id=Orders.P_Id ORDER BY Persons.LastName WHERE LastName='Svendson' AND (FirstName='Tove' OR FirstName='Ola') GROUP BY Customer,OrderDate HAVING SUM(OrderPrice)>1500");
 		
-		statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh, Lop");
+		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh hs, Lop l where hs.MALOP=l.MALOP and HocSinh.MS>=3");
+		
+		statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP");
+		
 		database.executeStatement(statement);
 		//database.saveToFile();
 		System.out.println("delete test.");
@@ -57,15 +60,15 @@ public class Test {
 		//Statement statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (5, 'Tjessem')");
 		//database.executeStatement(statement);
 		
-		Statement statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (1, 'Khanh')");
+		Statement statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (1, 'Khanh',1)");
 		database.executeStatement(statement);
-		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (2, 'Minh')");
+		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (2, 'Minh', 1)");
 		database.executeStatement(statement);
-		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (3, 'Tran')");
+		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (3, 'Tran', 1)");
 		database.executeStatement(statement);
-		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (4, 'ABC')");
+		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (4, 'ABC', 2)");
 		database.executeStatement(statement);
-		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (5, 'DEF')");
+		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (5, 'DEF', 2)");
 		database.executeStatement(statement);
 		
 		statement = Parser.parseStatement("UPDATE HocSinh SET TEN='Nissestien 67'");

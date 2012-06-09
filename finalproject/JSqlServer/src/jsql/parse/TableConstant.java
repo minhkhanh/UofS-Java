@@ -55,6 +55,10 @@ public class TableConstant extends Constant {
 				&& Utils.indexOfString(statement, "FULL JOIN")!=0
 				&& Utils.indexOfString(statement, "INNER JOIN")!=0) {
 			int iA = Utils.indexOfString(statement, " ");
+			if ((iA>Utils.indexOfString(statement, ",") && Utils.indexOfString(statement, ",")>=0)||(iA==-1)) {
+				iA = Utils.indexOfString(statement, ",");
+			}
+			if (iA==-1) iA = statement.length();
 			t.alias = statement.substring(0, iA);
 			statement = Utils.trim(statement.delete(0, iA + 1));
 		}

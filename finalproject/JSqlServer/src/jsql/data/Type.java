@@ -26,7 +26,8 @@ public abstract class Type implements Serializable, Comparable<Type> {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		return value.equals(obj);
+		if (obj.getClass()!=this.getClass()) return false;
+		return value.equals(((Type)obj).value);
 	}
 	
 	public static Type createType(String val) throws Exception {

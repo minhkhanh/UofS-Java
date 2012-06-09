@@ -38,6 +38,16 @@ public class Row implements Serializable {
 	public Row(Vector<Type> data) {
 		this.data = data;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Row other = (Row) obj;
+		if (data.size()!=other.data.size()) return false;
+		for (int i = 0; i < data.size(); i++) {
+			if (!data.get(i).equals(other.data.get(i))) return false;
+		}
+		return true;
+	}
 
 	public Type getDataAt(int index) {
 		return data.get(index);

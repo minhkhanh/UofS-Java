@@ -8,6 +8,7 @@ import java.util.Vector;
 import jsql.data.QueryRow;
 import jsql.data.QueryTable;
 import jsql.data.Result;
+import jsql.data.Row;
 import jsql.data.Type;
 
 /**
@@ -30,6 +31,7 @@ public class Select extends Statement implements Exp {
 	private QueryTable queryTable;
 	private QueryRow currentRow;
 	private Select parent;
+	private Vector<QueryTable> queryGroup;
 	
 	private Select()  {		
 	}
@@ -99,7 +101,7 @@ public class Select extends Statement implements Exp {
 		}
 	}
 	
-	public Type getParentQueryData(ColumnConstant col) {
+	public Type getParentQueryData(ColumnConstant col) throws Exception {
 		if (currentRow==null) return null;
 		Type type = currentRow.getData(col);
 		if (type!=null) return type;
@@ -138,15 +140,51 @@ public class Select extends Statement implements Exp {
 	public Result executeQuery(Select parent) throws Exception {
 		this.parent = parent;
 		executeFrom();
+		executeWhere();
+		executeGroupBy();
 		return null;
 	}
 	
 	private void executeFrom() throws Exception {
-		FromTree fromFree = (FromTree)from;
-		queryTable = fromFree.executeFrom(database);
+		if (from==null) throw new Exception("menh de select ko co from");
+		if (from instanceof TableConstant) queryTable = new QueryTable((TableConstant) from, database);
+		else queryTable = ((FromTree)from).executeFrom(database); 
 	}
 	
-	private void executeSelect() throws Exception {
-		
+	private void executeWhere() throws Exception {
+		if (where==null) return;
+		for (int i = 0; i < queryTable.getRows().size(); ) {
+			Row row = queryTable.getRows().elementAt(i);
+			QueryRow queryRow = new QueryRow(row, queryTable.getColumns());
+			if (where!=null && !where.filterByExpression(queryRow)) {
+				queryTable.removeRow(i);
+			} else ++i;
+		}
+	}
+	
+	private void executeGroupBy() throws Exception {
+		if (groupBy==null && having==null) return;
+		if (groupBy==null && having!=null) throw new Exception("menh de select co having ma ko co group by");
+		queryGroup = new Vector<QueryTable>();
+		for (int i = 0; i < queryTable.getRows().size(); ++i) {
+			Row row = queryTable.getRows().elementAt(i);
+			QueryTable table = null;
+			for (QueryTable t : queryGroup) {
+				if (t.isRowOfGroup(row)) {
+					table = t;
+					break;
+				}
+			}
+			if (table==null) {
+				table = new QueryTable(queryTable.getColumns(), groupBy);
+				queryGroup.add(table);
+			}
+			table.addRow(row);
+		}
+		if (having!=null) {
+			for (QueryTable group : queryGroup) {
+				
+			}
+		}
 	}
 }

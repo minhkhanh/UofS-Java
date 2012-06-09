@@ -18,6 +18,8 @@ public class Update extends Statement {
 	private String table;
 	private ExpressionTree where;
 	private Vector<UpdateChange> change;
+	private TableConstant tableConstant;
+	
 	private Update(String tableName) {
 		setTable(new String(tableName));
 		change = new Vector<UpdateChange>();
@@ -30,6 +32,7 @@ public class Update extends Statement {
 			int iTable = sqlStatement.indexOf(' ');
 			String tableName = sqlStatement.substring(0, iTable);
 			Update update = new Update(tableName);
+			update.tableConstant = (TableConstant) TableConstant.create(new StringBuilder(tableName));
 			sqlStatement = sqlStatement.substring(iTable).trim();
 			if (!Utils.checkStringPrefix(sqlStatement, "SET")) throw new Exception("do'nt have SET");
 			sqlStatement = sqlStatement.substring(3).trim();						
@@ -83,5 +86,7 @@ public class Update extends Statement {
 	public void setChange(Vector<UpdateChange> change) {
 		this.change = change;
 	}
-
+	public TableConstant getTableConstant() {
+		return tableConstant;
+	}
 }

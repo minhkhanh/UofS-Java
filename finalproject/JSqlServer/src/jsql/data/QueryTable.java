@@ -9,7 +9,12 @@ import java.util.Vector;
 
 import jsql.data.Row;
 import jsql.parse.ColumnConstant;
+import jsql.parse.Constant;
 import jsql.parse.ExpressionTree;
+import jsql.parse.FloatConstant;
+import jsql.parse.GroupByItem;
+import jsql.parse.OperatorAggregate;
+import jsql.parse.OperatorAvg;
 import jsql.parse.OperatorFullJoin;
 import jsql.parse.OperatorInnerJoin;
 import jsql.parse.OperatorJoin;
@@ -26,6 +31,7 @@ public class QueryTable {
 	//private String alias;
 	private Vector<Row> rows;
 	private Hashtable<ColumnConstant, Integer> columns;
+	private Vector<GroupByItem> groupBys;
 	
 	public QueryTable(TableConstant tableConstant, Database data) throws Exception {
 		String tableName = tableConstant.getName();
@@ -50,15 +56,62 @@ public class QueryTable {
 		}
 	}
 	
+	public QueryTable(Hashtable<ColumnConstant, Integer> columns) {
+		this.columns = columns;
+		rows = new Vector<Row>();
+	}
+	
+	public QueryTable(Hashtable<ColumnConstant, Integer> columns, Vector<GroupByItem> groupBys) {
+		this.columns = columns;
+		rows = new Vector<Row>();
+		this.groupBys = groupBys;
+	}
+	
+	public void addRow(Row row) {
+		rows.add(row);
+	}
+	
+	public boolean isRowOfGroup(Row row) throws Exception {
+		for (Row r : rows) {
+			for (GroupByItem groupByItem : groupBys) {
+				Integer i = getColumnIndex(groupByItem.getColumn());
+				if (i==null) throw new Exception("group by loi input - khong co column can group");
+				if (!r.getDataAt(i).equals(row.getDataAt(i))) return false;
+			}
+			break;
+		}
+		return true;
+	}
+	public Integer getColumnIndex(ColumnConstant col) throws Exception {
+		Enumeration<ColumnConstant> listCol  = columns.keys();
+		Integer index = null;
+		while (listCol.hasMoreElements()) {
+			ColumnConstant columnConstant = (ColumnConstant) listCol
+					.nextElement();
+			if (columnConstant.equals(col)) {
+				Integer i = columns.get(columnConstant);
+				if(index!=null && i !=null) throw new Exception("loi column khong dam bao duy nhat, thu dung alias");
+				index = i;
+			}
+		}
+		return index;
+	}
 	public Vector<Row> getRows() {
 		return rows;
+	}
+	public Row removeRow(int index) {
+		return rows.remove(index);
 	}
 	public void setRows(Vector<Row> rows) {
 		this.rows = rows;
 	}
-//	public String getName() {
-//		return name;
-//	}
+	public Hashtable<ColumnConstant, Integer> getColumns() {
+		return columns;
+	}
+	public Vector<GroupByItem> getGroupBys() {
+		return groupBys;
+	}
+
 //	public void setName(String name) {
 //		this.name = name;
 //	}
@@ -188,5 +241,20 @@ public class QueryTable {
 	}
 	private QueryTable rightJoin(ExpressionTree on, QueryTable queryTable) throws Exception {
 		return queryTable.leftJoin(on, this);
+	}
+	
+	public Constant executeAggregate(OperatorAggregate operator, ColumnConstant col) throws Exception {
+		Integer i = getColumnIndex(col);
+		if (i==null) throw new Exception("column Aggregate error");
+		Integer sum = 0;
+		if (operator instanceof OperatorAvg) {
+			for (Row row : rows) {
+				IntType t = (IntType) row.getDataAt(i);
+				sum += (Integer)t.getValue();
+			}
+			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
+		}
+		//cai tiep tuc
+		return null;
 	}
 }
