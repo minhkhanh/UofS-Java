@@ -47,6 +47,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 	public Frame_Main() {
 		this.InitFrame();
+		this.Init();
 	}
 
 	public void InitFrame() {
@@ -150,6 +151,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 		_PathFileDataBase = "";
 		_MyServer = new MyServer(3456);
 		_ThreadServer = new Thread(_MyServer);
+	}
+	
+	public void Init(){
+		jBtn_Listen.setEnabled(false);
 	}
 
 	@SuppressWarnings("deprecation")
