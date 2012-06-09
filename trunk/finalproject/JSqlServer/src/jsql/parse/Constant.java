@@ -19,7 +19,8 @@ public abstract class Constant implements Exp, MyComparable {
 	public static final int STRING = 3;
 	public static final int SET = 4;
 	public static final int BOOLEAN = 5;
-	public static final int TABLE = 5;
+	public static final int TABLE = 6;
+	public static final int FLOAT = 7;
 	
 	private int type = -1;
 	private Object value;

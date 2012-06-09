@@ -38,4 +38,12 @@ public class SelectItem {
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
+	
+	public boolean isColumnConstant() {
+		return exp instanceof ColumnConstant;
+	}
+	
+	public boolean isColumnFunction() {
+		return exp instanceof ExpressionTree;
+	}
 }

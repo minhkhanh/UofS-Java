@@ -15,6 +15,7 @@ public class Delete extends Statement {
 	private static final long serialVersionUID = 1L;
 	private String table;
 	private ExpressionTree where;
+	private TableConstant tableConstant;
 	
 	private Delete(String tableName) {
 		setTable(new String(tableName));
@@ -33,9 +34,10 @@ public class Delete extends Statement {
 			if (iWhere<0) table = sqlStatement.trim();
 			else {
 				table = sqlStatement.substring(0, iWhere).trim();
-				sqlStatement = sqlStatement.substring(iWhere).trim();
+				sqlStatement = sqlStatement.substring(iWhere).trim();				
 			}
 			Delete del = new Delete(table); 
+			del.tableConstant = (TableConstant) TableConstant.create(new StringBuilder(table));
 			if (iWhere>=0) {				
 				iWhere = Utils.indexOfString(sqlStatement, "WHERE");
 				if (iWhere<0) throw new Exception("do'nt have table");
@@ -68,6 +70,10 @@ public class Delete extends Statement {
 
 	public void setWhere(ExpressionTree where) {
 		this.where = where;
+	}
+
+	public TableConstant getTableConstant() {
+		return tableConstant;
 	}
 
 }

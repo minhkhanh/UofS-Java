@@ -3,6 +3,7 @@ package jsql.data;
 import java.io.Serializable;
 import java.util.Vector;
 
+import jsql.parse.ColumnConstant;
 import jsql.parse.Delete;
 import jsql.parse.Insert;
 import jsql.parse.Update;
@@ -146,11 +147,13 @@ public class Table implements Serializable {
 			rows.clear();
 			return iCount;
 		}
-		RowInfo rowInfo = new RowInfo(columns);
+		QueryTable table = new QueryTable(del.getTableConstant(), del.getDatabase());
+		//RowInfo rowInfo = new RowInfo(columns);
 		for (int i = 0; i < rows.size(); ) {
 			Row row = rows.get(i);
-			rowInfo.setRow(row);
-			if (del.getWhere().filterByExpression(rowInfo, del.getDatabase())) {
+			//rowInfo.setRow(row);			
+			QueryRow queryRow = new QueryRow(row, table.getColumns());
+			if (del.getWhere().filterByExpression(queryRow)) {
 				removeRow(row);
 				++iCount;
 			} else ++i;
@@ -160,16 +163,17 @@ public class Table implements Serializable {
 
 	public int executeUpdate(Update update) throws Exception {
 		int iCount = 0;
-		RowInfo rowInfo = new RowInfo(columns);
+		QueryTable table = new QueryTable(update.getTableConstant(), update.getDatabase());
+		//RowInfo rowInfo = new RowInfo(columns);
 		for (int i = 0; i < rows.size(); ++i) {
-			rowInfo.setRow(rows.get(i));
+			//rowInfo.setRow(rows.get(i));
+			QueryRow queryRow = new QueryRow(rows.get(i),  table.getColumns());
 			if (update.getWhere() == null
-					|| update.getWhere().filterByExpression(rowInfo,
-							update.getDatabase())) {
+					|| update.getWhere().filterByExpression(queryRow)) {
 				Row row = new Row(rows.get(i));
 				for (UpdateChange change : update.getChange()) {
-					row.setDataAt(rowInfo.getColumnIndex((String) change
-							.getColumn().getBaseValue()), change.getValue());
+					ColumnConstant col = new ColumnConstant(null, (String) change.getColumn().getBaseValue());
+					row.setDataAt(queryRow.getColumnIndex(col), change.getValue());
 				}
 				if (updateRow(i, row))
 					++iCount;
