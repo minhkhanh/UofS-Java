@@ -3,12 +3,15 @@
  */
 package jsql.parse;
 
+import java.util.Hashtable;
 import java.util.Vector;
 
+import jsql.data.Column;
 import jsql.data.QueryRow;
 import jsql.data.QueryTable;
 import jsql.data.Result;
 import jsql.data.Row;
+import jsql.data.Table;
 import jsql.data.Type;
 
 /**
@@ -24,7 +27,7 @@ public class Select extends Statement implements Exp {
 	private ExpressionTree where;
 	private Vector<SelectItem> select;	
 	private Exp from;
-	private OrderBy orderBy;
+	private Vector<OrderBy> orderBy;
 	private Vector<GroupByItem> groupBy;
 	private ExpressionTree having;
 	
@@ -32,6 +35,7 @@ public class Select extends Statement implements Exp {
 	private QueryRow currentRow;
 	private Select parent;
 	private Vector<QueryTable> queryGroup;
+	private Vector<String> columnNames;
 	
 	private Select()  {		
 	}
@@ -73,7 +77,11 @@ public class Select extends Statement implements Exp {
 				if (Utils.indexOfString(key, "ORDER BY")==0) {
 					if (sel.orderBy!=null) throw new Exception("statement have 2 ORDER BY");
 					key = key.substring(8).trim();
-					sel.orderBy = new OrderBy(key);
+					String[] listOrder = key.split(",");
+					sel.orderBy = new Vector<OrderBy>();
+					for (String order : listOrder) {
+						sel.orderBy.add(new OrderBy(order));
+					}
 					continue;
 				}
 				if (Utils.indexOfString(key, "GROUP BY")==0) {
@@ -125,7 +133,7 @@ public class Select extends Statement implements Exp {
 		return from;
 	}
 
-	public OrderBy getOrderBy() {
+	public Vector<OrderBy> getOrderBy() {
 		return orderBy;
 	}
 
@@ -137,12 +145,26 @@ public class Select extends Statement implements Exp {
 		return having;
 	}
 	
-	public Result executeQuery(Select parent) throws Exception {
+	public Result executeSelect(Select parent) throws Exception {
+		Table table = executeQuery(parent);
+		Result r = new Result(null);
+		r.setTable(table);
+		return r;
+	}
+	
+	private Table executeQuery(Select parent) throws Exception {
 		this.parent = parent;
 		executeFrom();
 		executeWhere();
 		executeGroupBy();
-		return null;
+		executeSelect();
+		executeOrderBy();
+		Vector<Column> listCol = new Vector<Column>();
+		for (String col : columnNames) {
+			listCol.add(new Column(col, null));
+		}
+		Table t = new Table(listCol, queryTable.getRows());
+		return t;
 	}
 	
 	private void executeFrom() throws Exception {
@@ -188,5 +210,166 @@ public class Select extends Statement implements Exp {
 				} else ++i;
 			}
 		}
+	}
+	
+	private void executeSelect() throws Exception {		
+		columnNames = new Vector<String>();
+		Vector<Exp> listSelect = new Vector<Exp>();
+		for (int i = 0; i < select.size(); i++) {
+			Exp exp = select.get(i).getValue();
+			if (exp instanceof ExpressionTree) {
+				listSelect.add(exp);
+				if (select.get(i).getAlias()!=null) columnNames.add(select.get(i).getAlias());
+				else columnNames.add(exp.toString());
+			}
+			if (exp instanceof ColumnConstant) {
+				ColumnConstant col = (ColumnConstant)exp;
+				if (col.isWildcard()) {
+					for (ColumnConstant colCostant : queryTable.getListColumn()) {
+						listSelect.add(colCostant);
+						columnNames.add(colCostant.toString());
+					}
+				} else {
+					listSelect.add(col);
+					if (select.get(i).getAlias()!=null) columnNames.add(select.get(i).getAlias());
+					else columnNames.add(exp.toString());
+				}
+			}
+		}
+		Vector<Row> listRow = new Vector<Row>();
+		if (groupBy != null) {
+			//check cac select item
+			for (int i = 0; i < listSelect.size(); i++) {
+				if (!(listSelect.get(i) instanceof ColumnConstant)) continue;
+				boolean bFound = false;
+				Integer iCol = queryTable.getColumnIndex((ColumnConstant) listSelect.get(i));
+				for (GroupByItem groupItem : groupBy) {
+					if (iCol==queryTable.getColumnIndex(groupItem.getColumn())) {
+						bFound = true;
+						break;
+					}
+				}
+				if (!bFound) throw new Exception("loi cau lenh select - lay ve column khong dc group by");
+			}
+			for (int i = 0; i < queryGroup.size(); i++) {
+				QueryTable table = queryGroup.get(i);			
+				Row newRow = new Row();
+				for (int j = 0; j < listSelect.size(); j++) {					
+					Exp exp = listSelect.get(j);	
+					if (exp instanceof ExpressionTree) {
+						Constant c = ((ExpressionTree)exp).evaluate(table);
+						newRow.addData((Type) c.getValue());
+						continue;
+					}
+					if (exp instanceof ColumnConstant) {
+						ColumnConstant col = (ColumnConstant)exp;
+						Integer iCol = table.getColumnIndex(col);
+						Type t = table.getRows().firstElement().getDataAt(iCol);
+						newRow.addData(t);
+						continue;
+					}
+					throw new Exception("loi cau lenh select");
+				}
+				listRow.add(newRow);
+			}
+		} else {
+			for (int i = 0; i < queryTable.getRows().size(); i++) {
+				Row oldRow = queryTable.getRows().get(i);
+				Row newRow = new Row();
+				for (int j = 0; j < listSelect.size(); j++) {					
+					Exp exp = listSelect.get(j);	
+					if (exp instanceof ExpressionTree) {
+						Constant c = ((ExpressionTree)exp).evaluate(queryTable);
+						newRow.addData((Type) c.getValue());
+						continue;
+					}
+					if (exp instanceof ColumnConstant) {
+						ColumnConstant col = (ColumnConstant)exp;
+						Integer iCol = queryTable.getColumnIndex(col);
+						Type t = oldRow.getDataAt(iCol);
+						newRow.addData(t);
+						continue;
+					}
+					throw new Exception("loi cau lenh select");
+				}
+				listRow.add(newRow);
+			}
+		}
+		//loc lai kq neu co distanct		
+		for (int i = 0; i < listSelect.size(); i++) {					
+			Exp exp = listSelect.get(i);	
+			if (exp instanceof ColumnConstant) {
+				ColumnConstant col = (ColumnConstant)exp;
+				if (col.isDistinct()) {
+					Vector<Row> listRowNew = new Vector<Row>();
+					for (int j = 0; j < listRow.size(); j++) {
+						boolean bFound = false;
+						Row rowA = listRow.get(j);
+						for (int k = j+1; k < listRow.size(); k++) {
+							Row rowB = listRow.get(k);
+							if (rowA.getDataAt(i).equals(rowB.getDataAt(i))) {
+								bFound = true;
+								continue;
+							}
+						}
+						if (!bFound) listRowNew.add(rowA);
+					}	
+					listRow = listRowNew;
+				}
+			}
+		}
+		//tai tao hash column
+		Hashtable<ColumnConstant, Integer> columns = new Hashtable<ColumnConstant, Integer>();
+		for (int i = 0; i < listSelect.size(); i++) {
+			Exp exp = listSelect.get(i);
+			if (exp instanceof ColumnConstant) {
+				Integer iCol = queryTable.getColumnIndex((ColumnConstant) exp);
+				for (ColumnConstant col : queryTable.getListColumn(iCol)) {
+					columns.put(col, i);
+				}
+				continue;
+			}
+			if (exp instanceof ExpressionTree) {
+				SelectItem item = null;
+				for (SelectItem selectItem : select) {
+					if (selectItem.getValue()==exp) {
+						item = selectItem;
+						break;
+					}
+				}
+				if (item!=null && item.getAlias()!=null) {
+					columns.put(new ColumnConstant(item.getAlias(), null), i);
+				} else columns.put(new ColumnConstant(null, exp.toString()), i);
+			}
+		}
+		//tai tao querytable
+		queryTable = new QueryTable(columns, listRow, null); 
+	}
+	
+	private void executeOrderBy() throws Exception {
+		if (orderBy==null) return;
+		Vector<Row> listRow = queryTable.getRows();
+		for (int i = 0; i < listRow.size()-1; i++) {
+			for (int j = i+1; j < listRow.size(); j++) {
+				if (!compare(listRow.get(i), listRow.get(j))) {
+					Row t = listRow.get(i);
+					listRow.set(i, listRow.get(j));
+					listRow.set(j, t);
+				}
+			}
+		}
+
+	}
+	
+	//thoa trat tu
+	private boolean compare(Row rowA, Row rowB) throws Exception {
+		for (OrderBy order : orderBy) {
+			Integer iCol = queryTable.getColumnIndex(order.getColumnConstant());
+			int iCompare = rowA.getDataAt(iCol).compareTo(rowB.getDataAt(iCol));
+			if ((iCompare>0 && order.isAsc())||(iCompare<0 && !order.isAsc())) return false;
+			if (iCompare==0) continue;
+			break;
+		}
+		return true;
 	}
 }

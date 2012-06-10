@@ -17,11 +17,16 @@ import jsql.parse.IntConstant;
 import jsql.parse.OperatorAggregate;
 import jsql.parse.OperatorAvg;
 import jsql.parse.OperatorCount;
+import jsql.parse.OperatorFirst;
 import jsql.parse.OperatorFullJoin;
 import jsql.parse.OperatorInnerJoin;
 import jsql.parse.OperatorJoin;
+import jsql.parse.OperatorLast;
 import jsql.parse.OperatorLeftJoin;
+import jsql.parse.OperatorMax;
+import jsql.parse.OperatorMin;
 import jsql.parse.OperatorRightJoin;
+import jsql.parse.OperatorSum;
 import jsql.parse.TableConstant;
 
 /**
@@ -63,6 +68,11 @@ public class QueryTable {
 		rows = new Vector<Row>();
 	}
 	
+	public QueryTable(Hashtable<ColumnConstant, Integer> columns, Vector<Row> rows, Integer v) {
+		this.columns = columns;
+		this.rows = rows;
+	}
+	
 	public QueryTable(Hashtable<ColumnConstant, Integer> columns, Vector<GroupByItem> groupBys) {
 		this.columns = columns;
 		rows = new Vector<Row>();
@@ -71,6 +81,37 @@ public class QueryTable {
 	
 	public void addRow(Row row) {
 		rows.add(row);
+	}
+	
+	public Vector<ColumnConstant> getListColumn() {
+		Enumeration<ColumnConstant> listCol = columns.keys();
+		Vector<ColumnConstant> vecCol = new Vector<ColumnConstant>();
+		while (listCol.hasMoreElements()) {
+			ColumnConstant columnConstant = (ColumnConstant) listCol
+					.nextElement();
+			Integer i = columns.get(columnConstant);
+			boolean fFound = false;
+			for (ColumnConstant constant : vecCol) {
+				Integer j = columns.get(constant);
+				if (i==j) {
+					fFound = true;
+					break;
+				}
+			}
+			if (!fFound) vecCol.add(columnConstant);
+		}
+		return vecCol;
+	}
+	
+	public Vector<ColumnConstant> getListColumn(Integer index) {
+		Enumeration<ColumnConstant> listCol = columns.keys();
+		Vector<ColumnConstant> vecCol = new Vector<ColumnConstant>();
+		while (listCol.hasMoreElements()) {
+			ColumnConstant columnConstant = (ColumnConstant) listCol.nextElement();
+			Integer i = columns.get(columnConstant);
+			if (index==i) vecCol.add(columnConstant);
+		}
+		return vecCol;
 	}
 	
 	public boolean isRowOfGroup(Row row) throws Exception {
@@ -245,19 +286,22 @@ public class QueryTable {
 		return queryTable.leftJoin(on, this);
 	}
 	
-	public Constant executeAggregate(OperatorAggregate operator, ColumnConstant col) throws Exception {
-		Integer i = getColumnIndex(col);
-		if (i==null) throw new Exception("column Aggregate error");		
+	public Constant executeAggregate(OperatorAggregate operator, ColumnConstant col) throws Exception {		
 		if (operator instanceof OperatorAvg) {
-			Integer sum = 0;
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
+			NumberType sum = new IntType(0);
 			for (Row row : rows) {
-				IntType t = (IntType) row.getDataAt(i);
-				sum += (Integer)t.getValue();
+				//IntType t = (IntType) row.getDataAt(i);
+				//sum += (Integer)t.getValue();
+				sum = sum.cong((NumberType) row.getDataAt(i));
 			}
-			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
+			return new FloatConstant(new FloatType((Float) (sum.getValue()) / rows.size()));
 		}
 		if (operator instanceof OperatorCount) {
 			if (col.isWildcard()) return new IntConstant(new IntType(rows.size()));
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
 			Vector<Type> list = new Vector<Type>();
 			for (Row row : rows) {
 				Type t = row.getDataAt(i);
@@ -277,21 +321,46 @@ public class QueryTable {
 			}
 			return new IntConstant(new IntType(iCount));
 		}
-		if (operator instanceof OperatorAvg) {
-			Integer sum = 0;
-			for (Row row : rows) {
-				IntType t = (IntType) row.getDataAt(i);
-				sum += (Integer)t.getValue();
-			}
-			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
+		if (operator instanceof OperatorFirst) {
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
+			Row row = rows.firstElement();
+			return Constant.create(row.getDataAt(i));
 		}
-		if (operator instanceof OperatorAvg) {
-			Integer sum = 0;
+		if (operator instanceof OperatorLast) {
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
+			Row row = rows.lastElement();
+			return Constant.create(row.getDataAt(i));
+		}
+		if (operator instanceof OperatorMax) {
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
+			Type max = rows.firstElement().getDataAt(i);
 			for (Row row : rows) {
-				IntType t = (IntType) row.getDataAt(i);
-				sum += (Integer)t.getValue();
+				Type t = row.getDataAt(i);				
+				if (t.compareTo(max)==1) max = t;
 			}
-			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
+			return Constant.create(max);
+		}
+		if (operator instanceof OperatorMin) {
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
+			Type min = rows.firstElement().getDataAt(i);
+			for (Row row : rows) {
+				Type t = row.getDataAt(i);				
+				if (t.compareTo(min)==-1) min = t;
+			}
+			return Constant.create(min);
+		}
+		if (operator instanceof OperatorSum) {
+			Integer i = getColumnIndex(col);
+			if (i==null) throw new Exception("column Aggregate error");
+			NumberType sum = new IntType(0);
+			for (Row row : rows) {
+				sum = sum.cong((NumberType) row.getDataAt(i));
+			}
+			return Constant.create(sum);
 		}
 		return null;
 	}

@@ -9,7 +9,7 @@ package jsql.parse;
  */
 public class OrderBy {
 	private boolean asc = true;
-	private Exp exp;
+	private ColumnConstant columnConstant;
 	
 	public OrderBy(String data) throws Exception {
 		int i = Utils.indexOfString(data, " ASC");
@@ -20,14 +20,14 @@ public class OrderBy {
 		}
 		if (i>0) data = data.substring(0, i).trim();
 		if (data.length()==0) throw new Exception("loi syntax order by");
-		exp = ExpressionTree.createExp(data);
+		columnConstant = (ColumnConstant) ExpressionTree.createExp(data);
 	}
 
 	public boolean isAsc() {
 		return asc;
 	}
 	
-	public Exp getExp() {
-		return exp;
+	public ColumnConstant getColumnConstant() {
+		return columnConstant;
 	}
 }

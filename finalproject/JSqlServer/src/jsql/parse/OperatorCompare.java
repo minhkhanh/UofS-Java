@@ -7,7 +7,7 @@ package jsql.parse;
  * @author tmkhanh
  *
  */
-public abstract class OperatorCompare implements Operator {
+public abstract class OperatorCompare extends Operator {
 	@Override
 	public int getSoNgoi() {
 		return 2;

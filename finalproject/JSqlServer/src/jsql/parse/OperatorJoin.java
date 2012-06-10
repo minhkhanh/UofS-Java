@@ -7,7 +7,7 @@ package jsql.parse;
  * @author tmkhanh
  *
  */
-public abstract class OperatorJoin implements Operator {
+public abstract class OperatorJoin extends Operator {
 	@Override
 	public int getSoNgoi() {
 		return 2;

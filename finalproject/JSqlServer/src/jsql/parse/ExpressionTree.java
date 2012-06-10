@@ -202,7 +202,7 @@ public class ExpressionTree implements Exp {
 		if (!(c instanceof BooleanConstant)) throw new Exception("where syntax error!");
 		return (Boolean) ((BooleanConstant)c).getBaseValue();
 	}
-	private Constant evaluate(QueryTable queryTable) throws Exception {
+	public Constant evaluate(QueryTable queryTable) throws Exception {
 		if (isOneChild()) {
 			Exp e = getOneChild();
 			if (e instanceof Constant && !(operator instanceof OperatorAggregate)) return (Constant) e;
@@ -275,5 +275,16 @@ public class ExpressionTree implements Exp {
 		}
 		
 		throw new Exception("set operator is dont suport!");
+	}
+	
+	@Override
+	public String toString() {
+		if (isOneChild()) {
+			Exp eL = getOneChild();
+			return operator.toString() + "(" + eL.toString() + ")";
+		}
+		Exp eR = getChildRight();
+		Exp eL = getChildLeft();
+		return eR.toString() + " " + operator.toString() + " " + eL.toString();
 	}
 }

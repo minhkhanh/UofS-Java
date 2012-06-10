@@ -41,5 +41,11 @@ public abstract class Type implements Serializable, Comparable<Type> {
 		return new IntType(iVal);
 		//throw new Exception("type not suport!");		
 	}
+	
+	@Override
+	public String toString() {
+		if (value==null) return "null";
+		return value.toString();
+	}
 }
 	

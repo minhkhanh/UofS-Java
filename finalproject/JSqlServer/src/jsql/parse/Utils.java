@@ -68,6 +68,10 @@ public class Utils {
 		//String statement = sqlStatement.toString();
 		//statement.trimToSize()
 		if (statement==null||statement.length()==0) return null;
+		if (indexOfString(statement, "(*)")==0) {
+			statement = trim(statement.delete(0, 3));
+			return new ColumnConstant(new StringType("*"));
+		}
 		if (indexOfString(statement, "(")==0) {
 			statement = trim(statement.deleteCharAt(0));
 			return new DauNgoacMo();
@@ -174,11 +178,7 @@ public class Utils {
 			ColumnConstant colConst = new ColumnConstant(new StringType(col));
 			colConst.setDistinct();
 			return colConst;
-		}
-		if (indexOfString(statement, "*")==0) {
-			statement = trim(statement.delete(0, 1));
-			return new ColumnConstant(new StringType("*"));
-		}
+		}		
 		
 		//toan hang
 		if (indexOfString(statement, "'")==0) {

@@ -8,8 +8,8 @@ package jsql.parse;
  *
  */
 public class SelectItem {
-	private Exp exp; //cong thuc trung binh ;	
-	private String alias; //alias cua column
+	private Exp exp = null; //cong thuc trung binh ;	
+	private String alias = null; //alias cua column
 	public SelectItem(String data) throws Exception {
 		int i=-1;
 		if ((i = Utils.indexOfString(data, "AS "))>0 && !Utils.isWordChar(data.charAt(i-1))) {

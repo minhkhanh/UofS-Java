@@ -4,7 +4,9 @@
 package jsql.parse;
 
 import jsql.data.BooleanType;
+import jsql.data.FloatType;
 import jsql.data.IntType;
+import jsql.data.NullType;
 import jsql.data.StringType;
 import jsql.data.Type;
 
@@ -28,6 +30,21 @@ public abstract class Constant implements Exp, MyComparable {
 	protected Constant(int type, Object value) {
 		this.type = type;
 		this.value = value;
+	}
+	
+	public static Constant create(Type value) throws Exception {
+		if (value instanceof IntType) return new IntConstant((IntType) value);
+		if (value instanceof BooleanType) return new BooleanConstant((BooleanType) value);
+		if (value instanceof FloatType) return new FloatConstant((FloatType) value);
+		if (value instanceof StringType) return new StringConstant((StringType) value);
+		if (value instanceof NullType) return new NullConstant();
+		throw new Exception("type in not suport!");
+		//return null;
+	}
+	
+	@Override
+	public String toString() {
+		return value.toString();
 	}
 	
 	public int getType() {
@@ -84,9 +101,4 @@ public abstract class Constant implements Exp, MyComparable {
 		throw new Exception("operator in not suport!");
 	}
 	
-	public static Constant create(Type type) throws Exception {
-		if (type instanceof IntType) return new IntConstant((IntType) type);
-		if (type instanceof StringType) return new StringConstant((StringType) type);
-		throw new Exception("type in not suport!");
-	}
 }
