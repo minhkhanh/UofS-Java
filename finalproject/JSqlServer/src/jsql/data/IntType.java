@@ -20,7 +20,7 @@ public class IntType extends Type {
 
 	@Override
 	public int compareTo(Type o) {
-		if (o.getClass()!=FloatType.class) return ((Integer)getValue()).compareTo(((Float)o.getValue()).intValue());;
+		if (o.getClass()==FloatType.class) return ((Integer)getValue()).compareTo(((Float)o.getValue()).intValue());;
 		if (o.getClass()!=this.getClass()) return 0;
 		return ((Integer)getValue()).compareTo((Integer)o.getValue());
 	}

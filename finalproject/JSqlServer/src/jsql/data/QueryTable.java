@@ -13,8 +13,10 @@ import jsql.parse.Constant;
 import jsql.parse.ExpressionTree;
 import jsql.parse.FloatConstant;
 import jsql.parse.GroupByItem;
+import jsql.parse.IntConstant;
 import jsql.parse.OperatorAggregate;
 import jsql.parse.OperatorAvg;
+import jsql.parse.OperatorCount;
 import jsql.parse.OperatorFullJoin;
 import jsql.parse.OperatorInnerJoin;
 import jsql.parse.OperatorJoin;
@@ -245,16 +247,52 @@ public class QueryTable {
 	
 	public Constant executeAggregate(OperatorAggregate operator, ColumnConstant col) throws Exception {
 		Integer i = getColumnIndex(col);
-		if (i==null) throw new Exception("column Aggregate error");
-		Integer sum = 0;
+		if (i==null) throw new Exception("column Aggregate error");		
 		if (operator instanceof OperatorAvg) {
+			Integer sum = 0;
 			for (Row row : rows) {
 				IntType t = (IntType) row.getDataAt(i);
 				sum += (Integer)t.getValue();
 			}
 			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
 		}
-		//cai tiep tuc
+		if (operator instanceof OperatorCount) {
+			if (col.isWildcard()) return new IntConstant(new IntType(rows.size()));
+			Vector<Type> list = new Vector<Type>();
+			for (Row row : rows) {
+				Type t = row.getDataAt(i);
+				if (t instanceof NullType) continue;
+				list.add(t);
+			}
+			if (!col.isDistinct()) return new IntConstant(new IntType(list.size()));
+			int iCount = 0;
+			for (int j = 0; j < list.size(); j++) {
+				boolean bFound = false;
+				for (int k = j+1; k < list.size(); k++) {
+					Type t1 = list.get(j);
+					Type t2 = list.get(k);
+					if (t1.equals(t2)) bFound = true;
+				}
+				if (!bFound) ++iCount;
+			}
+			return new IntConstant(new IntType(iCount));
+		}
+		if (operator instanceof OperatorAvg) {
+			Integer sum = 0;
+			for (Row row : rows) {
+				IntType t = (IntType) row.getDataAt(i);
+				sum += (Integer)t.getValue();
+			}
+			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
+		}
+		if (operator instanceof OperatorAvg) {
+			Integer sum = 0;
+			for (Row row : rows) {
+				IntType t = (IntType) row.getDataAt(i);
+				sum += (Integer)t.getValue();
+			}
+			return new FloatConstant(new FloatType((float) (sum) / rows.size()));
+		}
 		return null;
 	}
 }
