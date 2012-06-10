@@ -7,7 +7,7 @@ package jsql.parse;
  * @author tmkhanh
  *
  */
-public abstract class OperatorAggregate implements Operator {
+public abstract class OperatorAggregate extends Operator {
 	@Override
 	public int compareTo(Operator o) {
 		if (o.getSoNgoi()==1) return 0;

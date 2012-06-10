@@ -7,7 +7,7 @@ package jsql.data;
  * @author tmkhanh
  *
  */
-public class FloatType extends Type {
+public class FloatType extends NumberType {
 
 	/**
 	 * 
@@ -25,5 +25,17 @@ public class FloatType extends Type {
 		return ((Float)getValue()).compareTo((Float)o.getValue());
 	}
 	
-
+	@Override
+	public NumberType cong(NumberType num) {
+		if (num instanceof IntType) {
+			Float t = ((Integer)num.getValue()).floatValue();
+			this.value = (Float)this.value + t;
+			return new FloatType((Float) value);
+		}
+		if (num instanceof FloatType) {
+			this.value = (Float)this.value + (Float)num.getValue();
+			return new FloatType((Float) value);
+		}
+		return null;
+	}
 }

@@ -118,7 +118,7 @@ public class Database implements Serializable {
 				throw new Exception("select is null!");
 			
 			select.setDatabase(this);
-			return select.executeQuery(null);		
+			return select.executeSelect(null);		
 			
 		} catch (Exception e) {
 			e.printStackTrace();

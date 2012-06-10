@@ -12,7 +12,7 @@ import jsql.data.StringType;
 public class ColumnConstant extends Constant {
 
 	private String columnName;
-	private String alias;
+	private String alias = null;
 	private boolean distinct = false;
 	protected ColumnConstant(StringType columnName) {
 		super(COLUMNNAME, columnName);
@@ -53,5 +53,11 @@ public class ColumnConstant extends Constant {
 		ColumnConstant col = (ColumnConstant)obj;
 		if (col.alias==null) return columnName.equals(col.columnName); 
 		return columnName.equals(col.columnName) && alias.equals(col.alias);
+	}
+	
+	@Override
+	public String toString() {
+		if (alias==null) return columnName;
+		return alias + "." + columnName;
 	}
 }

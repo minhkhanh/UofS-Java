@@ -26,6 +26,11 @@ public class Table implements Serializable {
 		columns = new Vector<Column>();
 		rows = new Vector<Row>();
 	}
+	
+	public Table(Vector<Column> cols, Vector<Row> rows) {
+		this.columns = cols;
+		this.rows = rows;
+	}
 
 	public String getName() {
 		return name;

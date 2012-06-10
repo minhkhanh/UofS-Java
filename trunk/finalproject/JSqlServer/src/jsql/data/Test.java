@@ -63,8 +63,8 @@ public class Test {
 		
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh hs, Lop l where hs.MALOP=l.MALOP and HocSinh.MS>=3");
 		
-		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having count(distinct MS)>=3");
-		statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having avg(MS)>=3");
+		statement = Parser.parseStatement("SELECT MALOP, count(*) FROM HocSinh group by MALOP order by MALOP DESC");
+		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having avg(MS)>=3");
 		
 		database.executeStatement(statement);
 		//database.saveToFile();
