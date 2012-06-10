@@ -205,7 +205,7 @@ public class ExpressionTree implements Exp {
 	private Constant evaluate(QueryTable queryTable) throws Exception {
 		if (isOneChild()) {
 			Exp e = getOneChild();
-			if (e instanceof Constant) return (Constant) e;
+			if (e instanceof Constant && !(operator instanceof OperatorAggregate)) return (Constant) e;
 		}
 		if (operator==null) throw new Exception("compare with null");
 		Exp eL = getChildLeft();
@@ -269,7 +269,7 @@ public class ExpressionTree implements Exp {
 		}
 		
 		if (operator instanceof OperatorAggregate) {			
-			//if (!(isOneChild())) throw new Exception("set with non-setable");
+			if (!(isOneChild())) throw new Exception("error syntax Aggregate");
 			ColumnConstant col = (ColumnConstant) getOneChild();
 			return queryTable.executeAggregate((OperatorAggregate) operator, col);
 		}

@@ -182,8 +182,10 @@ public class Select extends Statement implements Exp {
 			table.addRow(row);
 		}
 		if (having!=null) {
-			for (QueryTable group : queryGroup) {
-				
+			for (int i = 0; i < queryGroup.size(); ) {
+				if (!having.filterByExpression(queryGroup.get(i))) {
+					queryGroup.remove(i);
+				} else ++i;
 			}
 		}
 	}

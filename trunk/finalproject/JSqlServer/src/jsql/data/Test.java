@@ -23,8 +23,24 @@ public class Test {
 	}
 	
 	public static void testSelect() {
-		generateDatabase();
-		Database database = Database.loadFromFile("test.db");
+		Database database = new Database("test.db");
+		
+		Table table = new Table();
+		table.setName("HocSinh");
+		Vector<Column> listCol = new Vector<Column>();
+		listCol.add(new Column("MS", Database.INT));
+		listCol.add(new Column("TEN", Database.STRING));
+		listCol.add(new Column("MALOP", Database.INT));
+		table.setColumns(listCol);
+		database.addTable(table);
+		
+		table = new Table();
+		table.setName("Lop");
+		listCol = new Vector<Column>();
+		listCol.add(new Column("MALOP", Database.INT));
+		listCol.add(new Column("TEN", Database.STRING));
+		table.setColumns(listCol);
+		database.addTable(table);
 		
 		Statement statement = Parser.parseStatement("INSERT INTO Lop VALUES (1, 'Lop 1')");
 		database.executeStatement(statement);
@@ -47,7 +63,8 @@ public class Test {
 		
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh hs, Lop l where hs.MALOP=l.MALOP and HocSinh.MS>=3");
 		
-		statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP");
+		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having count(distinct MS)>=3");
+		statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having avg(MS)>=3");
 		
 		database.executeStatement(statement);
 		//database.saveToFile();

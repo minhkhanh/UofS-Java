@@ -18,7 +18,7 @@ public class FloatConstant extends Constant {
 
 	@Override
 	public int compareTo(Constant obj) throws Exception {
-		if (!(obj instanceof FloatConstant)) throw new Exception("compare is not suport!");
+		if (!(obj instanceof FloatConstant) && !(obj instanceof IntConstant)) throw new Exception("compare is not suport!");
 		return ((Type)getValue()).compareTo((Type) obj.getValue());
 	}
 	

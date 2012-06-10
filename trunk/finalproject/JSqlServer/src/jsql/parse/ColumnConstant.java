@@ -13,6 +13,7 @@ public class ColumnConstant extends Constant {
 
 	private String columnName;
 	private String alias;
+	private boolean distinct = false;
 	protected ColumnConstant(StringType columnName) {
 		super(COLUMNNAME, columnName);
 		String data = (String) columnName.getValue();
@@ -36,6 +37,15 @@ public class ColumnConstant extends Constant {
 	}
 	public String getAlias() {
 		return alias;
+	}
+	public void setDistinct() {
+		distinct = true;
+	}
+	public boolean isDistinct() {
+		return distinct;
+	}
+	public boolean isWildcard() {
+		return columnName.equals("*");
 	}
 	
 	@Override

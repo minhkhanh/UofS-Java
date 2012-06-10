@@ -164,6 +164,21 @@ public class Utils {
 			statement = trim(statement.delete(0, 3));
 			return new OperatorSum();
 		}
+		if (indexOfString(statement, "DISTINCT")==0 && !isWordChar(statement.charAt(8))) {
+			statement = trim(statement.delete(0, 8));
+			int i = 0;
+			while (isWordChar(statement.charAt(i))) i++;
+			if (i<=0) throw new Exception("split false!");
+			String col = statement.substring(0, i).trim();
+			statement = trim(statement.delete(0, i));
+			ColumnConstant colConst = new ColumnConstant(new StringType(col));
+			colConst.setDistinct();
+			return colConst;
+		}
+		if (indexOfString(statement, "*")==0) {
+			statement = trim(statement.delete(0, 1));
+			return new ColumnConstant(new StringType("*"));
+		}
 		
 		//toan hang
 		if (indexOfString(statement, "'")==0) {
