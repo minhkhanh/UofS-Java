@@ -16,11 +16,15 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import jsql.data.IntType;
 import jsql.data.Row;
 import jsql.data.Table;
+import jsql.parse.Parser;
+import jsql.parse.Statement;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
@@ -156,23 +160,52 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		if ("addfield".equals(arg0.getActionCommand())) {
 
-			// kiểm tra thông tin người dùng nhập vào
-			
-			// người dùng nhập thông tin chưa
-			for (int i = 0; i < jTableNewData.getModel().getColumnCount(); i++) {
-				Object xxx = jTableNewData.getModel().getValueAt(0, i);
-				if (xxx.equals(null)) {
-					JOptionPane.showMessageDialog(this, "Chưa nhập" + "!",
+			TableModel tm = jTableNewData.getModel();
+			int nc = tm.getColumnCount();
+			Table table = Main.GetDataBase().getTable(
+					jCbb_ListTable.getSelectedIndex());
+
+			// kiem tra xem nguoi dung nhap du thong tin chưa
+			for (int i = 0; i < nc; i++) {
+				if (tm.getValueAt(0, i).equals("")) {
+					JOptionPane.showMessageDialog(this,
+							"Chưa nhập \"" + tm.getColumnName(i) + "\"!",
 							"Warning", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-
-				// jsql.data.Type x = (jsql.data.Type) _NewValue.get(1).get(i);
-				// tRow.setDataAt(i, x);
-
 			}
-			
-			//người dùng nhập thông tin hợp lệ không
+
+			// them thong tin vao bang
+			Statement statement;
+			String sql;
+			String value;
+
+			sql = "INSERT INTO " + table.getName() + " VALUES (";
+
+			for (int i = 0; i < nc; i++) {
+
+				value = tm.getValueAt(0, i).toString().trim();
+
+				JOptionPane.showMessageDialog(this, table.getColumnType(i),
+						"Warning", JOptionPane.WARNING_MESSAGE);
+
+				if (true) {
+					sql += value;
+				} else {
+					sql += "'" + value + "'";
+				}
+
+				if (i < nc - 1)
+					sql += ", ";
+			}
+
+			sql += ")";
+
+			JOptionPane.showMessageDialog(this, sql, "Warning",
+					JOptionPane.WARNING_MESSAGE);
+
+			// statement = Parser.parseStatement(sql);
+			// Main.GetDataBase().executeStatement(statement);
 
 			this.Refresh();
 		}

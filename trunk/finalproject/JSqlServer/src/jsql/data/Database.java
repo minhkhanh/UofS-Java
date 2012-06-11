@@ -216,6 +216,7 @@ public class Database implements Serializable {
 		this.saveToFile();
 	}
 
+	// added by khuong
 	public void DeleteTable(String tableName) {
 		for (int i = 0; i < tables.size(); i++)
 			if (tables.get(i).getName().equals(tableName))
@@ -223,6 +224,7 @@ public class Database implements Serializable {
 		this.saveToFile();
 	}
 
+	// added by khuong
 	public Table getTable(String tableName) {
 
 		for (int i = 0; i < tables.size(); i++)
@@ -231,6 +233,7 @@ public class Database implements Serializable {
 		return null;
 	}
 
+	// added by khuong
 	public String GetFilePath() {
 		return filePath;
 	}

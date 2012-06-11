@@ -102,11 +102,16 @@ public class Helper implements Serializable {
 		tRow = new Vector<Object>();
 
 		for (int j = 0; j < nCol; j++) {
-			tRow.add(null);
+			tRow.add("");
 		}
 
 		obj.add(tRow);
 
 		return obj;
+	}
+	
+	//lay loai du lieu cua colum, tra ve chuoi string tuong ung
+	public static String getColType(Table table,int idxcol){
+		return table.getColumn(idxcol).getType();
 	}
 }

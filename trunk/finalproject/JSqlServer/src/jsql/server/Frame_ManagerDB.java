@@ -120,6 +120,9 @@ public class Frame_ManagerDB extends JFrame implements ActionListener {
 		jFChooser.setFileFilter(_FileFilterDb);
 		if (Main.GetDataBase() != null)
 			jTf_AddrFileDB.setText(Main.GetDataBase().GetFilePath());
+
+		if (Main.GetDataBase() != null)
+			Refresh();
 	}
 
 	@SuppressWarnings("static-access")
@@ -154,8 +157,8 @@ public class Frame_ManagerDB extends JFrame implements ActionListener {
 					&& jCbb_ListTable.getModel().getSize() > 0) {
 
 				int ch = JOptionPane.showConfirmDialog(this, "Xóa bảng \""
-						+ jCbb_ListTable.getSelectedItem().toString() + "\""
-						+ " Bạn có chắc chắn??", "Warning",
+						+ jCbb_ListTable.getSelectedItem().toString() + "\"."
+						+ " Bạn có chắc chắn ?", "Warning",
 						JOptionPane.YES_NO_OPTION);
 				if (ch == 1)
 					return;
@@ -184,7 +187,7 @@ public class Frame_ManagerDB extends JFrame implements ActionListener {
 	public Boolean CheckChooseDataBase() {
 		if (Main.GetDataBase() == null) {
 			JOptionPane.showMessageDialog(this,
-					"Xin chọn file Database trước !!!", "Warning",
+					"Xin chọn file Database trước !", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 
 			return false;
