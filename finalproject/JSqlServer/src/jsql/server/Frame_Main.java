@@ -14,7 +14,7 @@ import jsql.data.Database;
  * 
  */
 @SuppressWarnings("serial")
-public class dd extends JFrame implements ActionListener {
+public class Frame_Main extends JFrame implements ActionListener {
 
 	private JPanel jP_Main;
 	private JPanel jP_Database;
@@ -22,12 +22,14 @@ public class dd extends JFrame implements ActionListener {
 	private JTextField jTf_AddrDB;
 	private JButton jBtn_Browse;
 	private JFileChooser jFChooser;
+	private Panel_Info p_Info;
 	private Panel_Server p_Server;
-	private Panel_Manager p_Manager;
+	private Panel_ManagerTable p_Manager;
 	private Panel_AddTable p_AddTable;
+	private Panel_AddData p_AddData;
 
-	public dd() {
-		
+	public Frame_Main() {
+
 		setResizable(false);
 		setTitle("jSQLServer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,12 +48,17 @@ public class dd extends JFrame implements ActionListener {
 		tabbedPane.setBounds(5, 75, 784, 469);
 		jP_Main.add(tabbedPane);
 
+		p_Info = new Panel_Info();
 		p_Server = new Panel_Server();
-		p_Manager = new Panel_Manager();
+		p_Manager = new Panel_ManagerTable();
 		p_AddTable = new Panel_AddTable();
+		p_AddData = new Panel_AddData();
 		tabbedPane.add(p_Server);
 		tabbedPane.add(p_Manager);
 		tabbedPane.add(p_AddTable);
+		tabbedPane.add(p_AddData);
+
+		tabbedPane.add(p_Info);
 
 		jP_Database = new JPanel();
 		jP_Database.setBounds(5, 5, 779, 49);
@@ -107,12 +114,12 @@ public class dd extends JFrame implements ActionListener {
 
 				p_Server.ChoosenDatabase();
 				p_AddTable.ChoosenDatabase();
+				p_AddData.ChoosenDatabase();
 			} else {
 				if (_PathFileDataBase.equals("")) {
 					Panel_Server.PrintLog("Đã hủy việc chọn File DataBase");
 				}
 			}
-
 		}
 	}
 }

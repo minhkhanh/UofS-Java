@@ -36,7 +36,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 	private Vector<String> _ColNameTable1 = new Vector<String>();
 	private Vector<Vector<Object>> _Values = new Vector<Vector<Object>>();
 	private Vector<Vector<Object>> _NewValue = new Vector<Vector<Object>>();
-	private JButton jBtn_Ok;
+	private JButton jBtn_SaveToDB;
 	@SuppressWarnings("rawtypes")
 	private JComboBox jCbb_ListTable;
 	private JLabel jLbl_ChoseTable;
@@ -54,18 +54,18 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		this.setLayout(null);
 		this.setName("Add Data");
 
-		jBtn_Ok = new JButton("OK");
-		jBtn_Ok.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Ok.setBounds(251, 11, 103, 30);
-		jBtn_Ok.setActionCommand("ok");
-		jBtn_Ok.addActionListener(this);
-		this.add(jBtn_Ok);
+		jBtn_SaveToDB = new JButton("Save to Database");
+		jBtn_SaveToDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_SaveToDB.setBounds(301, 11, 149, 30);
+		jBtn_SaveToDB.setActionCommand("ok");
+		jBtn_SaveToDB.addActionListener(this);
+		this.add(jBtn_SaveToDB);
 
 		jCbb_ListTable = new JComboBox();
 		jCbb_ListTable.setActionCommand("changetable");
 		jCbb_ListTable.addActionListener(this);
 		jCbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jCbb_ListTable.setBounds(119, 11, 103, 30);
+		jCbb_ListTable.setBounds(119, 11, 156, 30);
 		this.add(jCbb_ListTable);
 
 		jLbl_ChoseTable = new JLabel("Chon Bang: ");
@@ -74,33 +74,30 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		this.add(jLbl_ChoseTable);
 
 		jP_Table = new JPanel();
-		jP_Table.setBounds(10, 88, 642, 214);
+		jP_Table.setBounds(10, 63, 764, 239);
 		jP_Table.setBorder(javax.swing.BorderFactory.createTitledBorder(
-				javax.swing.BorderFactory.createEtchedBorder(), "TABLE"));
+				javax.swing.BorderFactory.createEtchedBorder(), "DATA"));
 		this.add(jP_Table);
 
 		jTable1 = new JTable();
 		jTable1.setFont(new java.awt.Font("Tahoma", 0, 14));
 
 		jSP1 = new javax.swing.JScrollPane();
-		jSP1.setBounds(10, 21, 622, 182);
+		jSP1.setBounds(10, 21, 744, 207);
 		jSP1.setViewportView(jTable1);
 
 		jP_Table.setLayout(null);
 		jP_Table.add(jSP1);
 
-		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
-				.GetListTableName(Main.GetDataBase())));
-
 		jP_AddData = new JPanel();
-		jP_AddData.setBounds(10, 329, 642, 147);
+		jP_AddData.setBounds(10, 348, 764, 80);
 		jP_AddData.setBorder(new TitledBorder(new EtchedBorder(
 				EtchedBorder.LOWERED, null, null), "ADD DATA"));
 		this.add(jP_AddData);
 		jP_AddData.setLayout(null);
 
 		jBtn_AddField = new JButton("Add");
-		jBtn_AddField.setBounds(10, 100, 94, 30);
+		jBtn_AddField.setBounds(10, 21, 77, 30);
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand("ok");
 		jBtn_AddField.setActionCommand("addfield");
@@ -111,7 +108,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		jTableNewData.setFont(new java.awt.Font("Tahoma", 0, 14));
 
 		jSP2 = new javax.swing.JScrollPane();
-		jSP2.setBounds(10, 21, 622, 68);
+		jSP2.setBounds(112, 21, 642, 48);
 		jSP2.setViewportView(jTableNewData);
 
 		jP_AddData.setLayout(null);
@@ -119,7 +116,9 @@ public class Panel_AddData extends JPanel implements ActionListener {
 	}
 
 	public void Init() {
-		this.Refresh();
+		jCbb_ListTable.setEnabled(false);
+		jBtn_SaveToDB.setEnabled(false);
+		jBtn_AddField.setEnabled(false);
 	}
 
 	@Override
@@ -237,5 +236,17 @@ public class Panel_AddData extends JPanel implements ActionListener {
 
 		jTableNewData
 				.setModel(new DefaultTableModel(_NewValue, _ColNameTable1));
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void ChoosenDatabase() {
+		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
+				.GetListTableName(Main.GetDataBase())));
+		
+		jCbb_ListTable.setEnabled(true);
+		jBtn_SaveToDB.setEnabled(true);
+		jBtn_AddField.setEnabled(true);
+
+		this.Refresh();
 	}
 }

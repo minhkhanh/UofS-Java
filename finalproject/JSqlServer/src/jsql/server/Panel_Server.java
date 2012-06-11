@@ -38,6 +38,11 @@ public class Panel_Server extends JPanel implements ActionListener {
 	private int _Port;
 
 	public Panel_Server() {
+		this.InitFrame();
+		this.Init();
+	}
+
+	public void InitFrame() {
 
 		this.setSize(784, 439);
 		this.setLayout(null);
@@ -93,7 +98,9 @@ public class Panel_Server extends JPanel implements ActionListener {
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
+	}
 
+	public void Init() {
 		// INIT
 		jBtn_Listen.setEnabled(false);
 		jBtn_Stop.setEnabled(false);

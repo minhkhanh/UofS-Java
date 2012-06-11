@@ -209,7 +209,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 
 				this.ResetAddTable();
 
-				Panel_Manager.Refresh();
+				Panel_ManagerTable.Refresh();
 			}
 		}
 
