@@ -118,11 +118,8 @@ public class Database implements Serializable {
 				throw new Exception("select is null!");
 			
 			select.setDatabase(this);
-<<<<<<< .mine
-			return select.executeQuery(select);		
-=======
+
 			return select.executeSelect(null);		
->>>>>>> .r127
 			
 		} catch (Exception e) {
 			e.printStackTrace();
