@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
+import javax.swing.JTabbedPane;
+import java.awt.Component;
 
 public class testGiaoDienMoi extends JFrame {
 
@@ -42,12 +44,14 @@ public class testGiaoDienMoi extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		// JMenuBar menuBar = new JMenuBar();
-		// setJMenuBar(menuBar);
-
-		MainMenuBar aa = new MainMenuBar();
-		// this.setJMenuBar(aa.myMenuBar);
-		// jP_Main.add(toolBar.myToolBar, BorderLayout.NORTH);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JPanel aa = new JPanel();
+		aa.setName("sdfdsg");
+		tabbedPane.add(aa);
+		
+		JPanel ab = new JPanel();
+		tabbedPane.add(ab);
+		contentPane.add(tabbedPane, BorderLayout.CENTER);
 	}
 
 }
