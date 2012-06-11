@@ -26,9 +26,8 @@ import jsql.data.Database;
  * 
  */
 @SuppressWarnings("serial")
-public class Frame_ManagerTable extends JFrame implements ActionListener {
+public class Frame_ManagerDB extends JFrame implements ActionListener {
 
-	private JPanel contentPane;
 	private JPanel jP_Main;
 	private JButton jBtn_AddTable;
 	private JButton jBtn_DeleteTable;
@@ -36,7 +35,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	private JButton jBtn_Browse;
 	private JButton jBtn_CreateNewDatabase;
 	private JFileChooser jFChooser;
-	private JTextField jTf_AddrFileDB;
+	private static JTextField jTf_AddrFileDB;
 	@SuppressWarnings("rawtypes")
 	private static JComboBox jCbb_ListTable;
 
@@ -46,7 +45,7 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 	private FileFilterDb _FileFilterDb;
 
-	public Frame_ManagerTable() {
+	public Frame_ManagerDB() {
 		this.InitFrame();
 		this.Init();
 	}
@@ -56,14 +55,10 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 		setResizable(false);
 		setBounds(300, 100, 700, 525);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-
 		jP_Main = new JPanel();
-		contentPane.add(jP_Main, BorderLayout.CENTER);
+		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		jP_Main.setLayout(null);
+		setContentPane(jP_Main);
 
 		jBtn_AddTable = new JButton("Add Table");
 		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -135,30 +130,8 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		if ("createdb".equals(arg0.getActionCommand())) {
-			//_FrameCreateDB = new Frame_CreateNewDB();
-			//_FrameCreateDB.setVisible(true);
-			JFileChooser fc = new JFileChooser();
-			fc.setFileFilter(new FileFilter() {
-				
-				@Override
-				public String getDescription() {
-					return "JSql File (*.db)";
-				}
-				
-				@Override
-				public boolean accept(File f) {
-					if(f == null) return false;  
-					if(f.isDirectory()) return true;
-					return f.getName().toLowerCase().endsWith(".db");  
-				}
-			});
-			int returnVal = fc.showDialog(this, "Choose");
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				String _PathFileDataBase = fc.getSelectedFile().getPath();
-				System.out.println("choose: " + _PathFileDataBase);
-				//jTF_Target.setText(_PathFileDataBase);
-				// Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
-			}
+			_FrameCreateDB = new Frame_CreateNewDB();
+			_FrameCreateDB.setVisible(true);
 		}
 
 		if ("browse".equals(arg0.getActionCommand())) {
@@ -167,7 +140,6 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				String pathFileDataBase = jFChooser.getSelectedFile().getPath();
-				jTf_AddrFileDB.setText(pathFileDataBase);
 				Main.SetDataBase(Database.loadFromFile(pathFileDataBase));
 				this.Refresh();
 			}
@@ -184,17 +156,20 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 			if (this.CheckChooseDataBase()
 					&& jCbb_ListTable.getModel().getSize() > 0) {
 
-				int ch = JOptionPane.showConfirmDialog(this, "Delete table \""
+				int ch = JOptionPane.showConfirmDialog(this, "Xóa bảng \""
 						+ jCbb_ListTable.getSelectedItem().toString() + "\""
-						+ " Are you sure??", "Warning",
+						+ " Bạn có chắc chắn??", "Warning",
 						JOptionPane.YES_NO_OPTION);
 				if (ch == 1)
 					return;
+
 				// delete table
 				Main.GetDataBase().DeleteTable(
 						jCbb_ListTable.getSelectedIndex());
-				JOptionPane.showMessageDialog(this, "Deleted successful",
-						"Warning", JOptionPane.WARNING_MESSAGE);
+
+				JOptionPane.showMessageDialog(this,
+						"Đã xóa bảng thành công ^_^", "Warning",
+						JOptionPane.WARNING_MESSAGE);
 
 				this.Refresh();
 			}
@@ -211,8 +186,9 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 	public Boolean CheckChooseDataBase() {
 		if (Main.GetDataBase() == null) {
-			JOptionPane.showMessageDialog(this, "Please choose File DataBase!",
-					"Warning", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this,
+					"Xin chọn file Database trước !!!", "Warning",
+					JOptionPane.WARNING_MESSAGE);
 
 			return false;
 		}
@@ -221,8 +197,8 @@ public class Frame_ManagerTable extends JFrame implements ActionListener {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void Refresh() {
+		jTf_AddrFileDB.setText(Main.GetDataBase().GetFilePath());
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
 				.GetListTableName(Main.GetDataBase())));
-
 	}
 }

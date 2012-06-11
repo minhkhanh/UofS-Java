@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,19 +21,24 @@ import jsql.data.Database;
 public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 	private JPanel jP_Main;
+	private JPanel jP_CreateNewDB;
 
-	JButton btnNewButton;
-	JButton btnCancel;
-	JButton btnBrowse;
-	private JTextField jTF_Target;
+	private JButton jBtn_NewButton;
+	private JButton jBtn_Cancel;
+	private JButton jBtn_Browse;
+	private JTextField jTf_Target;
 	private JTextField jTf_Name;
-
 	private JFileChooser jFChooser;
 
 	/**
 	 * Create the frame.
 	 */
 	public Frame_CreateNewDB() {
+		this.InitFrame();
+		this.Init();
+	}
+
+	public void InitFrame() {
 		setResizable(false);
 		setBounds(100, 100, 426, 275);
 		jP_Main = new JPanel();
@@ -40,7 +46,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 		setContentPane(jP_Main);
 		jP_Main.setLayout(null);
 
-		JPanel jP_CreateNewDB = new JPanel();
+		jP_CreateNewDB = new JPanel();
 		jP_CreateNewDB.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(),
 				"Create New DataBase"));
@@ -48,32 +54,32 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 		jP_Main.add(jP_CreateNewDB);
 		jP_CreateNewDB.setLayout(null);
 
-		btnNewButton = new JButton("Create");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnNewButton.setBounds(20, 173, 89, 30);
-		btnNewButton.setActionCommand("CNDB_Create");
-		btnNewButton.addActionListener(this);
-		jP_CreateNewDB.add(btnNewButton);
+		jBtn_NewButton = new JButton("Create");
+		jBtn_NewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_NewButton.setBounds(20, 173, 89, 30);
+		jBtn_NewButton.setActionCommand("CNDB_Create");
+		jBtn_NewButton.addActionListener(this);
+		jP_CreateNewDB.add(jBtn_NewButton);
 
-		btnCancel = new JButton("Cancel");
-		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnCancel.setBounds(142, 173, 89, 30);
-		btnCancel.setActionCommand("CNDB_Cancel");
-		btnCancel.addActionListener(this);
-		jP_CreateNewDB.add(btnCancel);
+		jBtn_Cancel = new JButton("Cancel");
+		jBtn_Cancel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Cancel.setBounds(142, 173, 89, 30);
+		jBtn_Cancel.setActionCommand("CNDB_Cancel");
+		jBtn_Cancel.addActionListener(this);
+		jP_CreateNewDB.add(jBtn_Cancel);
 
-		btnBrowse = new JButton("Browse");
-		btnBrowse.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnBrowse.setBounds(290, 43, 89, 30);
-		btnBrowse.setActionCommand("CNDB_Browse");
-		btnBrowse.addActionListener(this);
-		jP_CreateNewDB.add(btnBrowse);
+		jBtn_Browse = new JButton("Browse");
+		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Browse.setBounds(290, 43, 89, 30);
+		jBtn_Browse.setActionCommand("CNDB_Browse");
+		jBtn_Browse.addActionListener(this);
+		jP_CreateNewDB.add(jBtn_Browse);
 
-		jTF_Target = new JTextField();
-		jTF_Target.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTF_Target.setBounds(20, 44, 260, 30);
-		jP_CreateNewDB.add(jTF_Target);
-		jTF_Target.setColumns(10);
+		jTf_Target = new JTextField();
+		jTf_Target.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_Target.setBounds(20, 44, 260, 30);
+		jP_CreateNewDB.add(jTf_Target);
+		jTf_Target.setColumns(10);
 
 		jTf_Name = new JTextField();
 		jTf_Name.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -90,9 +96,11 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 		lblEnterYourName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblEnterYourName.setBounds(26, 85, 209, 30);
 		jP_CreateNewDB.add(lblEnterYourName);
+	}
 
+	public void Init() {
 		jFChooser = new JFileChooser();
-
+		jFChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	}
 
 	@Override
@@ -100,33 +108,56 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 		if ("CNDB_Browse".equals(arg0.getActionCommand())) {
 
-			 //chon thu muc de luu database
-			jFChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			 int returnVal = jFChooser.showDialog(this, "Choose");
-			 if (returnVal == JFileChooser.APPROVE_OPTION) {
-				 String _PathFileDataBase = jFChooser.getSelectedFile().getPath();
-				 jTF_Target.setText(_PathFileDataBase);
-				 //Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
-			 }
+			// chon thu muc de luu database
+			int returnVal = jFChooser.showDialog(this, "Choose");
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String pathFileDataBase = jFChooser.getSelectedFile().getPath();
+				jTf_Target.setText(pathFileDataBase);
+			}
 		}
 
 		if ("CNDB_Create".equals(arg0.getActionCommand())) {
 
-			String target = jTF_Target.getText().trim();
+			String target = jTf_Target.getText().trim();
 			String name = jTf_Name.getText().trim();
+			File tfile;
+
+			// chưa chọn thư mục để lưu file jSql
+			if (target.trim().equals("")) {
+				JOptionPane.showMessageDialog(this,
+						"Xin chọn thư mục để lưu file Database !", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			// thư mục người dùng nhập không tồn tại
+			tfile = new File(target);
+			if (!tfile.exists()) {
+				int ch = JOptionPane.showConfirmDialog(this,
+						"Đường dẫn thư mục không tồn tại. "
+								+ "\nĐường dẫn sẽ được tạo."
+								+ "\nĐồng ý hay Không ?", "Warning",
+						JOptionPane.YES_NO_OPTION);
+				if (ch == 1)
+					return;
+				if (ch == 0) {
+					new File(target).mkdirs();
+				}
+			}
 
 			// database bi trung ten
-			File a = new File(target + "\\" + name + ".db");
-			if (!a.exists()) {
-				JOptionPane.showMessageDialog(this, "Database is exists!",
-						"Warning", JOptionPane.WARNING_MESSAGE);
+			tfile = new File(target + "\\" + name + ".db");
+			if (tfile.exists()) {
+				JOptionPane.showMessageDialog(this,
+						"Database đã  tồn tại. Xin nhập tên khác !", "Warning",
+						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
 			// chua nhap ten
 			if (name.equals("")) {
 				JOptionPane.showMessageDialog(this,
-						"Please Enter Your DataBase Name!", "Warning",
+						"Xin vui lòng nhập tên Database !", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -135,11 +166,11 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			Database.createNewDatabase(target + "\\" + name + ".db");
 
 			JOptionPane.showMessageDialog(this,
-					"Created New DataBase Sucessful!", "Info",
+					"Đã tạo Database thành công ^_^", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			Frame_Main.PrintLog("Created New DataBase: "
-					+ jTf_Name.getText().trim());
+			Frame_Main.PrintLog("Đã tạo Database mới: " + target + "\\" + name
+					+ ".db");
 		}
 
 		if ("CNDB_Cancel".equals(arg0.getActionCommand())) {

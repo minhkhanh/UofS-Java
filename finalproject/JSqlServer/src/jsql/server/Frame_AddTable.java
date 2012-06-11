@@ -200,7 +200,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 				this.ResetAddTable();
 				
-				Frame_ManagerTable.Refresh();
+				Frame_ManagerDB.Refresh();
 			}
 		}
 
