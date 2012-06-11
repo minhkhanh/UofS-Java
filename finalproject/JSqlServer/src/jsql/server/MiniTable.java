@@ -37,8 +37,8 @@ public class MiniTable extends JPanel implements ActionListener {
 				javax.swing.BorderFactory.createEtchedBorder(), ""));
 		this.setLocation(pos);
 
-		colName = new Vector<>();
-		values = new Vector<>();
+		colName = new Vector<String>();
+		values = new Vector<Vector<String>>();
 
 		jLbl_TableName = new JLabel(data.getName());
 		jLbl_TableName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -52,7 +52,7 @@ public class MiniTable extends JPanel implements ActionListener {
 		Vector<String> tField;
 
 		for (int i = 0; i < nField; i++) {
-			tField = new Vector<>();
+			tField = new Vector<String>();
 			tField.add(data.getColumName(i));
 			tField.add(data.getColumnType(i));
 
