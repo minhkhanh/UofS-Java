@@ -8,6 +8,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 
+import com.sun.media.sound.Toolkit;
+
 /**
  * @author DWater
  * 
@@ -40,38 +42,54 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		this.add(jMn_Help);
 
 		jMI_Exit = new JMenuItem("Thoát");
-		jMI_Exit.setActionCommand("exit");
+		jMI_Exit.setActionCommand(actionC.exit.toString());
 		jMI_Exit.addActionListener(this);
 		jMn_File.addSeparator();
 		jMn_File.add(jMI_Exit);
 
 		jMI_Help = new JMenuItem("Hướng dẫn");
-		jMI_Help.setActionCommand("help");
+		jMI_Help.setActionCommand(actionC.help.toString());
 		jMI_Help.addActionListener(this);
 		jMn_Help.add(jMI_Help);
 
 		jMI_Info = new JMenuItem("Thông tin");
 		jMn_Help.add(jMI_Info);
-		jMI_Info.setActionCommand("info");
+		jMI_Info.setActionCommand(actionC.info.toString());
 		jMI_Info.addActionListener(this);
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
-		actionC key = actionC.valueOf(e.getActionCommand());
+		actionC action = actionC.valueOf(e.getActionCommand());
 
-		switch (key) {
+		switch (action) {
 
 		case exit:
 			System.exit(0);
 			break;
 		case help:
-
-			JOptionPane.showMessageDialog(this, "SDFDSF", "Hướng dẫn",
-					JOptionPane.INFORMATION_MESSAGE, null);
+			JOptionPane.showMessageDialog(this, 
+					"\nHướng dẫn sử dụng!!" +
+					"\n\n  1. Chọn file database." +
+					"\n  2. Nhấn listen để chạy server." +
+					"\n  3. Qua phần Manager Database để tạo database, thêm bảng, " +
+					"\nthêm  dữ liệu, ....", 
+					"Hướng dẫn",
+					JOptionPane.CLOSED_OPTION);
 			break;
 		case info:
+			JOptionPane.showMessageDialog(this, 
+					"\nĐẠI HỌC KHOA HỌC TỰ NHIÊN"
+					+ "\nKHOA CÔNG NGHỆ THÔNG TIN" 
+					+ "\n\nĐỒ ÁN JAVA (JSQL)"
+					+ "\n\nGiảng viên: Nguyễn Văn Khiết"
+					+ "\n\nNhóm sinh viên thực hiên:" 
+					+ "\n    - 0812223 - Trần Minh Khánh"
+					+ "\n    - 0812333 - Nguyễn Hiếu Nghĩa"
+					+ "\n    - 0912237 - Trần Duy Khương",
+					"Thông tin chương trình", JOptionPane.INFORMATION_MESSAGE,
+					Helper.createImageIcon("/img/logoUS.png"));
 			break;
 		}
 	}

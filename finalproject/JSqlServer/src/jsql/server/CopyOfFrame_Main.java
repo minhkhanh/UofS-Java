@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,13 +18,15 @@ import jsql.data.Database;
  * 
  */
 @SuppressWarnings("serial")
-public class Frame_Main extends JFrame implements ActionListener {
+public class CopyOfFrame_Main extends JFrame implements ActionListener {
 
 	public enum actionC {
-		browse, managertable,listen,stop
+		browse, managertable, listen, stop
 	};
-	
+
 	private JPanel jP_Main;
+	private JPanel jP_Server;
+	private JPanel jP_Manager;
 	private JPanel jP_Log;
 	private JTextField jTf_AddrFileDB;
 	private JTextField jTf_Port;
@@ -46,7 +49,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private FileFilterDb _FileFilterDb;
 	private String _PathFileDataBase;
 
-	public Frame_Main() {
+	public CopyOfFrame_Main() {
 		this.InitFrame();
 		this.Init();
 	}
@@ -58,22 +61,38 @@ public class Frame_Main extends JFrame implements ActionListener {
 		setBounds(300, 100, 700, 525);
 		jP_Main = new JPanel();
 		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
-		jP_Main.setLayout(null);
+		jP_Main.setLayout(new BorderLayout(0, 0));
 		setContentPane(jP_Main);
-		
+
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+
+		jP_Main.add(tabbedPane, BorderLayout.CENTER);
+
+		jP_Server = new JPanel();
+		jP_Server.setBorder(new EmptyBorder(5, 5, 5, 5));
+		jP_Server.setLayout(null);
+		jP_Server.setName("Server");
+		tabbedPane.add(jP_Server);
+
+		jP_Manager = new JPanel();
+		jP_Manager.setBorder(new EmptyBorder(5, 5, 5, 5));
+		jP_Manager.setLayout(null);
+		jP_Manager.setName("Manager Database");
+		tabbedPane.add(jP_Manager);
+
 		this.setJMenuBar(new MainMenuBar());
 
 		jLbl_AddrFolder = new JLabel("File DataBase:");
 		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_AddrFolder.setBounds(20, 11, 100, 30);
-		jP_Main.add(jLbl_AddrFolder);
+		jP_Server.add(jLbl_AddrFolder);
 
 		jLbl_Port = new JLabel("Port:");
 		jLbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_Port.setBounds(10, 54, 110, 30);
-		jP_Main.add(jLbl_Port);
+		jP_Server.add(jLbl_Port);
 
 		jTf_AddrFileDB = new JTextField();
 		jTf_AddrFileDB.setEditable(false);
@@ -81,48 +100,48 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_AddrFileDB.setBounds(130, 12, 239, 30);
 		jTf_AddrFileDB.setColumns(10);
-		jP_Main.add(jTf_AddrFileDB);
+		jP_Server.add(jTf_AddrFileDB);
 
 		jTf_Port = new JTextField();
 		jTf_Port.setText("3456");
 		jTf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_Port.setBounds(130, 55, 120, 30);
 		jTf_Port.setColumns(10);
-		jP_Main.add(jTf_Port);
+		jP_Server.add(jTf_Port);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Browse.setBounds(390, 11, 131, 30);
 		jBtn_Browse.setActionCommand(actionC.browse.toString());
 		jBtn_Browse.addActionListener(this);
-		jP_Main.add(jBtn_Browse);
+		jP_Server.add(jBtn_Browse);
 
 		jBtn_ManagerTable = new JButton("Manager DB");
 		jBtn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_ManagerTable.setBounds(531, 11, 131, 30);
 		jBtn_ManagerTable.setActionCommand(actionC.managertable.toString());
 		jBtn_ManagerTable.addActionListener(this);
-		jP_Main.add(jBtn_ManagerTable);
+		jP_Server.add(jBtn_ManagerTable);
 
 		jBtn_Listen = new JButton("Listen");
 		jBtn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Listen.setBounds(390, 54, 131, 30);
 		jBtn_Listen.setActionCommand(actionC.listen.toString());
 		jBtn_Listen.addActionListener(this);
-		jP_Main.add(jBtn_Listen);
+		jP_Server.add(jBtn_Listen);
 
 		jBtn_Stop = new JButton("Stop");
 		jBtn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Stop.setBounds(531, 54, 131, 30);
 		jBtn_Stop.setActionCommand(actionC.stop.toString());
 		jBtn_Stop.addActionListener(this);
-		jP_Main.add(jBtn_Stop);
+		jP_Server.add(jBtn_Stop);
 
 		jP_Log = new JPanel();
 		jP_Log.setBounds(20, 100, 642, 363);
 		jP_Log.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "LOG"));
-		jP_Main.add(jP_Log);
+		jP_Server.add(jP_Log);
 
 		colNameTableLog.add("ID");
 		colNameTableLog.add("Time");
@@ -144,7 +163,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setBounds(298, 71, 46, 14);
-		jP_Main.add(lblNewLabel);
+		jP_Server.add(lblNewLabel);
 	}
 
 	public void Init() {
@@ -166,7 +185,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
+
 		actionC action = actionC.valueOf(arg0.getActionCommand());
 
 		if (action == actionC.browse) {

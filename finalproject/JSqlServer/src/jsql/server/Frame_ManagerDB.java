@@ -25,7 +25,7 @@ import jsql.data.Database;
 @SuppressWarnings("serial")
 public class Frame_ManagerDB extends JFrame implements ActionListener {
 
-	private JPanel jP_Main;
+	private JPanel jP_Manager;
 	private JButton jBtn_AddTable;
 	private JButton jBtn_DeleteTable;
 	private JButton jBtn_AddData;
@@ -52,17 +52,17 @@ public class Frame_ManagerDB extends JFrame implements ActionListener {
 
 		setResizable(false);
 		setBounds(300, 100, 700, 525);
-		jP_Main = new JPanel();
-		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
-		jP_Main.setLayout(null);
-		setContentPane(jP_Main);
+		jP_Manager = new JPanel();
+		jP_Manager.setBorder(new EmptyBorder(5, 5, 5, 5));
+		jP_Manager.setLayout(null);
+		setContentPane(jP_Manager);
 
 		jBtn_AddTable = new JButton("Add Table");
 		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddTable.setBounds(10, 75, 131, 30);
 		jBtn_AddTable.setActionCommand("addtable");
 		jBtn_AddTable.addActionListener(this);
-		jP_Main.add(jBtn_AddTable);
+		jP_Manager.add(jBtn_AddTable);
 
 		jBtn_DeleteTable = new JButton("Delete Table");
 		jBtn_DeleteTable.setToolTipText("");
@@ -70,32 +70,32 @@ public class Frame_ManagerDB extends JFrame implements ActionListener {
 		jBtn_DeleteTable.setActionCommand("deletetable");
 		jBtn_DeleteTable.addActionListener(this);
 		jBtn_DeleteTable.setBounds(10, 116, 131, 30);
-		jP_Main.add(jBtn_DeleteTable);
+		jP_Manager.add(jBtn_DeleteTable);
 
 		jBtn_AddData = new JButton("Add Data");
 		jBtn_AddData.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddData.setActionCommand("adddata");
 		jBtn_AddData.addActionListener(this);
 		jBtn_AddData.setBounds(10, 157, 131, 30);
-		jP_Main.add(jBtn_AddData);
+		jP_Manager.add(jBtn_AddData);
 
 		JLabel lblFileDatabase = new JLabel("File Database:");
 		lblFileDatabase.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFileDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFileDatabase.setBounds(10, 11, 103, 29);
-		jP_Main.add(lblFileDatabase);
+		jP_Manager.add(lblFileDatabase);
 
 		jTf_AddrFileDB = new JTextField();
 		jTf_AddrFileDB.setEditable(false);
 		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_AddrFileDB.setBounds(123, 11, 387, 30);
-		jP_Main.add(jTf_AddrFileDB);
+		jP_Manager.add(jTf_AddrFileDB);
 		jTf_AddrFileDB.setColumns(10);
 
 		jCbb_ListTable = new JComboBox();
 		jCbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jCbb_ListTable.setBounds(151, 116, 103, 30);
-		jP_Main.add(jCbb_ListTable);
+		jP_Manager.add(jCbb_ListTable);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -103,14 +103,14 @@ public class Frame_ManagerDB extends JFrame implements ActionListener {
 		jBtn_Browse.setBounds(528, 10, 138, 30);
 		jBtn_Browse.setActionCommand("browse");
 		jBtn_Browse.addActionListener(this);
-		jP_Main.add(jBtn_Browse);
+		jP_Manager.add(jBtn_Browse);
 
 		jBtn_CreateNewDatabase = new JButton("Create DataBase");
 		jBtn_CreateNewDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_CreateNewDatabase.setActionCommand("createdb");
 		jBtn_CreateNewDatabase.addActionListener(this);
 		jBtn_CreateNewDatabase.setBounds(528, 75, 138, 30);
-		jP_Main.add(jBtn_CreateNewDatabase);
+		jP_Manager.add(jBtn_CreateNewDatabase);
 	}
 
 	public void Init() {

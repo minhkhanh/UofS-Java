@@ -1,37 +1,54 @@
 package jsql.server;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
+import java.util.Calendar;
+import java.util.Vector;
 
 import jsql.data.Database;
 
+/**
+ * @author DWater
+ * 
+ */
 @SuppressWarnings("serial")
 public class dd extends JFrame implements ActionListener {
 
+	public enum actionC {
+		browse, managertable, listen, stop
+	};
+
 	private JPanel jP_Main;
-	private JPanel jP_CreateNewDB;
-
-	private JButton jBtn_NewButton;
-	private JButton jBtn_Cancel;
+	private JPanel jP_Server;
+	private JPanel jP_Manager;
+	private JPanel jP_Log;
+	private JTextField jTf_AddrFileDB;
+	private JTextField jTf_Port;
 	private JButton jBtn_Browse;
-	private JTextField jTf_Target;
-	private JTextField jTf_Name;
+	private JButton jBtn_ManagerTable;
+	private JButton jBtn_Listen;
+	private JButton jBtn_Stop;
+	private JLabel jLbl_AddrFolder;
+	private JLabel jLbl_Port;
 	private JFileChooser jFChooser;
+	private static JTable tableLog;
+	private JScrollPane jSP_Log;
+	private static Vector<String> colNameTableLog = new Vector<String>();
+	private static Vector<Vector<String>> _Logs = new Vector<Vector<String>>();
 
-	/**
-	 * Create the frame.
-	 */
+	private MyServer _MyServer;
+	private Thread _ThreadServer;
+	private int _Port;
+	private Frame_ManagerDB _FrameManagerTable;
+	private FileFilterDb _FileFilterDb;
+	private String _PathFileDataBase;
+
 	public dd() {
 		this.InitFrame();
 		this.Init();
@@ -39,150 +56,219 @@ public class dd extends JFrame implements ActionListener {
 
 	public void InitFrame() {
 		setResizable(false);
-		setBounds(100, 100, 426, 275);
+		setTitle("jSQLServer");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(300, 100, 800, 570);
 		jP_Main = new JPanel();
 		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
+		jP_Main.setLayout(new BorderLayout(0, 0));
 		setContentPane(jP_Main);
-		jP_Main.setLayout(null);
 
-		jP_CreateNewDB = new JPanel();
-		jP_CreateNewDB.setBorder(javax.swing.BorderFactory.createTitledBorder(
-				javax.swing.BorderFactory.createEtchedBorder(),
-				"Create New DataBase"));
-		jP_CreateNewDB.setBounds(10, 11, 395, 216);
-		jP_Main.add(jP_CreateNewDB);
-		jP_CreateNewDB.setLayout(null);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
-		jBtn_NewButton = new JButton("Create");
-		jBtn_NewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_NewButton.setBounds(20, 173, 89, 30);
-		jBtn_NewButton.setActionCommand("CNDB_Create");
-		jBtn_NewButton.addActionListener(this);
-		jP_CreateNewDB.add(jBtn_NewButton);
+		jP_Main.add(tabbedPane, BorderLayout.CENTER);
 
-		jBtn_Cancel = new JButton("Cancel");
-		jBtn_Cancel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Cancel.setBounds(142, 173, 89, 30);
-		jBtn_Cancel.setActionCommand("CNDB_Cancel");
-		jBtn_Cancel.addActionListener(this);
-		jP_CreateNewDB.add(jBtn_Cancel);
+		jP_Server = new JPanel();
+		jP_Server.setBorder(new EmptyBorder(5, 5, 5, 5));
+		jP_Server.setLayout(null);
+		jP_Server.setName("Server");
+		tabbedPane.add(jP_Server);
+
+		jP_Manager = new JPanel();
+		jP_Manager.setBorder(new EmptyBorder(5, 5, 5, 5));
+		jP_Manager.setLayout(null);
+		jP_Manager.setName("Manager Database");
+		tabbedPane.add(jP_Manager);
+
+		this.setJMenuBar(new MainMenuBar());
+
+		jLbl_AddrFolder = new JLabel("File DataBase:");
+		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
+		jLbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jLbl_AddrFolder.setBounds(20, 11, 100, 30);
+		jP_Server.add(jLbl_AddrFolder);
+
+		jLbl_Port = new JLabel("Port:");
+		jLbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
+		jLbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jLbl_Port.setBounds(10, 54, 110, 30);
+		jP_Server.add(jLbl_Port);
+
+		jTf_AddrFileDB = new JTextField();
+		jTf_AddrFileDB.setEditable(false);
+		jTf_AddrFileDB.setText("");
+		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_AddrFileDB.setBounds(130, 12, 239, 30);
+		jTf_AddrFileDB.setColumns(10);
+		jP_Server.add(jTf_AddrFileDB);
+
+		jTf_Port = new JTextField();
+		jTf_Port.setText("3456");
+		jTf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_Port.setBounds(130, 55, 120, 30);
+		jTf_Port.setColumns(10);
+		jP_Server.add(jTf_Port);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Browse.setBounds(290, 43, 89, 30);
-		jBtn_Browse.setActionCommand("CNDB_Browse");
+		jBtn_Browse.setBounds(390, 11, 131, 30);
+		jBtn_Browse.setActionCommand(actionC.browse.toString());
 		jBtn_Browse.addActionListener(this);
-		jP_CreateNewDB.add(jBtn_Browse);
+		jP_Server.add(jBtn_Browse);
 
-		jTf_Target = new JTextField();
-		jTf_Target.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTf_Target.setBounds(20, 44, 260, 30);
-		jP_CreateNewDB.add(jTf_Target);
-		jTf_Target.setColumns(10);
+		jBtn_ManagerTable = new JButton("Manager DB");
+		jBtn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_ManagerTable.setBounds(531, 11, 131, 30);
+		jBtn_ManagerTable.setActionCommand(actionC.managertable.toString());
+		jBtn_ManagerTable.addActionListener(this);
+		jP_Server.add(jBtn_ManagerTable);
 
-		jTf_Name = new JTextField();
-		jTf_Name.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTf_Name.setColumns(10);
-		jTf_Name.setBounds(20, 115, 260, 30);
-		jP_CreateNewDB.add(jTf_Name);
+		jBtn_Listen = new JButton("Listen");
+		jBtn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Listen.setBounds(390, 54, 131, 30);
+		jBtn_Listen.setActionCommand(actionC.listen.toString());
+		jBtn_Listen.addActionListener(this);
+		jP_Server.add(jBtn_Listen);
 
-		JLabel lblng = new JLabel("Target");
-		lblng.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblng.setBounds(26, 16, 46, 30);
-		jP_CreateNewDB.add(lblng);
+		jBtn_Stop = new JButton("Stop");
+		jBtn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Stop.setBounds(531, 54, 131, 30);
+		jBtn_Stop.setActionCommand(actionC.stop.toString());
+		jBtn_Stop.addActionListener(this);
+		jP_Server.add(jBtn_Stop);
 
-		JLabel lblEnterYourName = new JLabel("New Database name:");
-		lblEnterYourName.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblEnterYourName.setBounds(26, 85, 209, 30);
-		jP_CreateNewDB.add(lblEnterYourName);
+		jP_Log = new JPanel();
+		jP_Log.setBounds(20, 100, 642, 363);
+		jP_Log.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "LOG"));
+		jP_Server.add(jP_Log);
+
+		colNameTableLog.add("ID");
+		colNameTableLog.add("Time");
+		colNameTableLog.add("Action");
+
+		tableLog = new JTable();
+		tableLog.setFont(new java.awt.Font("Tahoma", 0, 14));
+		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
+		tableLog.getColumnModel().getColumn(0).setPreferredWidth(1);
+		tableLog.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
+
+		jSP_Log = new javax.swing.JScrollPane();
+		jSP_Log.setBounds(10, 21, 622, 331);
+		jSP_Log.setViewportView(tableLog);
+
+		jP_Log.setLayout(null);
+		jP_Log.add(jSP_Log);
+
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(298, 71, 46, 14);
+		jP_Server.add(lblNewLabel);
 	}
 
 	public void Init() {
+		jBtn_Listen.setEnabled(false);
+		jBtn_Stop.setEnabled(false);
+
+		_FileFilterDb = new FileFilterDb() {
+		};
+
 		jFChooser = new JFileChooser();
-		jFChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		jFChooser.setFileFilter(_FileFilterDb);
+		_PathFileDataBase = "";
+		// khoi tao port ban dau la 3456 khi listen se lay thong tin port nguoi
+		// dung nhap vao
+		_MyServer = new MyServer(3456);
+		_ThreadServer = new Thread(_MyServer);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		if ("CNDB_Browse".equals(arg0.getActionCommand())) {
+		actionC action = actionC.valueOf(arg0.getActionCommand());
 
-			// chon thu muc de luu database
-			int returnVal = jFChooser.showDialog(this, "Choose");
+		if (action == actionC.browse) {
+
+			int returnVal = jFChooser.showDialog(this, "Choose DataBase");
+
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				String pathFileDataBase = jFChooser.getSelectedFile().getPath();
-				jTf_Target.setText(pathFileDataBase);
-			}
-		}
+				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
+				jTf_AddrFileDB.setText(_PathFileDataBase);
+				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
+				PrintLog("Đã chọn File DataBase");
 
-		if ("CNDB_Create".equals(arg0.getActionCommand())) {
-
-			String target = jTf_Target.getText().trim();
-			String name = jTf_Name.getText().trim();
-			File tfile;
-
-			// chưa chọn thư mục để lưu file jSql
-			if (target.trim().equals("")) {
-				JOptionPane.showMessageDialog(this,
-						"Xin chọn thư mục để lưu file Database !", "Warning",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-
-			// thư mục người dùng nhập không tồn tại
-			tfile = new File(target);
-			if (!tfile.exists()) {
-				int ch = JOptionPane.showConfirmDialog(this,
-						"Đường dẫn thư mục không tồn tại. "
-								+ "\nĐường dẫn sẽ được tạo."
-								+ "\nĐồng ý hay Không ?", "Warning",
-						JOptionPane.YES_NO_OPTION);
-				if (ch == 1)
-					return;
-				if (ch == 0) {
-					boolean chh = new File(target).mkdirs();
-
-					if (!chh) {
-						JOptionPane
-								.showMessageDialog(
-										this,
-										"Không thể tạo thư mục. Xin xem lại đường dẫn !",
-										"Warning", JOptionPane.WARNING_MESSAGE);
-						return;
-					}
+				jBtn_Listen.setEnabled(true);
+				jBtn_Stop.setEnabled(false);
+			} else {
+				if (_PathFileDataBase.equals("")) {
+					PrintLog("Đã hủy việc chọn File DataBase");
 				}
 			}
-
-			// chua nhap ten
-			if (name.equals("")) {
-				JOptionPane.showMessageDialog(this,
-						"Xin vui lòng nhập tên Database !", "Warning",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-
-			// database bi trung ten
-			tfile = new File(target + "\\" + name + ".db");
-			if (tfile.exists()) {
-				JOptionPane.showMessageDialog(this,
-						"Database đã  tồn tại. Xin nhập tên khác !", "Warning",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-
-			// tao database
-			Database.createNewDatabase(target + "\\" + name + ".db");
-
-			JOptionPane.showMessageDialog(this,
-					"Đã tạo Database thành công ^_^", "Info",
-					JOptionPane.INFORMATION_MESSAGE);
-
-			Frame_Main.PrintLog("Đã tạo Database mới: " + target + "\\" + name
-					+ ".db");
 		}
 
-		if ("CNDB_Cancel".equals(arg0.getActionCommand())) {
-			this.dispose();
+		if (action == actionC.managertable) {
+			_FrameManagerTable = new Frame_ManagerDB();
+			_FrameManagerTable.setVisible(true);
 		}
+
+		if (action == actionC.listen) {
+			if (!jTf_Port.getText().trim().equals("")) {
+
+				_Port = Integer.parseInt(jTf_Port.getText().trim());
+
+				if (_ThreadServer.isAlive()) {
+					_MyServer.stop();
+					_ThreadServer.stop();
+				}
+				_MyServer.SetPort(_Port);
+				_ThreadServer = new Thread(_MyServer);
+				_ThreadServer.start();
+
+				jBtn_Listen.setEnabled(false);
+				jBtn_Stop.setEnabled(true);
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Xin nhập thông tin port !!!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		}
+
+		if (action == actionC.stop) {
+			_MyServer.stop();
+			_ThreadServer.stop();
+
+			jBtn_Listen.setEnabled(true);
+			jBtn_Stop.setEnabled(false);
+		}
+		
+		
+		
+		
+	}
+
+	public static void PrintLog(String strAction) {
+		Vector<String> tLog = new Vector<String>();
+		Calendar c = Calendar.getInstance();
+		String time;
+
+		// add id
+		tLog.add(Integer.toString(_Logs.size() + 1));
+
+		int month = c.get(Calendar.MONTH) + 1;
+
+		// add time
+		time = c.get(Calendar.DAY_OF_MONTH) + "/" + month + "/"
+				+ c.get(Calendar.YEAR) + "   " + c.get(Calendar.HOUR_OF_DAY)
+				+ ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
+
+		tLog.add(time);
+
+		// add action
+		tLog.add(strAction);
+
+		_Logs.add(tLog);
+
+		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
 	}
 }
