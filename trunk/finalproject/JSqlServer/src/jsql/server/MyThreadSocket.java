@@ -13,7 +13,7 @@ import jsql.parse.Statement;
  * @author DWater
  * 
  */
-public class ThreadSocket extends Thread {
+public class MyThreadSocket extends Thread {
 	private Socket _Socket;
 	private ObjectOutputStream _OOS;
 	private ObjectInputStream _OIS;
@@ -21,9 +21,9 @@ public class ThreadSocket extends Thread {
 	private Request _Request;
 	private Result _Result;
 
-	public ThreadSocket(Socket socket) {
+	public MyThreadSocket(Socket socket) {
 		this._Socket = socket;
-		Frame_Main.PrintLog(_Socket.getInetAddress()
+		Panel_Server.PrintLog(_Socket.getInetAddress()
 				+ "đã kết nối đến Server ^_^");
 	}
 

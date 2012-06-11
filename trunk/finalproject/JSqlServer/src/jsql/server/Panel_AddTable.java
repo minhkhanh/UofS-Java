@@ -1,37 +1,27 @@
 package jsql.server;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
+import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-
+import javax.swing.table.DefaultTableModel;
 import jsql.data.Column;
 import jsql.data.Table;
 
-/**
- * @author DWater
- * 
- */
 @SuppressWarnings("serial")
-public class Frame_AddTable extends JFrame implements ActionListener {
+public class Panel_AddTable extends JPanel implements ActionListener {
 
-	private JPanel contentPane;
-	private JPanel jP_Main;
 	private JPanel jP_Table;
 	private JPanel jP_AddField;
 	private JTable jTable1;
@@ -50,7 +40,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	private JComboBox<?> jCbb_DataType;
 	private JButton jBtn_AddField;
 
-	public Frame_AddTable() {
+	public Panel_AddTable() {
 		this.InitFrame();
 		this.Init();
 	}
@@ -58,40 +48,33 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void InitFrame() {
 
-		setResizable(false);
-		setBounds(300, 100, 700, 525);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-
-		jP_Main = new JPanel();
-		contentPane.add(jP_Main, BorderLayout.CENTER);
-		jP_Main.setLayout(null);
+		this.setSize(784, 439);
+		this.setLayout(null);
+		this.setName("Add Table");
 
 		jBtn_AddTable = new JButton("OK");
 		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddTable.setBounds(308, 11, 94, 30);
-		jBtn_AddTable.setActionCommand("addtable");
+		jBtn_AddTable.setActionCommand(KeyAction.addtable_addtable.toString());
 		jBtn_AddTable.addActionListener(this);
-		jP_Main.add(jBtn_AddTable);
+		this.add(jBtn_AddTable);
 
 		jLbl_NameTable = new JLabel("Table name:");
 		jLbl_NameTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_NameTable.setBounds(20, 11, 77, 30);
-		jP_Main.add(jLbl_NameTable);
+		this.add(jLbl_NameTable);
 
 		jTf_TableName = new JTextField();
 		jTf_TableName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_TableName.setBounds(107, 12, 173, 30);
 		jTf_TableName.setColumns(10);
-		jP_Main.add(jTf_TableName);
+		this.add(jTf_TableName);
 
 		jP_Table = new JPanel();
-		jP_Table.setBounds(20, 52, 642, 254);
+		jP_Table.setBounds(20, 52, 754, 218);
 		jP_Table.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "TABLE"));
-		jP_Main.add(jP_Table);
+		this.add(jP_Table);
 
 		colNameTable1.add("Primary Key");
 		colNameTable1.add("Field Name");
@@ -103,74 +86,91 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		jTable1.setModel(new DefaultTableModel(_Fields, colNameTable1));
 
 		jSP1 = new javax.swing.JScrollPane();
-		jSP1.setBounds(10, 21, 622, 222);
+		jSP1.setBounds(10, 21, 734, 186);
 		jSP1.setViewportView(jTable1);
 
 		jP_Table.setLayout(null);
 		jP_Table.add(jSP1);
 
 		jP_AddField = new JPanel();
-		jP_AddField.setBounds(20, 329, 642, 137);
+		jP_AddField.setBounds(10, 291, 764, 137);
 		jP_AddField.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "ADD FIELD"));
-		jP_Main.add(jP_AddField);
+		this.add(jP_AddField);
 		jP_AddField.setLayout(null);
 
 		jLbl_DataType = new JLabel("Data Type:");
-		jLbl_DataType.setBounds(419, 55, 69, 30);
+		jLbl_DataType.setBounds(536, 54, 69, 30);
 		jP_AddField.add(jLbl_DataType);
 		jLbl_DataType.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		jLbl_FieldNam = new JLabel("Field Name:");
-		jLbl_FieldNam.setBounds(132, 55, 70, 30);
+		jLbl_FieldNam.setBounds(154, 54, 70, 30);
 		jP_AddField.add(jLbl_FieldNam);
 		jLbl_FieldNam.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		jLbl_Description = new JLabel("Description:");
-		jLbl_Description.setBounds(132, 96, 73, 30);
+		jLbl_Description.setBounds(154, 95, 73, 30);
 		jP_AddField.add(jLbl_Description);
 		jLbl_Description.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		jChb_Primary = new JCheckBox("Primary Key");
-		jChb_Primary.setBounds(132, 22, 99, 25);
+		jChb_Primary.setBounds(154, 21, 99, 25);
 		jP_AddField.add(jChb_Primary);
 		jChb_Primary.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		jTf_FieldName = new JTextField();
 		jTf_FieldName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_FieldName.setColumns(10);
-		jTf_FieldName.setBounds(212, 55, 173, 30);
+		jTf_FieldName.setBounds(234, 54, 229, 30);
 		jP_AddField.add(jTf_FieldName);
 
 		jTf_Description = new JTextField();
 		jTf_Description.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_Description.setColumns(10);
-		jTf_Description.setBounds(212, 97, 420, 30);
+		jTf_Description.setBounds(234, 96, 520, 30);
 		jP_AddField.add(jTf_Description);
 
 		jCbb_DataType = new JComboBox();
 		jCbb_DataType.setModel(new DefaultComboBoxModel(new String[] { "int",
-				"string","float" }));
-		jCbb_DataType.setBounds(498, 57, 134, 30);
+				"string", "float" }));
+		jCbb_DataType.setBounds(620, 56, 134, 30);
 		jP_AddField.add(jCbb_DataType);
 
 		jBtn_AddField = new JButton("Add Field");
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_AddField.setActionCommand("ok");
-		jBtn_AddField.setBounds(10, 33, 94, 30);
-		jBtn_AddField.setActionCommand("addfield");
+		jBtn_AddField.setActionCommand(KeyAction.addtable_addfield.toString());
+		jBtn_AddField.setBounds(10, 54, 94, 30);
 		jBtn_AddField.addActionListener(this);
 		jP_AddField.add(jBtn_AddField);
 	}
 
 	public void Init() {
+		jTf_TableName.setEnabled(false);
+		jTf_FieldName.setEnabled(false);
+		jTf_Description.setEnabled(false);
+		jBtn_AddTable.setEnabled(false);
+		jBtn_AddField.setEnabled(false);
+		jChb_Primary.setEnabled(false);
+		jCbb_DataType.setEnabled(false);
+	}
 
+	public void ChoosenDatabase() {
+		jTf_TableName.setEnabled(true);
+		jTf_FieldName.setEnabled(true);
+		jTf_Description.setEnabled(true);
+		jBtn_AddTable.setEnabled(true);
+		jBtn_AddField.setEnabled(true);
+		jChb_Primary.setEnabled(true);
+		jCbb_DataType.setEnabled(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		if ("addtable".equals(arg0.getActionCommand())) {
+		KeyAction action = KeyAction.valueOf(arg0.getActionCommand());
+
+		if (action == KeyAction.addtable_addtable) {
 
 			String tableName = jTf_TableName.getText().trim();
 
@@ -200,17 +200,20 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 				Main.GetDataBase().addTable(table);
 				Main.GetDataBase().saveToFile();
 
-				JOptionPane.showMessageDialog(this, "Đã thêm table: \""
+				JOptionPane.showMessageDialog(this, "Đã thêm table \""
 						+ tableName + "\"" + " thành công ^_^", "OK",
 						JOptionPane.INFORMATION_MESSAGE);
 
+				Panel_Server.PrintLog("Server: Đã thêm table \"" + tableName
+						+ "\"" + " vào database.");
+
 				this.ResetAddTable();
 
-				Frame_ManagerDB.Refresh();
+				Panel_Manager.Refresh();
 			}
 		}
 
-		if ("addfield".equals(arg0.getActionCommand())) {
+		if (action == KeyAction.addtable_addfield) {
 
 			Boolean primary = jChb_Primary.isSelected();
 			String fieldName = jTf_FieldName.getText().trim();
