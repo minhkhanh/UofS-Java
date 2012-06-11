@@ -1,7 +1,5 @@
 package jsql.server;
 
-import java.awt.BorderLayout;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -199,8 +197,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 				jBtn_Listen.setEnabled(false);
 				jBtn_Stop.setEnabled(true);
 			} else {
-				JOptionPane.showMessageDialog(this, "Xin nhập thông tin port !!!",
-						"Warning", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this,
+						"Xin nhập thông tin port !!!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
 			}
 		}
 
