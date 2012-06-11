@@ -6,10 +6,10 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * @author DWater
- *
+ * 
  */
 public abstract class FileFilter_SqlFile extends FileFilter {
-	
+
 	@Override
 	public String getDescription() {
 		return "JSql File (*.db)";
@@ -28,7 +28,7 @@ public abstract class FileFilter_SqlFile extends FileFilter {
 
 		return false;
 	}
-	
+
 	public String getExtension(File f) {
 		String ext = null;
 		String s = f.getName();

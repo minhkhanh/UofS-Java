@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -39,6 +38,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 	}
 
 	public void InitFrame() {
+
 		setResizable(false);
 		setSize(426, 275);
 		setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2
@@ -62,21 +62,21 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 		jBtn_NewButton = new JButton("Create");
 		jBtn_NewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_NewButton.setBounds(20, 173, 89, 30);
-		jBtn_NewButton.setActionCommand("CNDB_Create");
+		jBtn_NewButton.setActionCommand(KeyAction.cnd_create.toString());
 		jBtn_NewButton.addActionListener(this);
 		jP_CreateNewDB.add(jBtn_NewButton);
 
 		jBtn_Cancel = new JButton("Cancel");
 		jBtn_Cancel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Cancel.setBounds(142, 173, 89, 30);
-		jBtn_Cancel.setActionCommand("CNDB_Cancel");
+		jBtn_Cancel.setActionCommand(KeyAction.cnd_cancel.toString());
 		jBtn_Cancel.addActionListener(this);
 		jP_CreateNewDB.add(jBtn_Cancel);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Browse.setBounds(290, 43, 89, 30);
-		jBtn_Browse.setActionCommand("CNDB_Browse");
+		jBtn_Browse.setActionCommand(KeyAction.cnd_browse.toString());
 		jBtn_Browse.addActionListener(this);
 		jP_CreateNewDB.add(jBtn_Browse);
 
@@ -111,7 +111,9 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		if ("CNDB_Browse".equals(arg0.getActionCommand())) {
+		KeyAction action = KeyAction.valueOf(arg0.getActionCommand());
+
+		if (action == KeyAction.cnd_browse) {
 
 			// chon thu muc de luu database
 			int returnVal = jFChooser.showDialog(this, "Choose");
@@ -121,7 +123,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			}
 		}
 
-		if ("CNDB_Create".equals(arg0.getActionCommand())) {
+		if (action == KeyAction.cnd_create) {
 
 			String target = jTf_Target.getText().trim();
 			String name = jTf_Name.getText().trim();
@@ -187,7 +189,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 					+ "\\" + name + ".db");
 		}
 
-		if ("CNDB_Cancel".equals(arg0.getActionCommand())) {
+		if (action == KeyAction.cnd_cancel) {
 			this.dispose();
 		}
 	}

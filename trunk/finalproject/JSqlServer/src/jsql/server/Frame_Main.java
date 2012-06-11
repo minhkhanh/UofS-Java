@@ -27,6 +27,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private Panel_ManagerTable p_Manager;
 	private Panel_AddTable p_AddTable;
 	private Panel_AddData p_AddData;
+	private JButton jBtn_CreateNewDb;
 
 	public Frame_Main() {
 
@@ -61,7 +62,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tabbedPane.add(p_Info);
 
 		jP_Database = new JPanel();
-		jP_Database.setBounds(5, 5, 779, 49);
+		jP_Database.setBounds(5, 5, 784, 49);
 		jP_Main.add(jP_Database);
 		jP_Database.setLayout(null);
 		jP_Database.setBorder(javax.swing.BorderFactory.createTitledBorder(
@@ -72,7 +73,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jTf_AddrDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_AddrDB.setEditable(false);
 		jTf_AddrDB.setColumns(10);
-		jTf_AddrDB.setBounds(130, 12, 486, 30);
+		jTf_AddrDB.setBounds(130, 12, 362, 30);
 		jP_Database.add(jTf_AddrDB);
 
 		JLabel lblFileDatabase = new JLabel("File Database:");
@@ -85,8 +86,14 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Browse.setActionCommand(KeyAction.main_browse.toString());
 		jBtn_Browse.addActionListener(this);
-		jBtn_Browse.setBounds(638, 11, 131, 30);
+		jBtn_Browse.setBounds(502, 11, 131, 30);
 		jP_Database.add(jBtn_Browse);
+
+		jBtn_CreateNewDb = new JButton("Create New DB");
+		jBtn_CreateNewDb.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_CreateNewDb.setActionCommand(KeyAction.main_createdb.toString());
+		jBtn_CreateNewDb.setBounds(643, 11, 131, 30);
+		jP_Database.add(jBtn_CreateNewDb);
 
 		this.setJMenuBar(new MainMenuBar());
 
@@ -99,6 +106,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 
 		KeyAction action = KeyAction.valueOf(arg0.getActionCommand());
+
+		if (action == KeyAction.main_browse) {
+			new Frame_CreateNewDB().setVisible(true);
+		}
 
 		if (action == KeyAction.main_browse) {
 
