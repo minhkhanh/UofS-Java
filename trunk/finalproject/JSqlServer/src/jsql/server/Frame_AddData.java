@@ -1,6 +1,5 @@
 package jsql.server;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,15 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import jsql.data.IntType;
-import jsql.data.Row;
 import jsql.data.Table;
 import jsql.parse.Parser;
 import jsql.parse.Statement;
@@ -50,10 +46,6 @@ public class Frame_AddData extends JFrame implements ActionListener {
 	@SuppressWarnings("rawtypes")
 	private JComboBox jCbb_ListTable;
 	private JLabel jLbl_ChoseTable;
-
-	private JButton jBtn_AddTable;
-	private JLabel jLbl_NameTable;
-	private JTextField jTf_TableName;
 	private JButton jBtn_AddField;
 
 	public Frame_AddData() {
