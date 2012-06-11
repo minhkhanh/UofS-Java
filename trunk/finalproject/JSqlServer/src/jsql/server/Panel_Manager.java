@@ -62,12 +62,14 @@ public class Panel_Manager extends JPanel implements ActionListener {
 			else
 				pos = new Point(15 + i * 189, 5);
 
-			tMiniTable = new MiniTable(Main.GetDataBase().getTable(i), pos);
+			tMiniTable = new MiniTable(this, Main.GetDataBase().getTable(i),
+					pos);
 			add(tMiniTable);
 		}
 	}
 
-	public static void RemoveMiniTable(MiniTable mt) {
-		 this.remove(mt);
+	public void RemoveMiniTable(MiniTable mt) {
+		this.remove(mt);
+		this.repaint();
 	}
 }

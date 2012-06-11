@@ -29,7 +29,11 @@ public class MiniTable extends JPanel implements ActionListener {
 	private static Vector<Vector<String>> values;
 	private JButton btnDelete;
 
-	public MiniTable(jsql.data.Table data, Point pos) {
+	private Panel_Manager manager;
+
+	public MiniTable(Panel_Manager mn, jsql.data.Table data, Point pos) {
+
+		manager = mn;
 
 		this.setSize(175, 205);
 		this.setLayout(null);
@@ -94,8 +98,8 @@ public class MiniTable extends JPanel implements ActionListener {
 
 			JOptionPane.showMessageDialog(this, "Đã xóa bảng thành công ^_^",
 					"Warning", JOptionPane.WARNING_MESSAGE);
-			// Panel_Manager.Refresh();
-			Panel_Manager.Remove(this);
+
+			manager.RemoveMiniTable(this);
 		}
 	}
 }
