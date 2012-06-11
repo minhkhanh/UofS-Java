@@ -19,14 +19,14 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JPanel jP_Main;
 	private JPanel jP_Database;
 	private JTabbedPane tabbedPane;
-	private JTextField jTf_AddrDB;
+	private static JTextField jTf_AddrDB;
 	private JButton jBtn_Browse;
 	private JFileChooser jFChooser;
 	private Panel_Info p_Info;
-	private Panel_Server p_Server;
-	private Panel_Manager p_Manager;
-	private Panel_AddTable p_AddTable;
-	private Panel_AddData p_AddData;
+	private static Panel_Server p_Server;
+	private static Panel_Manager p_Manager;
+	private static Panel_AddTable p_AddTable;
+	private static Panel_AddData p_AddData;
 	private JButton jBtn_CreateNewDb;
 	private Frame_CreateNewDB _FrameCreateDB;
 	private JButton jBtn_Refresh;
@@ -139,22 +139,24 @@ public class Frame_Main extends JFrame implements ActionListener {
 				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 
 				Panel_Server.PrintLog("Server: Đã chọn File DataBase");
-
-				p_Server.ChoosenDatabase();
-				p_AddTable.ChoosenDatabase();
-				p_AddData.ChoosenDatabase();
-				p_Manager.ChoosenDatabase();
+				p_Server.SetStatus("Click Listen to Start Server !");
+				Frame_Main.Refresh();
 			}
 		}
 
 		if (action == KeyAction.main_refresh) {
+			Frame_Main.Refresh();
+		}
+	}
 
-			if (Main.GetDataBase() != null) {
-				p_Server.ChoosenDatabase();
-				p_AddTable.ChoosenDatabase();
-				p_AddData.ChoosenDatabase();
-				p_Manager.ChoosenDatabase();
-			}
+	public static void Refresh() {
+		if (Main.GetDataBase() != null) {
+			p_Server.ChoosenDatabase();
+			p_AddTable.ChoosenDatabase();
+			p_AddData.ChoosenDatabase();
+			p_Manager.Refresh();
+
+			jTf_AddrDB.setText(Main.GetDataBase().GetFilePath());
 		}
 	}
 }

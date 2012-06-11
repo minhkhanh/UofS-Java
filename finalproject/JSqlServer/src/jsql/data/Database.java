@@ -29,7 +29,7 @@ public class Database implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String INT = "INT";
 	public static final String STRING = "STRING";
 
@@ -92,10 +92,11 @@ public class Database implements Serializable {
 	public Table getTable(int index) {
 		return tables.get(index);
 	}
-	
+
 	public boolean haveTable(String name) {
 		for (Table table : tables) {
-			if (table.getName().equals(name)) return true;
+			if (table.getName().equals(name))
+				return true;
 		}
 		return false;
 	}
@@ -108,7 +109,7 @@ public class Database implements Serializable {
 		if (statement instanceof Update)
 			return executeUpdate((Update) statement);
 		if (statement instanceof Select)
-			return executeSelect((Select) statement);		
+			return executeSelect((Select) statement);
 		return new Result("statement is dont suport!");
 	}
 
@@ -116,11 +117,11 @@ public class Database implements Serializable {
 		try {
 			if (select == null)
 				throw new Exception("select is null!");
-			
+
 			select.setDatabase(this);
 
-			return select.executeSelect(null);		
-			
+			return select.executeSelect(null);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(e.getMessage());
@@ -140,10 +141,10 @@ public class Database implements Serializable {
 			}
 			if (table == null)
 				throw new Exception("table is not exit!");
-			
+
 			update.setDatabase(this);
 			int num = table.executeUpdate(update);
-			
+
 			System.out.println("update " + num + " row done!");
 			return new Result("update " + num + " row done!");
 		} catch (Exception e) {
@@ -166,10 +167,10 @@ public class Database implements Serializable {
 			}
 			if (table == null)
 				throw new Exception("table is not exit!");
-			
+
 			del.setDatabase(this);
 			int num = table.executeDelete(del);
-			
+
 			System.out.println("delete " + num + " row done!");
 			return new Result("delete " + num + " row done!");
 		} catch (Exception e) {
@@ -210,15 +211,18 @@ public class Database implements Serializable {
 	// added by Khuong
 	public void DeleteTable(int idx) {
 		tables.remove(idx);
-		this.saveToFile();
 	}
 
 	// added by khuong
 	public void DeleteTable(String tableName) {
-		for (int i = 0; i < tables.size(); i++)
-			if (tables.get(i).getName().equals(tableName))
+		for (int i = 0; i < tables.size(); i++) {
+			if (tables.get(i).getName().equals(tableName)) {
+
+				System.out.println("delete  " + tables.get(i).getName());
 				tables.remove(i);
-		this.saveToFile();
+				return;
+			}
+		}
 	}
 
 	// added by khuong

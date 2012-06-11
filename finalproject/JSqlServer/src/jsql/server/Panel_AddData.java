@@ -56,9 +56,10 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		this.setName("Add Data");
 
 		jBtn_SaveToDB = new JButton("Save to Database");
-		jBtn_SaveToDB.setIcon(new ImageIcon(Panel_AddData.class.getResource("/img/accept.png")));
+		jBtn_SaveToDB.setIcon(new ImageIcon(Panel_AddData.class
+				.getResource("/img/accept.png")));
 		jBtn_SaveToDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_SaveToDB.setBounds(301, 11, 177, 30);
+		jBtn_SaveToDB.setBounds(301, 9, 177, 35);
 		jBtn_SaveToDB.setActionCommand("ok");
 		jBtn_SaveToDB.addActionListener(this);
 		this.add(jBtn_SaveToDB);
@@ -99,8 +100,9 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		jP_AddData.setLayout(null);
 
 		jBtn_AddField = new JButton("Add");
-		jBtn_AddField.setIcon(new ImageIcon(Panel_AddData.class.getResource("/img/add.png")));
-		jBtn_AddField.setBounds(10, 29, 92, 30);
+		jBtn_AddField.setIcon(new ImageIcon(Panel_AddData.class
+				.getResource("/img/add.png")));
+		jBtn_AddField.setBounds(10, 29, 92, 35);
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand("ok");
 		jBtn_AddField.setActionCommand("addfield");
@@ -228,6 +230,11 @@ public class Panel_AddData extends JPanel implements ActionListener {
 
 	public void Refresh() {
 
+		if (Main.GetDataBase() == null
+				|| Main.GetDataBase().getTables() == null
+				|| Main.GetDataBase().getTables().size() == 0)
+			return;
+
 		Table table = Main.GetDataBase().getTable(
 				jCbb_ListTable.getSelectedIndex());
 
@@ -245,7 +252,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 	public void ChoosenDatabase() {
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
 				.GetListTableName(Main.GetDataBase())));
-		
+
 		jCbb_ListTable.setEnabled(true);
 		jBtn_SaveToDB.setEnabled(true);
 		jBtn_AddField.setEnabled(true);

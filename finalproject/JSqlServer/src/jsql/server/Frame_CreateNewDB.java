@@ -187,6 +187,11 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 			Panel_Server.PrintLog("Server: Đã tạo Database mới: " + target
 					+ "\\" + name + ".db");
+			this.dispose();
+
+			Main.SetDataBase(Database
+					.loadFromFile(target + "\\" + name + ".db"));
+			Frame_Main.Refresh();
 		}
 
 		if (action == KeyAction.cnd_cancel) {

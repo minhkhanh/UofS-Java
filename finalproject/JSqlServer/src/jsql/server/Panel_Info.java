@@ -125,7 +125,7 @@ public class Panel_Info extends JPanel {
 		txtpnHngDnS.setBounds(10, 35, 356, 371);
 
 		jSP_Help = new javax.swing.JScrollPane();
-		jSP_Help.setBounds(10, 35, 356, 371);
+		jSP_Help.setBounds(10, 22, 356, 384);
 		jSP_Help.setViewportView(txtpnHngDnS);
 		jP_Help.add(jSP_Help);
 	}

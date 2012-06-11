@@ -40,21 +40,23 @@ public class Helper implements Serializable {
 
 		return true;
 	}
-	
+
 	// Load Image
-    public static ImageIcon createImageIcon(String path) 
-    {
-        java.net.URL imgURL = Main.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
+	public static ImageIcon createImageIcon(String path) {
+		java.net.URL imgURL = Main.class.getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
+	}
 
 	// de load vao combobox
 	public static String[] GetListTableName(Database db) {
+
+		if (db == null)
+			return null;
 
 		List<Table> tables = db.getTables();
 		String[] obj = new String[tables.size()];
@@ -69,6 +71,8 @@ public class Helper implements Serializable {
 	// de load vao header table
 	public static Vector<String> GetListFiledAndType(Table table) {
 
+		if (table == null)
+			return null;
 		Vector<String> obj = new Vector<String>();
 
 		for (int i = 0; i < table.getColumns().size(); i++) {
@@ -81,6 +85,9 @@ public class Helper implements Serializable {
 
 	// de load vao table
 	public static Vector<Vector<Object>> GetValues(Table table) {
+
+		if (table == null)
+			return null;
 
 		Vector<Vector<Object>> obj = new Vector<Vector<Object>>();
 		Vector<Object> tRow;
@@ -107,6 +114,9 @@ public class Helper implements Serializable {
 	// tao row empty de add vao table de thay doi data theo y minh
 	public static Vector<Vector<Object>> CreateRowEmpy(Table table) {
 
+		if (table == null)
+			return null;
+
 		Vector<Vector<Object>> obj = new Vector<Vector<Object>>();
 		Vector<Object> tRow;
 		int nCol;
@@ -122,10 +132,5 @@ public class Helper implements Serializable {
 		obj.add(tRow);
 
 		return obj;
-	}
-	
-	//lay loai du lieu cua colum, tra ve chuoi string tuong ung
-	public static String getColType(Table table,int idxcol){
-		return table.getColumn(idxcol).getType();
 	}
 }
