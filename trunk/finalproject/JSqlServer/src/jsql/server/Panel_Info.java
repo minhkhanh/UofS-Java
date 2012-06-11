@@ -73,32 +73,32 @@ public class Panel_Info extends JPanel {
 		lblnCui.setBounds(71, 149, 295, 25);
 		jP_Info.add(lblnCui);
 		lblnCui.setHorizontalAlignment(SwingConstants.CENTER);
-		lblnCui.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblnCui.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel lblLpTrnhng = new JLabel("LẬP TRÌNH ỨNG DỤNG JAVA (TH2009/3)");
 		lblLpTrnhng.setBounds(71, 119, 295, 25);
 		jP_Info.add(lblLpTrnhng);
 		lblLpTrnhng.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLpTrnhng.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblLpTrnhng.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel lbliHcKhoa = new JLabel("ĐẠI HỌC KHOA HỌC TỰ NHIÊN");
 		lbliHcKhoa.setBounds(71, 58, 295, 25);
 		jP_Info.add(lbliHcKhoa);
 		lbliHcKhoa.setHorizontalAlignment(SwingConstants.CENTER);
-		lbliHcKhoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbliHcKhoa.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(71, 34, 295, 25);
 		jP_Info.add(lblNewLabel);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel.setText("ĐẠI HỌC QUỐC GIA TP. HCM\r\n");
 
 		JLabel lblKhoaCngNgh = new JLabel("KHOA CÔNG NGHỆ THÔNG TIN");
 		lblKhoaCngNgh.setBounds(71, 83, 295, 25);
 		jP_Info.add(lblKhoaCngNgh);
 		lblKhoaCngNgh.setHorizontalAlignment(SwingConstants.CENTER);
-		lblKhoaCngNgh.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblKhoaCngNgh.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel label = new JLabel("");
 		label.setBounds(10, 38, 70, 70);
@@ -119,24 +119,7 @@ public class Panel_Info extends JPanel {
 		txtpnHngDnS.setBackground(SystemColor.controlShadow);
 		txtpnHngDnS.setBackground(new Color(240, 240, 240));
 		txtpnHngDnS
-				.setText("HƯỚNG DẪN SỬ DỤNG\r\n"
-						+ "\r\n1. Chạy module Server"
-						+ "\r\n     1.1. Nhấn Browse để tạo chọn file jSql (database)"
-						+ "\r\n     1.2. Nhấn Listen để mở server. Có thể tùy chỉnh thông số Port. "
-						+ "\r\n     1.3. Chờ client kết nối đến."
-						+ "\r\n2. Chạy module Client."
-						+ "\r\n     2.1. Chỉnh Port trùng với server."
-						+ "\r\n     2.2. Nhấn Conect để kết nối đến Server."
-						+ "\r\n     2.3. Nhập các câu truy vấn rồi nhấn Execute để yêu cầu Server thực hiện."
-						+ "\r\n     2.4  Chờ Server xử lý và hiển thị kết quả."
-						+ "\r\n     2.5 Lập lại bươc 2.3"
-						+ "\r\n3. Quản lý Database & Table"
-						+ "\r\n     - Nhấn Create New DB: Hiển thị form tạo database mới."
-						+ "\r\n     - Chọn tab Manager: Quản lý database và table."
-						+ "\r\n     - Chọn tab Add Table: Thêm bảng mới cho database"
-						+ "\r\n     - Chọn tab Add Data: Thêm giá trị vào bảng."
-						+ "\r\n     - Chọn tab Information: Thông tin & hướng dẫn sử dụng."
-						+ "");
+				.setText("\t\tHƯỚNG DẪN SỬ DỤNG\r\n\r\n1. Chạy module Server\r\n     1.1. Nhấn Browse để tạo chọn file jSql (database)\r\n     1.2. Nhấn Listen để mở server. Có thể tùy chỉnh thông số Port. \r\n     1.3. Chờ client kết nối đến.\r\n2. Chạy module Client.\r\n     2.1. Chỉnh Port trùng với server.\r\n     2.2. Nhấn Conect để kết nối đến Server.\r\n     2.3. Nhập các câu truy vấn rồi nhấn Execute để yêu cầu Server thực hiện.\r\n     2.4  Chờ Server xử lý và hiển thị kết quả.\r\n     2.5 Lập lại bươc 2.3\r\n3. Quản lý Database & Table\r\n     - Nhấn Create New DB: Hiển thị form tạo database mới.\r\n     - Chọn tab Manager: Quản lý database và table.\r\n     - Chọn tab Add Table: Thêm bảng mới cho database\r\n     - Chọn tab Add Data: Thêm giá trị vào bảng.\r\n     - Chọn tab Information: Thông tin & hướng dẫn sử dụng.");
 		txtpnHngDnS.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtpnHngDnS.setEditable(false);
 		txtpnHngDnS.setBounds(10, 35, 356, 371);

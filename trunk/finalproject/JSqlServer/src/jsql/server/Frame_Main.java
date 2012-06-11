@@ -29,6 +29,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private Panel_AddData p_AddData;
 	private JButton jBtn_CreateNewDb;
 	private Frame_CreateNewDB _FrameCreateDB;
+	private JButton jBtn_Refresh;
 
 	public Frame_Main() {
 
@@ -74,28 +75,41 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jTf_AddrDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_AddrDB.setEditable(false);
 		jTf_AddrDB.setColumns(10);
-		jTf_AddrDB.setBounds(130, 12, 362, 30);
+		jTf_AddrDB.setBounds(120, 11, 362, 30);
 		jP_Database.add(jTf_AddrDB);
 
 		JLabel lblFileDatabase = new JLabel("File Database:");
 		lblFileDatabase.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFileDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFileDatabase.setBounds(20, 11, 100, 30);
+		lblFileDatabase.setBounds(10, 10, 100, 30);
 		jP_Database.add(lblFileDatabase);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_Browse.setActionCommand(KeyAction.main_browse.toString());
 		jBtn_Browse.addActionListener(this);
-		jBtn_Browse.setBounds(502, 11, 131, 30);
+		jBtn_Browse.setBounds(507, 10, 131, 30);
 		jP_Database.add(jBtn_Browse);
 
-		jBtn_CreateNewDb = new JButton("Create New DB");
+		jBtn_CreateNewDb = new JButton("");
+		jBtn_CreateNewDb.setToolTipText("Create New Database");
+		jBtn_CreateNewDb.setIcon(new ImageIcon(Frame_Main.class
+				.getResource("/img/new_page.png")));
 		jBtn_CreateNewDb.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_CreateNewDb.setActionCommand(KeyAction.main_createdb.toString());
 		jBtn_CreateNewDb.addActionListener(this);
-		jBtn_CreateNewDb.setBounds(643, 11, 131, 30);
+		jBtn_CreateNewDb.setBounds(672, 6, 46, 35);
 		jP_Database.add(jBtn_CreateNewDb);
+
+		jBtn_Refresh = new JButton("");
+		jBtn_Refresh.setToolTipText("Refresh");
+		jBtn_Refresh.setIcon(new ImageIcon(Frame_Main.class
+				.getResource("/img/refresh.png")));
+		jBtn_Refresh.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Refresh.setActionCommand(KeyAction.main_refresh.toString());
+		jBtn_Refresh.addActionListener(this);
+		jBtn_Refresh.setBounds(728, 6, 46, 35);
+		jP_Database.add(jBtn_Refresh);
 
 		this.setJMenuBar(new MainMenuBar());
 
@@ -126,6 +140,16 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 				Panel_Server.PrintLog("Server: Đã chọn File DataBase");
 
+				p_Server.ChoosenDatabase();
+				p_AddTable.ChoosenDatabase();
+				p_AddData.ChoosenDatabase();
+				p_Manager.ChoosenDatabase();
+			}
+		}
+
+		if (action == KeyAction.main_refresh) {
+
+			if (Main.GetDataBase() != null) {
 				p_Server.ChoosenDatabase();
 				p_AddTable.ChoosenDatabase();
 				p_AddData.ChoosenDatabase();
