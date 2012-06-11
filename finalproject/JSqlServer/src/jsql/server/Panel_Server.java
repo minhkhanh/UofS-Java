@@ -1,14 +1,21 @@
 package jsql.server;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import jsql.data.Database;
 
@@ -17,18 +24,16 @@ import jsql.data.Database;
  * 
  */
 @SuppressWarnings("serial")
-public class Frame_Main extends JFrame implements ActionListener {
+public class Panel_Server extends JPanel implements ActionListener {
 
 	public enum actionC {
-		browse, managertable,listen,stop
+		sv_browse, sv_listen, sv_stop
 	};
-	
-	private JPanel jP_Main;
+
 	private JPanel jP_Log;
-	private JTextField jTf_AddrFileDB;
+	private JTextField jTf_AddrFileDB1;
 	private JTextField jTf_Port;
-	private JButton jBtn_Browse;
-	private JButton jBtn_ManagerTable;
+	private JButton jBtn_Browse1;
 	private JButton jBtn_Listen;
 	private JButton jBtn_Stop;
 	private JLabel jLbl_AddrFolder;
@@ -42,87 +47,67 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private MyServer _MyServer;
 	private Thread _ThreadServer;
 	private int _Port;
-	private Frame_ManagerDB _FrameManagerTable;
-	private FileFilterDb _FileFilterDb;
 	private String _PathFileDataBase;
 
-	public Frame_Main() {
-		this.InitFrame();
-		this.Init();
-	}
+	public Panel_Server() {
 
-	public void InitFrame() {
-		setResizable(false);
-		setTitle("jSQLServer");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 100, 700, 525);
-		jP_Main = new JPanel();
-		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
-		jP_Main.setLayout(null);
-		setContentPane(jP_Main);
-		
-		this.setJMenuBar(new MainMenuBar());
+		this.setSize(794, 519);
+		this.setLayout(null);
+		this.setName("Server");
 
 		jLbl_AddrFolder = new JLabel("File DataBase:");
 		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLbl_AddrFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_AddrFolder.setBounds(20, 11, 100, 30);
-		jP_Main.add(jLbl_AddrFolder);
+		this.add(jLbl_AddrFolder);
 
 		jLbl_Port = new JLabel("Port:");
 		jLbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_Port.setBounds(10, 54, 110, 30);
-		jP_Main.add(jLbl_Port);
+		this.add(jLbl_Port);
 
-		jTf_AddrFileDB = new JTextField();
-		jTf_AddrFileDB.setEditable(false);
-		jTf_AddrFileDB.setText("");
-		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTf_AddrFileDB.setBounds(130, 12, 239, 30);
-		jTf_AddrFileDB.setColumns(10);
-		jP_Main.add(jTf_AddrFileDB);
+		jTf_AddrFileDB1 = new JTextField();
+		jTf_AddrFileDB1.setEditable(false);
+		jTf_AddrFileDB1.setText("");
+		jTf_AddrFileDB1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_AddrFileDB1.setBounds(130, 12, 486, 30);
+		jTf_AddrFileDB1.setColumns(10);
+		this.add(jTf_AddrFileDB1);
 
 		jTf_Port = new JTextField();
 		jTf_Port.setText("3456");
 		jTf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jTf_Port.setBounds(130, 55, 120, 30);
 		jTf_Port.setColumns(10);
-		jP_Main.add(jTf_Port);
+		this.add(jTf_Port);
 
-		jBtn_Browse = new JButton("Browse");
-		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Browse.setBounds(390, 11, 131, 30);
-		jBtn_Browse.setActionCommand(actionC.browse.toString());
-		jBtn_Browse.addActionListener(this);
-		jP_Main.add(jBtn_Browse);
-
-		jBtn_ManagerTable = new JButton("Manager DB");
-		jBtn_ManagerTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_ManagerTable.setBounds(531, 11, 131, 30);
-		jBtn_ManagerTable.setActionCommand(actionC.managertable.toString());
-		jBtn_ManagerTable.addActionListener(this);
-		jP_Main.add(jBtn_ManagerTable);
+		jBtn_Browse1 = new JButton("Browse");
+		jBtn_Browse1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Browse1.setBounds(638, 11, 131, 30);
+		jBtn_Browse1.setActionCommand(actionC.sv_browse.toString());
+		jBtn_Browse1.addActionListener(this);
+		this.add(jBtn_Browse1);
 
 		jBtn_Listen = new JButton("Listen");
 		jBtn_Listen.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Listen.setBounds(390, 54, 131, 30);
-		jBtn_Listen.setActionCommand(actionC.listen.toString());
+		jBtn_Listen.setBounds(485, 54, 131, 30);
+		jBtn_Listen.setActionCommand(actionC.sv_listen.toString());
 		jBtn_Listen.addActionListener(this);
-		jP_Main.add(jBtn_Listen);
+		this.add(jBtn_Listen);
 
 		jBtn_Stop = new JButton("Stop");
 		jBtn_Stop.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Stop.setBounds(531, 54, 131, 30);
-		jBtn_Stop.setActionCommand(actionC.stop.toString());
+		jBtn_Stop.setBounds(638, 54, 131, 30);
+		jBtn_Stop.setActionCommand(actionC.sv_stop.toString());
 		jBtn_Stop.addActionListener(this);
-		jP_Main.add(jBtn_Stop);
+		this.add(jBtn_Stop);
 
 		jP_Log = new JPanel();
-		jP_Log.setBounds(20, 100, 642, 363);
+		jP_Log.setBounds(10, 100, 759, 363);
 		jP_Log.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "LOG"));
-		jP_Main.add(jP_Log);
+		this.add(jP_Log);
 
 		colNameTableLog.add("ID");
 		colNameTableLog.add("Time");
@@ -132,33 +117,24 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tableLog.setFont(new java.awt.Font("Tahoma", 0, 14));
 		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
 		tableLog.getColumnModel().getColumn(0).setPreferredWidth(1);
-		tableLog.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tableLog.getColumnModel().getColumn(1).setPreferredWidth(1);
 		tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
 
 		jSP_Log = new javax.swing.JScrollPane();
-		jSP_Log.setBounds(10, 21, 622, 331);
+		jSP_Log.setBounds(10, 21, 739, 331);
 		jSP_Log.setViewportView(tableLog);
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(298, 71, 46, 14);
-		jP_Main.add(lblNewLabel);
-	}
-
-	public void Init() {
+		// INIT
 		jBtn_Listen.setEnabled(false);
 		jBtn_Stop.setEnabled(false);
 
-		_FileFilterDb = new FileFilterDb() {
-		};
-
 		jFChooser = new JFileChooser();
-		jFChooser.setFileFilter(_FileFilterDb);
+		jFChooser.setFileFilter(new FileFilterDb() {
+		});
 		_PathFileDataBase = "";
-		// khoi tao port ban dau la 3456 khi listen se lay thong tin port nguoi
-		// dung nhap vao
 		_MyServer = new MyServer(3456);
 		_ThreadServer = new Thread(_MyServer);
 	}
@@ -166,16 +142,15 @@ public class Frame_Main extends JFrame implements ActionListener {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
+		// TODO Auto-generated method stub
 		actionC action = actionC.valueOf(arg0.getActionCommand());
 
-		if (action == actionC.browse) {
-
+		if (action == actionC.sv_browse) {
 			int returnVal = jFChooser.showDialog(this, "Choose DataBase");
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
-				jTf_AddrFileDB.setText(_PathFileDataBase);
+				jTf_AddrFileDB1.setText(_PathFileDataBase);
 				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 				PrintLog("Đã chọn File DataBase");
 
@@ -188,12 +163,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			}
 		}
 
-		if (action == actionC.managertable) {
-			_FrameManagerTable = new Frame_ManagerDB();
-			_FrameManagerTable.setVisible(true);
-		}
-
-		if (action == actionC.listen) {
+		if (action == actionC.sv_listen) {
 			if (!jTf_Port.getText().trim().equals("")) {
 
 				_Port = Integer.parseInt(jTf_Port.getText().trim());
@@ -215,7 +185,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 			}
 		}
 
-		if (action == actionC.stop) {
+		if (action == actionC.sv_stop) {
 			_MyServer.stop();
 			_ThreadServer.stop();
 
@@ -246,6 +216,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		_Logs.add(tLog);
 
-		//tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
+		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
 	}
+
 }
