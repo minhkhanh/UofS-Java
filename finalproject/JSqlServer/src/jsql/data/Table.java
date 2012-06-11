@@ -89,14 +89,14 @@ public class Table implements Serializable {
 	// added by khuong
 	public String getColumnType(int idx) {
 		if (idx >= 0 && idx < columns.size())
-			this.columns.get(idx).getType();
+			return this.columns.get(idx).getType();
 		return null;
 	}
 
 	// added by khuong
 	public String getColumName(int idx) {
 		if (idx >= 0 && idx < columns.size())
-			this.columns.get(idx).getName();
+			return this.columns.get(idx).getName();
 		return null;
 	}
 
