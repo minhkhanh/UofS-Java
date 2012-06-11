@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,14 +19,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import jsql.data.Database;
 import jsql.data.Row;
 import jsql.data.Table;
 
-import javax.swing.JLayeredPane;
-import javax.swing.JTabbedPane;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -190,10 +184,9 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 			Row tRow = table.getRow(0);
 
-			for (int i = 0; i < tRow.numCol(); i++)
-			{
-			//	jsql.data.Type x = (jsql.data.Type) _NewValue.get(1).get(i);
-				//tRow.setDataAt(i, x);
+			for (int i = 0; i < tRow.numCol(); i++) {
+				// jsql.data.Type x = (jsql.data.Type) _NewValue.get(1).get(i);
+				// tRow.setDataAt(i, x);
 			}
 
 			_Values = Helper.GetValues(table);

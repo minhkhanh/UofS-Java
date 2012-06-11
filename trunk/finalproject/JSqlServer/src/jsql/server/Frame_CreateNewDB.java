@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -141,23 +140,33 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 				if (ch == 1)
 					return;
 				if (ch == 0) {
-					new File(target).mkdirs();
+					boolean chh = new File(target).mkdirs();
+
+					if (!chh) {
+						JOptionPane
+								.showMessageDialog(
+										this,
+										"Không thể tạo thư mục. Xin xem lại đường dẫn !",
+										"Warning", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 				}
 			}
+			
+			// chua nhap ten
+			if (name.equals("")) {
+				JOptionPane.showMessageDialog(this,
+						"Xin vui lòng nhập tên Database !", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
 
 			// database bi trung ten
 			tfile = new File(target + "\\" + name + ".db");
 			if (tfile.exists()) {
 				JOptionPane.showMessageDialog(this,
 						"Database đã  tồn tại. Xin nhập tên khác !", "Warning",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-
-			// chua nhap ten
-			if (name.equals("")) {
-				JOptionPane.showMessageDialog(this,
-						"Xin vui lòng nhập tên Database !", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
