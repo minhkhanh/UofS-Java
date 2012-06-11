@@ -45,15 +45,12 @@ public class Panel_Manager extends JPanel implements ActionListener {
 		return true;
 	}
 
-	static Vector<MiniTable> _ListMiniTable;
-
 	public void ChoosenDatabase() {
 		Refresh();
 
 	}
 
 	public void Refresh() {
-		_ListMiniTable = new Vector<>();
 		MiniTable tMiniTable;
 		Point pos;
 		int nTable = Main.GetDataBase().getTables().size();
@@ -70,7 +67,7 @@ public class Panel_Manager extends JPanel implements ActionListener {
 		}
 	}
 
-	public void Remove(MiniTable mt) {
-		this.remove(mt);
+	public static void RemoveMiniTable(MiniTable mt) {
+		 this.remove(mt);
 	}
 }

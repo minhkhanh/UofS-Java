@@ -95,7 +95,7 @@ public class MiniTable extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Đã xóa bảng thành công ^_^",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			// Panel_Manager.Refresh();
-			
+			Panel_Manager.Remove(this);
 		}
 	}
 }
