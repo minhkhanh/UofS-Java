@@ -1,25 +1,24 @@
 package jsql.server;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 
 /**
+ * @author DWater
  * 
- * @author Ka
  */
-public class MainMenuBar implements ActionListener {
+@SuppressWarnings("serial")
+public class MainMenuBar extends JMenuItem implements ActionListener {
 
-	public enum n_key {
-		newDat, open, Save, SaveAs, SaveAll, exit
+	public enum actionC {
+		exit, help, info
 	};
 
 	public JMenuBar myMenuBar = new JMenuBar();
@@ -27,8 +26,6 @@ public class MainMenuBar implements ActionListener {
 	public MainMenuBar() {
 		JMenu jMn_File = new JMenu("File");
 		JMenu jMn_Option = new JMenu("Option");
-		JMenu m_View = new JMenu("View");
-		JMenu m_Run = new JMenu("Run");
 		JMenu jMn_Help = new JMenu("Help");
 
 		// add to item to menu help
@@ -71,34 +68,36 @@ public class MainMenuBar implements ActionListener {
 
 		myMenuBar.add(jMn_File);
 		myMenuBar.add(jMn_Option);
-		myMenuBar.add(m_View);
-		myMenuBar.add(m_Run);
 		myMenuBar.add(jMn_Help);
 		myMenuBar.setBorder(new BevelBorder(BevelBorder.RAISED));
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		String temp = e.getActionCommand();
 
-		n_key key = n_key.valueOf(temp);
+		actionC key = actionC.valueOf(e.getActionCommand());
 
 		switch (key) {
-		case newDat:
-			// CreateDatabaseForm df = CreateDatabaseForm.getInstant();
-			// df.setVisible(true);
+		case help:
+			JOptionPane.showInternalMessageDialog(
+					myMenuBar, "Không thể tạo thư mục. Xin xem lại đường dẫn !",
+					"Warning", JOptionPane.WARNING_MESSAGE);
 			break;
-		case open:
-			break;
-		case Save:
-			break;
-		case SaveAs:
-			break;
-		case SaveAll:
+		case info:
 			break;
 		case exit:
 			System.exit(0);
 			break;
 		}
-	}
 
+		/*
+		 * int ch = JOptionPane.showConfirmDialog(this,
+		 * "Đường dẫn thư mục không tồn tại. " + "\nĐường dẫn sẽ được tạo." +
+		 * "\nĐồng ý hay Không ?", "Warning", JOptionPane.YES_NO_OPTION); if (ch
+		 * == 1) return; if (ch == 0) { boolean chh = new File(target).mkdirs();
+		 * 
+		 * if (!chh) { JOptionPane .showMessageDialog( this,
+		 * "Không thể tạo thư mục. Xin xem lại đường dẫn !", "Warning",
+		 * JOptionPane.WARNING_MESSAGE); return; } }
+		 */
+	}
 }
