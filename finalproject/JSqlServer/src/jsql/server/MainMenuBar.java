@@ -16,7 +16,7 @@ import javax.swing.border.BevelBorder;
  * 
  * @author Ka
  */
-public class MenuBar implements ActionListener {
+public class MainMenuBar implements ActionListener {
 
 	public enum n_key {
 		newDat, open, Save, SaveAs, SaveAll, exit
@@ -24,7 +24,7 @@ public class MenuBar implements ActionListener {
 
 	public JMenuBar myMenuBar = new JMenuBar();
 
-	public MenuBar() {
+	public MainMenuBar() {
 		JMenu jMn_File = new JMenu("File");
 		JMenu jMn_Option = new JMenu("Option");
 		JMenu m_View = new JMenu("View");
