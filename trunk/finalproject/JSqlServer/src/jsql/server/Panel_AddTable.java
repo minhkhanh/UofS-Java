@@ -54,9 +54,10 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		this.setName("Add Table");
 
 		jBtn_AddTable = new JButton("OK");
-		jBtn_AddTable.setIcon(new ImageIcon(Panel_AddTable.class.getResource("/img/accept.png")));
+		jBtn_AddTable.setIcon(new ImageIcon(Panel_AddTable.class
+				.getResource("/img/accept.png")));
 		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_AddTable.setBounds(308, 11, 94, 30);
+		jBtn_AddTable.setBounds(308, 9, 94, 35);
 		jBtn_AddTable.setActionCommand(KeyAction.addtable_addtable.toString());
 		jBtn_AddTable.addActionListener(this);
 		this.add(jBtn_AddTable);
@@ -140,10 +141,11 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		jP_AddField.add(jCbb_DataType);
 
 		jBtn_AddField = new JButton("Add Field");
-		jBtn_AddField.setIcon(new ImageIcon(Panel_AddTable.class.getResource("/img/add.png")));
+		jBtn_AddField.setIcon(new ImageIcon(Panel_AddTable.class
+				.getResource("/img/add.png")));
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand(KeyAction.addtable_addfield.toString());
-		jBtn_AddField.setBounds(10, 54, 123, 30);
+		jBtn_AddField.setBounds(10, 54, 123, 35);
 		jBtn_AddField.addActionListener(this);
 		jP_AddField.add(jBtn_AddField);
 	}
@@ -189,10 +191,10 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 					tcol.setName(_Fields.get(i).get(1).toString());
 					tcol.setType(_Fields.get(i).get(2).toString().toUpperCase());
 					tcol.setDescription(_Fields.get(i).get(3).toString());
-					if (_Fields.get(i).get(0).equals("false"))
-						tcol.setPrimary(false);
-					else
+					if ((Boolean) _Fields.get(i).get(0))
 						tcol.setPrimary(true);
+					else
+						tcol.setPrimary(false);
 
 					colums.add(tcol);
 				}
@@ -212,7 +214,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 
 				this.ResetAddTable();
 
-				//Panel_Manager.Refresh();
+				Frame_Main.Refresh();
 			}
 		}
 

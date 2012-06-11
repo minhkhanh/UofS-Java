@@ -100,6 +100,11 @@ public class Table implements Serializable {
 		return null;
 	}
 
+	// added by khuong
+	public Boolean isPrimaryKey(int idxcol) {
+		return columns.get(idxcol).isPrimary();
+	}
+
 	public int getColumnIndex(String name) {
 		for (int i = 0; i < columns.size(); i++) {
 			Column col = columns.get(i);

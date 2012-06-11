@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Color;
 
 /**
  * @author DWater
@@ -51,13 +52,13 @@ public class Panel_Server extends JPanel implements ActionListener {
 		jLbl_Port = new JLabel("Port:");
 		jLbl_Port.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLbl_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jLbl_Port.setBounds(171, 11, 110, 30);
+		jLbl_Port.setBounds(292, 11, 59, 30);
 		this.add(jLbl_Port);
 
 		jTf_Port = new JTextField();
 		jTf_Port.setText("3456");
 		jTf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTf_Port.setBounds(322, 12, 120, 30);
+		jTf_Port.setBounds(361, 12, 120, 30);
 		jTf_Port.setColumns(10);
 		this.add(jTf_Port);
 
@@ -98,18 +99,19 @@ public class Panel_Server extends JPanel implements ActionListener {
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
+
+		jLbl_Status = new JLabel("Xin chọn file Database");
+		jLbl_Status.setForeground(Color.RED);
+		jLbl_Status.setHorizontalAlignment(SwingConstants.CENTER);
+		jLbl_Status.setFont(new Font("Tahoma", Font.BOLD, 16));
+		jLbl_Status.setBounds(10, 11, 293, 30);
+		add(jLbl_Status);
 	}
 
 	public void Init() {
 		// INIT
 		jBtn_Listen.setEnabled(false);
 		jBtn_Stop.setEnabled(false);
-
-		jLbl_Status = new JLabel("Port:");
-		jLbl_Status.setHorizontalAlignment(SwingConstants.RIGHT);
-		jLbl_Status.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jLbl_Status.setBounds(10, 11, 110, 30);
-		add(jLbl_Status);
 
 		_MyServer = new MyServer(3456);
 		_ThreadServer = new Thread(_MyServer);
@@ -137,6 +139,8 @@ public class Panel_Server extends JPanel implements ActionListener {
 
 				jBtn_Listen.setEnabled(false);
 				jBtn_Stop.setEnabled(true);
+
+				jLbl_Status.setText("Server is running !");
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"Xin nhập thông tin port !!!", "Warning",
@@ -150,6 +154,8 @@ public class Panel_Server extends JPanel implements ActionListener {
 
 			jBtn_Listen.setEnabled(true);
 			jBtn_Stop.setEnabled(false);
+
+			jLbl_Status.setText("Click Listen to Start Server !");
 		}
 	}
 
@@ -188,5 +194,11 @@ public class Panel_Server extends JPanel implements ActionListener {
 			jBtn_Listen.setEnabled(true);
 			jBtn_Stop.setEnabled(false);
 		}
+	}
+
+	public void SetStatus(String stt) {
+
+		if (!jLbl_Status.getText().equals("Server is running !"))
+			jLbl_Status.setText(stt);
 	}
 }
