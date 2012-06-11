@@ -107,8 +107,9 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		KeyAction action = KeyAction.valueOf(arg0.getActionCommand());
 
-		if (action == KeyAction.main_browse) {
-			new Frame_CreateNewDB().setVisible(true);
+		if (action == KeyAction.main_createdb) {
+			Frame_CreateNewDB aa = new Frame_CreateNewDB();
+			aa.setVisible(true);
 		}
 
 		if (action == KeyAction.main_browse) {
