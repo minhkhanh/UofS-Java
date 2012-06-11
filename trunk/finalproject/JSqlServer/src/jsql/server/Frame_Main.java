@@ -91,7 +91,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		this.setJMenuBar(new MainMenuBar());
 
 		jFChooser = new JFileChooser();
-		jFChooser.setFileFilter(new FileFilterDb() {
+		jFChooser.setFileFilter(new FileFilter_SqlFile() {
 		});
 	}
 

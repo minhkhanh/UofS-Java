@@ -8,8 +8,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 
-import com.sun.media.sound.Toolkit;
-
 /**
  * @author DWater
  * 
@@ -69,22 +67,21 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 			System.exit(0);
 			break;
 		case help:
-			JOptionPane.showMessageDialog(this, 
-					"\nHướng dẫn sử dụng!!" +
-					"\n\n  1. Chọn file database." +
-					"\n  2. Nhấn listen để chạy server." +
-					"\n  3. Qua phần Manager Database để tạo database, thêm bảng, " +
-					"\nthêm  dữ liệu, ....", 
-					"Hướng dẫn",
-					JOptionPane.CLOSED_OPTION);
+			JOptionPane
+					.showMessageDialog(
+							this,
+							"\nHướng dẫn sử dụng!!"
+									+ "\n\n  1. Chọn file database."
+									+ "\n  2. Nhấn listen để chạy server."
+									+ "\n  3. Qua phần Manager Database để tạo database, thêm bảng, "
+									+ "\nthêm  dữ liệu, ....", "Hướng dẫn",
+							JOptionPane.CLOSED_OPTION);
 			break;
 		case info:
-			JOptionPane.showMessageDialog(this, 
-					"\nĐẠI HỌC KHOA HỌC TỰ NHIÊN"
-					+ "\nKHOA CÔNG NGHỆ THÔNG TIN" 
-					+ "\n\nĐỒ ÁN JAVA (JSQL)"
+			JOptionPane.showMessageDialog(this, "\nĐẠI HỌC KHOA HỌC TỰ NHIÊN"
+					+ "\nKHOA CÔNG NGHỆ THÔNG TIN" + "\n\nĐỒ ÁN JAVA (JSQL)"
 					+ "\n\nGiảng viên: Nguyễn Văn Khiết"
-					+ "\n\nNhóm sinh viên thực hiên:" 
+					+ "\n\nNhóm sinh viên thực hiên:"
 					+ "\n    - 0812223 - Trần Minh Khánh"
 					+ "\n    - 0812333 - Nguyễn Hiếu Nghĩa"
 					+ "\n    - 0912237 - Trần Duy Khương",

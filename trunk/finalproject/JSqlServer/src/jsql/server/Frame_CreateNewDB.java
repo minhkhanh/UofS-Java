@@ -45,7 +45,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 				- getWidth() / 2,
 				Toolkit.getDefaultToolkit().getScreenSize().height / 2
 						- getHeight() / 2);
-		
+
 		jP_Main = new JPanel();
 		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(jP_Main);
@@ -158,7 +158,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 					}
 				}
 			}
-			
+
 			// chua nhap ten
 			if (name.equals("")) {
 				JOptionPane.showMessageDialog(this,
@@ -166,7 +166,6 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-
 
 			// database bi trung ten
 			tfile = new File(target + "\\" + name + ".db");
@@ -184,8 +183,8 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 					"Đã tạo Database thành công ^_^", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			Panel_Server.PrintLog("Server: Đã tạo Database mới: " + target + "\\" + name
-					+ ".db");
+			Panel_Server.PrintLog("Server: Đã tạo Database mới: " + target
+					+ "\\" + name + ".db");
 		}
 
 		if ("CNDB_Cancel".equals(arg0.getActionCommand())) {

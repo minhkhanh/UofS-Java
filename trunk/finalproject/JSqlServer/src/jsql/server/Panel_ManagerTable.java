@@ -26,12 +26,12 @@ public class Panel_ManagerTable extends JPanel implements ActionListener {
 	public enum actionC {
 		mn_browse, mn_addtable, mn_deletetable, mn_adddata
 	}
+
 	private JButton jBtn_DeleteTable;
 	private JButton jBtn_CreateNewDatabase;
 	@SuppressWarnings("rawtypes")
 	private static JComboBox jCbb_ListTable;
 
-	private Frame_AddData _FrameAddData;
 	private Frame_CreateNewDB _FrameCreateDB;
 
 	public Panel_ManagerTable() {
@@ -67,7 +67,7 @@ public class Panel_ManagerTable extends JPanel implements ActionListener {
 	}
 
 	public void Init() {
-		
+
 	}
 
 	@Override
@@ -98,14 +98,6 @@ public class Panel_ManagerTable extends JPanel implements ActionListener {
 						JOptionPane.WARNING_MESSAGE);
 
 				this.Refresh();
-			}
-		}
-
-		if ("adddata".equals(arg0.getActionCommand())) {
-
-			if (this.CheckChooseDataBase()) {
-				_FrameAddData = new Frame_AddData();
-				_FrameAddData.setVisible(true);
 			}
 		}
 	}

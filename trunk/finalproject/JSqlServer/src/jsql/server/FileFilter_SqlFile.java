@@ -8,7 +8,7 @@ import javax.swing.filechooser.FileFilter;
  * @author DWater
  *
  */
-public abstract class FileFilterDb extends FileFilter {
+public abstract class FileFilter_SqlFile extends FileFilter {
 	
 	@Override
 	public String getDescription() {
