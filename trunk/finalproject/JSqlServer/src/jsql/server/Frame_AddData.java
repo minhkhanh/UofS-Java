@@ -32,7 +32,6 @@ import javax.swing.border.EtchedBorder;
 @SuppressWarnings("serial")
 public class Frame_AddData extends JFrame implements ActionListener {
 
-	private JPanel contentPane;
 	private JPanel jP_Main;
 	private JPanel jP_Table;
 	private JPanel jP_AddData;
@@ -55,6 +54,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 	public Frame_AddData() {
 		this.InitFrame();
+		this.Init();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -62,14 +62,10 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		setResizable(false);
 		setBounds(300, 100, 700, 525);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-
 		jP_Main = new JPanel();
-		contentPane.add(jP_Main, BorderLayout.CENTER);
+		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		jP_Main.setLayout(null);
+		setContentPane(jP_Main);
 
 		jBtn_Ok = new JButton("OK");
 		jBtn_Ok.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -133,17 +129,10 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		jP_AddData.setLayout(null);
 		jP_AddData.add(jSP2);
+	}
 
-		Table table = Main.GetDataBase().getTable(
-				jCbb_ListTable.getSelectedIndex());
-
-		_ColNameTable1 = Helper.GetListFiledAndType(table);
-		_Values = Helper.GetValues(table);
-		_NewValue = Helper.CreateRowEmpy(table);
-
-		jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
-		jTableNewData
-				.setModel(new DefaultTableModel(_NewValue, _ColNameTable1));
+	public void Init() {
+		this.Refresh();
 	}
 
 	@Override
@@ -154,7 +143,7 @@ public class Frame_AddData extends JFrame implements ActionListener {
 			// luu du lieu xuong database -> close form
 			Main.GetDataBase().saveToFile();
 
-			JOptionPane.showMessageDialog(this, "Saved to DataBase ^_^",
+			JOptionPane.showMessageDialog(this, "Đã lưu database ^_^",
 					"Warning", JOptionPane.INFORMATION_MESSAGE);
 
 			this.dispose();
@@ -162,44 +151,45 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 		if ("changetable".equals(arg0.getActionCommand())) {
 
-			Table table = Main.GetDataBase().getTable(
-					jCbb_ListTable.getSelectedIndex());
-
-			_ColNameTable1 = Helper.GetListFiledAndType(table);
-			_Values = Helper.GetValues(table);
-			_NewValue = Helper.CreateRowEmpy(table);
-
-			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
-
-			jTableNewData.setModel(new DefaultTableModel(_NewValue,
-					_ColNameTable1));
-
+			this.Refresh();
 		}
 
 		if ("addfield".equals(arg0.getActionCommand())) {
 
-			// them 1row vao
-			Table table = Main.GetDataBase().getTable(
-					jCbb_ListTable.getSelectedIndex());
+			// kiểm tra thông tin người dùng nhập vào
+			
+			// người dùng nhập thông tin chưa
+			for (int i = 0; i < jTableNewData.getModel().getColumnCount(); i++) {
+				Object xxx = jTableNewData.getModel().getValueAt(0, i);
+				if (xxx.equals(null)) {
+					JOptionPane.showMessageDialog(this, "Chưa nhập" + "!",
+							"Warning", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 
-			Row tRow = table.getRow(0);
-
-			for (int i = 0; i < tRow.numCol(); i++) {
 				// jsql.data.Type x = (jsql.data.Type) _NewValue.get(1).get(i);
 				// tRow.setDataAt(i, x);
+
 			}
+			
+			//người dùng nhập thông tin hợp lệ không
 
-			_Values = Helper.GetValues(table);
-			_NewValue = Helper.CreateRowEmpy(table);
-
-			jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
-
-			jTableNewData.setModel(new DefaultTableModel(_NewValue,
-					_ColNameTable1));
+			this.Refresh();
 		}
 	}
 
-	public void SaveToDB() {
+	public void Refresh() {
 
+		Table table = Main.GetDataBase().getTable(
+				jCbb_ListTable.getSelectedIndex());
+
+		_ColNameTable1 = Helper.GetListFiledAndType(table);
+		_Values = Helper.GetValues(table);
+		_NewValue = Helper.CreateRowEmpy(table);
+
+		jTable1.setModel(new DefaultTableModel(_Values, _ColNameTable1));
+
+		jTableNewData
+				.setModel(new DefaultTableModel(_NewValue, _ColNameTable1));
 	}
 }

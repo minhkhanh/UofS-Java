@@ -25,7 +25,7 @@ import jsql.data.Table;
 
 /**
  * @author DWater
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class Frame_AddTable extends JFrame implements ActionListener {
@@ -52,6 +52,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 	public Frame_AddTable() {
 		this.InitFrame();
+		this.Init();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -162,6 +163,10 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		jP_AddField.add(jBtn_AddField);
 	}
 
+	public void Init() {
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
@@ -170,22 +175,22 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 			String tableName = jTf_TableName.getText().trim();
 
 			if (CheckAddTable(tableName)) {
-				
+
 				// them table moi vao database
 				Table table = new Table();
 				Vector<Column> colums = new Vector<Column>();
 				Column tcol;
-				
+
 				for (int i = 0; i < _Fields.size(); i++) {
 					tcol = new Column();
 					tcol.setName(_Fields.get(i).get(1).toString());
 					tcol.setType(_Fields.get(i).get(2).toString().toUpperCase());
 					tcol.setDescription(_Fields.get(i).get(3).toString());
-					if(_Fields.get(i).get(0).equals("false"))
+					if (_Fields.get(i).get(0).equals("false"))
 						tcol.setPrimary(false);
 					else
 						tcol.setPrimary(true);
-					
+
 					colums.add(tcol);
 				}
 
@@ -193,20 +198,21 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 				table.setColumns(colums);
 
 				Main.GetDataBase().addTable(table);
+				Main.GetDataBase().saveToFile();
 
-				JOptionPane.showMessageDialog(this, "Added table: \""
-						+ tableName + "\"" + " successful", "OK",
+				JOptionPane.showMessageDialog(this, "Đã thêm table: \""
+						+ tableName + "\"" + " thành công ^_^", "OK",
 						JOptionPane.INFORMATION_MESSAGE);
 
 				this.ResetAddTable();
-				
+
 				Frame_ManagerDB.Refresh();
 			}
 		}
 
 		if ("addfield".equals(arg0.getActionCommand())) {
 
-			Boolean primary =jChb_Primary.isSelected();
+			Boolean primary = jChb_Primary.isSelected();
 			String fieldName = jTf_FieldName.getText().trim();
 			String dataType = jCbb_DataType.getSelectedItem().toString();
 			String description = jTf_Description.getText().trim();
@@ -233,21 +239,32 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		// fieldName bi trung
 		for (int i = 0; i < _Fields.size(); i++)
 			if (fieldName.equals(_Fields.get(i).get(1))) {
-				JOptionPane.showMessageDialog(this, "Field Name is exist!!!!",
+				JOptionPane.showMessageDialog(this, "FieldName đã tồn tại!",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 
 		// chua nhap fieldName
 		if (fieldName.equals("")) {
-			JOptionPane.showMessageDialog(this, "Please Enter Field Name!",
+			JOptionPane.showMessageDialog(this, "Xin nhập FieldName!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		// fieldName khong hop le
+		if (!Helper.CheckFieldAndTableName(fieldName)) {
+			JOptionPane
+					.showMessageDialog(
+							this,
+							"FieldName không đúng quy định!"
+									+ "\n Tên chỉ gồm các ký tự A-Z, a-z, 0-9, ký tự đầu không được là số!",
+							"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
 		// Chua chon DataType
 		if (dataType.equals("")) {
-			JOptionPane.showMessageDialog(this, "Please Choose Data Type!",
+			JOptionPane.showMessageDialog(this, "Xin chọn DataType!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -255,8 +272,8 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		// Chua nhap description
 		if (description.equals("")) {
 			int ch = JOptionPane.showConfirmDialog(this,
-					"You don't enter Description! Do you want continue?",
-					"Warning", JOptionPane.YES_NO_OPTION);
+					"Bạn chưa nhập phần Description! Tiếp tục?", "Warning",
+					JOptionPane.YES_NO_OPTION);
 			if (ch == 1)
 				return false;
 		}
@@ -276,22 +293,34 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 		List<Table> tables = Main.GetDataBase().getTables();
 		for (int i = 0; i < tables.size(); i++) {
 			if (tableName.equals(tables.get(i).getName())) {
-				JOptionPane.showMessageDialog(this, "TableName is exist",
+				JOptionPane.showMessageDialog(this,
+						"TableName bị trùng. Xin nhập tên khác cho Table!",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 		}
 
-		// chua nhap ten table
+		// chua nhap tablename
 		if (tableName.equals("")) {
-			JOptionPane.showMessageDialog(this, "Please enter TableName",
+			JOptionPane.showMessageDialog(this, "Xin nhập tên cho Table!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
+		// table khong hop le
+		if (!Helper.CheckFieldAndTableName(tableName)) {
+			JOptionPane
+					.showMessageDialog(
+							this,
+							"Tên Table không đúng quy định!"
+									+ "\n Tên chỉ gồm các ký tự A-Z, a-z, 0-9, ký tự đầu không được là số!",
+							"Warning", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
 		// chua them field nao
 		if (_Fields.size() < 1) {
-			JOptionPane.showMessageDialog(this, "Please add Fields", "Warning",
+			JOptionPane.showMessageDialog(this,
+					"Xin thêm ít nhất một Field vào Table!", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
