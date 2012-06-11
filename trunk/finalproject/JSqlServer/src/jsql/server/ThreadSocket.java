@@ -24,13 +24,12 @@ public class ThreadSocket extends Thread {
 	public ThreadSocket(Socket socket) {
 		this._Socket = socket;
 		Frame_Main.PrintLog(_Socket.getInetAddress()
-				+ " connected to Server ^_^");
+				+ "đã kết nối đến Server ^_^");
 	}
 
 	@Override
 	public void run() {
 		try {
-
 			Thread.sleep(100);
 
 			_OOS = new ObjectOutputStream(_Socket.getOutputStream());
@@ -52,5 +51,4 @@ public class ThreadSocket extends Thread {
 			e.printStackTrace();
 		}
 	}
-
 }

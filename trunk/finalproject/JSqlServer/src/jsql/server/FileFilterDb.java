@@ -12,7 +12,7 @@ public abstract class FileFilterDb extends FileFilter {
 	
 	@Override
 	public String getDescription() {
-		return "DataBase";
+		return "JSql File (*.db)";
 	}
 
 	@Override

@@ -21,11 +21,10 @@ import jsql.data.Database;
 @SuppressWarnings("serial")
 public class Frame_Main extends JFrame implements ActionListener {
 
-	private JPanel contentPane;
 	private JPanel jP_Main;
 	private JPanel jP_Log;
-	private JTextField tf_AddrFileDB;
-	private JTextField tf_Port;
+	private JTextField jTf_AddrFileDB;
+	private JTextField jTf_Port;
 	private JButton jBtn_Browse;
 	private JButton jBtn_ManagerTable;
 	private JButton jBtn_Listen;
@@ -41,7 +40,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private MyServer _MyServer;
 	private Thread _ThreadServer;
 	private int _Port;
-	private Frame_ManagerTable _FrameManagerTable;
+	private Frame_ManagerDB _FrameManagerTable;
 	private FileFilterDb _FileFilterDb;
 	private String _PathFileDataBase;
 
@@ -55,14 +54,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 		setTitle("jSQLServer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 100, 700, 525);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-
 		jP_Main = new JPanel();
-		contentPane.add(jP_Main, BorderLayout.CENTER);
+		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		jP_Main.setLayout(null);
+		setContentPane(jP_Main);
 
 		jLbl_AddrFolder = new JLabel("File DataBase:");
 		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -76,20 +71,20 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jLbl_Port.setBounds(10, 54, 110, 30);
 		jP_Main.add(jLbl_Port);
 
-		tf_AddrFileDB = new JTextField();
-		tf_AddrFileDB.setEditable(false);
-		tf_AddrFileDB.setText("");
-		tf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tf_AddrFileDB.setBounds(130, 12, 239, 30);
-		tf_AddrFileDB.setColumns(10);
-		jP_Main.add(tf_AddrFileDB);
+		jTf_AddrFileDB = new JTextField();
+		jTf_AddrFileDB.setEditable(false);
+		jTf_AddrFileDB.setText("");
+		jTf_AddrFileDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_AddrFileDB.setBounds(130, 12, 239, 30);
+		jTf_AddrFileDB.setColumns(10);
+		jP_Main.add(jTf_AddrFileDB);
 
-		tf_Port = new JTextField();
-		tf_Port.setText("3456");
-		tf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		tf_Port.setBounds(130, 55, 120, 30);
-		tf_Port.setColumns(10);
-		jP_Main.add(tf_Port);
+		jTf_Port = new JTextField();
+		jTf_Port.setText("3456");
+		jTf_Port.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_Port.setBounds(130, 55, 120, 30);
+		jTf_Port.setColumns(10);
+		jP_Main.add(jTf_Port);
 
 		jBtn_Browse = new JButton("Browse");
 		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -142,6 +137,11 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
+	}
+
+	public void Init() {
+		jBtn_Listen.setEnabled(false);
+		jBtn_Stop.setEnabled(false);
 
 		_FileFilterDb = new FileFilterDb() {
 		};
@@ -149,13 +149,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jFChooser = new JFileChooser();
 		jFChooser.setFileFilter(_FileFilterDb);
 		_PathFileDataBase = "";
+		// khoi tao port ban dau la 3456 khi listen se lay thong tin port nguoi
+		// dung nhap vao
 		_MyServer = new MyServer(3456);
 		_ThreadServer = new Thread(_MyServer);
-	}
-	
-	public void Init(){
-		jBtn_Listen.setEnabled(false);
-		jBtn_Stop.setEnabled(false);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -168,32 +165,28 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_PathFileDataBase = jFChooser.getSelectedFile().getPath();
-				tf_AddrFileDB.setText(_PathFileDataBase);
+				jTf_AddrFileDB.setText(_PathFileDataBase);
 				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 				PrintLog("Đã chọn File DataBase");
-				
 
 				jBtn_Listen.setEnabled(true);
 				jBtn_Stop.setEnabled(false);
-				
 			} else {
-				if (!_PathFileDataBase.equals("")) {
-					PrintLog("Chọn chọn File DataBase");
-				} else {
+				if (_PathFileDataBase.equals("")) {
 					PrintLog("Đã hủy việc chọn File DataBase");
 				}
 			}
 		}
 
 		if ("managertable".equals(arg0.getActionCommand())) {
-			_FrameManagerTable = new Frame_ManagerTable();
+			_FrameManagerTable = new Frame_ManagerDB();
 			_FrameManagerTable.setVisible(true);
 		}
 
 		if ("listen".equals(arg0.getActionCommand())) {
-			if (tf_Port.getText().trim() != null) {
+			if (!jTf_Port.getText().trim().equals("")) {
 
-				_Port = Integer.parseInt(tf_Port.getText().trim());
+				_Port = Integer.parseInt(jTf_Port.getText().trim());
 
 				if (_ThreadServer.isAlive()) {
 					_MyServer.stop();
@@ -202,17 +195,18 @@ public class Frame_Main extends JFrame implements ActionListener {
 				_MyServer.SetPort(_Port);
 				_ThreadServer = new Thread(_MyServer);
 				_ThreadServer.start();
-				
 
 				jBtn_Listen.setEnabled(false);
 				jBtn_Stop.setEnabled(true);
+			} else {
+				JOptionPane.showMessageDialog(this, "Xin nhập thông tin port !!!",
+						"Warning", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 
 		if ("stop".equals(arg0.getActionCommand())) {
 			_MyServer.stop();
 			_ThreadServer.stop();
-			
 
 			jBtn_Listen.setEnabled(true);
 			jBtn_Stop.setEnabled(false);
