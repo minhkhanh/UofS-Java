@@ -57,7 +57,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jP_Main.setLayout(null);
 		setContentPane(jP_Main);
 	
-		this.setJMenuBar(new MenuBar().myMenuBar);
+		this.setJMenuBar(new MainMenuBar().myMenuBar);
 
 		jLbl_AddrFolder = new JLabel("File DataBase:");
 		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);

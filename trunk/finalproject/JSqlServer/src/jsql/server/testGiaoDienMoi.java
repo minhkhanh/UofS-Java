@@ -45,7 +45,7 @@ public class testGiaoDienMoi extends JFrame {
 		//	JMenuBar menuBar = new JMenuBar();
 		//setJMenuBar(menuBar);
 		
-		MenuBar aa = new MenuBar();
+		MainMenuBar aa = new MainMenuBar();
 		this.setJMenuBar(aa.myMenuBar);
       //  jP_Main.add(toolBar.myToolBar, BorderLayout.NORTH);
 	}
