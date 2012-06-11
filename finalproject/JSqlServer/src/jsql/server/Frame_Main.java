@@ -56,6 +56,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		jP_Main.setLayout(null);
 		setContentPane(jP_Main);
+	
+		this.setJMenuBar(new MenuBar().myMenuBar);
 
 		jLbl_AddrFolder = new JLabel("File DataBase:");
 		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -113,7 +115,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jP_Main.add(jBtn_Stop);
 
 		jP_Log = new JPanel();
-		jP_Log.setBounds(20, 100, 642, 376);
+		jP_Log.setBounds(20, 100, 642, 363);
 		jP_Log.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createEtchedBorder(), "LOG"));
 		jP_Main.add(jP_Log);
@@ -130,11 +132,15 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
 
 		jSP_Log = new javax.swing.JScrollPane();
-		jSP_Log.setBounds(10, 21, 622, 344);
+		jSP_Log.setBounds(10, 21, 622, 331);
 		jSP_Log.setViewportView(tableLog);
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(298, 71, 46, 14);
+		jP_Main.add(lblNewLabel);
 	}
 
 	public void Init() {

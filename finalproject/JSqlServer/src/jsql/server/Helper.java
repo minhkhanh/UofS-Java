@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
+
 import jsql.data.Database;
 import jsql.data.Table;
 
@@ -38,6 +40,18 @@ public class Helper implements Serializable {
 
 		return true;
 	}
+	
+	// Load Image
+    public static ImageIcon createImageIcon(String path) 
+    {
+        java.net.URL imgURL = Main.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
 
 	// de load vao combobox
 	public static String[] GetListTableName(Database db) {

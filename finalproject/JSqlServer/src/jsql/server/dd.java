@@ -1,0 +1,188 @@
+package jsql.server;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import jsql.data.Database;
+
+@SuppressWarnings("serial")
+public class dd extends JFrame implements ActionListener {
+
+	private JPanel jP_Main;
+	private JPanel jP_CreateNewDB;
+
+	private JButton jBtn_NewButton;
+	private JButton jBtn_Cancel;
+	private JButton jBtn_Browse;
+	private JTextField jTf_Target;
+	private JTextField jTf_Name;
+	private JFileChooser jFChooser;
+
+	/**
+	 * Create the frame.
+	 */
+	public dd() {
+		this.InitFrame();
+		this.Init();
+	}
+
+	public void InitFrame() {
+		setResizable(false);
+		setBounds(100, 100, 426, 275);
+		jP_Main = new JPanel();
+		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(jP_Main);
+		jP_Main.setLayout(null);
+
+		jP_CreateNewDB = new JPanel();
+		jP_CreateNewDB.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(),
+				"Create New DataBase"));
+		jP_CreateNewDB.setBounds(10, 11, 395, 216);
+		jP_Main.add(jP_CreateNewDB);
+		jP_CreateNewDB.setLayout(null);
+
+		jBtn_NewButton = new JButton("Create");
+		jBtn_NewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_NewButton.setBounds(20, 173, 89, 30);
+		jBtn_NewButton.setActionCommand("CNDB_Create");
+		jBtn_NewButton.addActionListener(this);
+		jP_CreateNewDB.add(jBtn_NewButton);
+
+		jBtn_Cancel = new JButton("Cancel");
+		jBtn_Cancel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Cancel.setBounds(142, 173, 89, 30);
+		jBtn_Cancel.setActionCommand("CNDB_Cancel");
+		jBtn_Cancel.addActionListener(this);
+		jP_CreateNewDB.add(jBtn_Cancel);
+
+		jBtn_Browse = new JButton("Browse");
+		jBtn_Browse.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Browse.setBounds(290, 43, 89, 30);
+		jBtn_Browse.setActionCommand("CNDB_Browse");
+		jBtn_Browse.addActionListener(this);
+		jP_CreateNewDB.add(jBtn_Browse);
+
+		jTf_Target = new JTextField();
+		jTf_Target.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_Target.setBounds(20, 44, 260, 30);
+		jP_CreateNewDB.add(jTf_Target);
+		jTf_Target.setColumns(10);
+
+		jTf_Name = new JTextField();
+		jTf_Name.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jTf_Name.setColumns(10);
+		jTf_Name.setBounds(20, 115, 260, 30);
+		jP_CreateNewDB.add(jTf_Name);
+
+		JLabel lblng = new JLabel("Target");
+		lblng.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblng.setBounds(26, 16, 46, 30);
+		jP_CreateNewDB.add(lblng);
+
+		JLabel lblEnterYourName = new JLabel("New Database name:");
+		lblEnterYourName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblEnterYourName.setBounds(26, 85, 209, 30);
+		jP_CreateNewDB.add(lblEnterYourName);
+	}
+
+	public void Init() {
+		jFChooser = new JFileChooser();
+		jFChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+
+		if ("CNDB_Browse".equals(arg0.getActionCommand())) {
+
+			// chon thu muc de luu database
+			int returnVal = jFChooser.showDialog(this, "Choose");
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String pathFileDataBase = jFChooser.getSelectedFile().getPath();
+				jTf_Target.setText(pathFileDataBase);
+			}
+		}
+
+		if ("CNDB_Create".equals(arg0.getActionCommand())) {
+
+			String target = jTf_Target.getText().trim();
+			String name = jTf_Name.getText().trim();
+			File tfile;
+
+			// chưa chọn thư mục để lưu file jSql
+			if (target.trim().equals("")) {
+				JOptionPane.showMessageDialog(this,
+						"Xin chọn thư mục để lưu file Database !", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			// thư mục người dùng nhập không tồn tại
+			tfile = new File(target);
+			if (!tfile.exists()) {
+				int ch = JOptionPane.showConfirmDialog(this,
+						"Đường dẫn thư mục không tồn tại. "
+								+ "\nĐường dẫn sẽ được tạo."
+								+ "\nĐồng ý hay Không ?", "Warning",
+						JOptionPane.YES_NO_OPTION);
+				if (ch == 1)
+					return;
+				if (ch == 0) {
+					boolean chh = new File(target).mkdirs();
+
+					if (!chh) {
+						JOptionPane
+								.showMessageDialog(
+										this,
+										"Không thể tạo thư mục. Xin xem lại đường dẫn !",
+										"Warning", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+				}
+			}
+
+			// chua nhap ten
+			if (name.equals("")) {
+				JOptionPane.showMessageDialog(this,
+						"Xin vui lòng nhập tên Database !", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			// database bi trung ten
+			tfile = new File(target + "\\" + name + ".db");
+			if (tfile.exists()) {
+				JOptionPane.showMessageDialog(this,
+						"Database đã  tồn tại. Xin nhập tên khác !", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			// tao database
+			Database.createNewDatabase(target + "\\" + name + ".db");
+
+			JOptionPane.showMessageDialog(this,
+					"Đã tạo Database thành công ^_^", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			Frame_Main.PrintLog("Đã tạo Database mới: " + target + "\\" + name
+					+ ".db");
+		}
+
+		if ("CNDB_Cancel".equals(arg0.getActionCommand())) {
+			this.dispose();
+		}
+	}
+}
