@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import jsql.data.Column;
 import jsql.data.Table;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class Panel_AddTable extends JPanel implements ActionListener {
@@ -53,6 +54,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		this.setName("Add Table");
 
 		jBtn_AddTable = new JButton("OK");
+		jBtn_AddTable.setIcon(new ImageIcon(Panel_AddTable.class.getResource("/img/accept.png")));
 		jBtn_AddTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddTable.setBounds(308, 11, 94, 30);
 		jBtn_AddTable.setActionCommand(KeyAction.addtable_addtable.toString());
@@ -138,9 +140,10 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		jP_AddField.add(jCbb_DataType);
 
 		jBtn_AddField = new JButton("Add Field");
+		jBtn_AddField.setIcon(new ImageIcon(Panel_AddTable.class.getResource("/img/add.png")));
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand(KeyAction.addtable_addfield.toString());
-		jBtn_AddField.setBounds(10, 54, 94, 30);
+		jBtn_AddField.setBounds(10, 54, 123, 30);
 		jBtn_AddField.addActionListener(this);
 		jP_AddField.add(jBtn_AddField);
 	}
@@ -209,7 +212,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 
 				this.ResetAddTable();
 
-				Panel_ManagerTable.Refresh();
+				Panel_Manager.Refresh();
 			}
 		}
 

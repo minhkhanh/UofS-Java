@@ -4,12 +4,11 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import java.awt.Label;
 import javax.swing.ImageIcon;
-import javax.swing.JSplitPane;
+import java.awt.SystemColor;
 
 /**
  * @author DWater
@@ -18,10 +17,11 @@ import javax.swing.JSplitPane;
 @SuppressWarnings("serial")
 public class Panel_Info extends JPanel {
 
-	private JLabel lblNewLabel;
+	JPanel jP_Help;
+	JPanel jP_Info;
+	private JScrollPane jSP_Help;
 
 	public Panel_Info() {
-		setBackground(new Color(102, 255, 153));
 		this.InitFrame();
 		this.Init();
 	}
@@ -31,91 +31,120 @@ public class Panel_Info extends JPanel {
 		this.setSize(784, 439);
 		this.setLayout(null);
 		this.setName("Information");
-		
 
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel.setBounds(66, 11, 313, 25);
-		lblNewLabel
-				.setText("ĐẠI HỌC QUỐC GIA TP. HCM\r\n");
-		add(lblNewLabel);
-		
-		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(Panel_Info.class.getResource("/img/logoUS.png")));
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label.setBounds(10, 11, 100, 100);
-		add(label);
-		
-		JLabel lbliHcKhoa = new JLabel("ĐẠI HỌC KHOA HỌC TỰ NHIÊN");
-		lbliHcKhoa.setHorizontalAlignment(SwingConstants.CENTER);
-		lbliHcKhoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbliHcKhoa.setBounds(66, 35, 313, 25);
-		add(lbliHcKhoa);
-		
-		JLabel lblKhoaCngNgh = new JLabel("KHOA CÔNG NGHỆ THÔNG TIN");
-		lblKhoaCngNgh.setHorizontalAlignment(SwingConstants.CENTER);
-		lblKhoaCngNgh.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblKhoaCngNgh.setBounds(66, 60, 313, 25);
-		add(lblKhoaCngNgh);
-		
-		JLabel lblLpTrnhng = new JLabel("LẬP TRÌNH ỨNG DỤNG JAVA (TH2009/3)");
-		lblLpTrnhng.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLpTrnhng.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblLpTrnhng.setBounds(66, 96, 313, 25);
-		add(lblLpTrnhng);
-		
-		JLabel lblnCui = new JLabel("ĐỒ ÁN CUỐI KỲ JSQL");
-		lblnCui.setHorizontalAlignment(SwingConstants.CENTER);
-		lblnCui.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblnCui.setBounds(66, 126, 313, 25);
-		add(lblnCui);
-		
-		JLabel lblGingVin = new JLabel("Giảng viên: Nguyễn Văn Khiết\r\n");
-		lblGingVin.setHorizontalAlignment(SwingConstants.LEFT);
-		lblGingVin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblGingVin.setBounds(40, 165, 339, 25);
-		add(lblGingVin);
-		
-		JLabel lblNhmSinhVin = new JLabel("Nhóm sinh viên:");
-		lblNhmSinhVin.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNhmSinhVin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNhmSinhVin.setBounds(40, 201, 339, 25);
-		add(lblNhmSinhVin);
-		
-		JLabel lblTrn = new JLabel("     - 0812223: Trần Minh Khánh");
-		lblTrn.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTrn.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblTrn.setBounds(40, 224, 339, 25);
-		add(lblTrn);
-		
-		JLabel lblNguyn = new JLabel("     - 0812333: Nguyễn Hiếu Nghĩa");
-		lblNguyn.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNguyn.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNguyn.setBounds(40, 249, 339, 25);
-		add(lblNguyn);
-		
+		jP_Info = new JPanel();
+		jP_Info.setBounds(10, 11, 376, 417);
+		jP_Info.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "Thông tin"));
+		add(jP_Info);
+		jP_Info.setLayout(null);
+
 		JLabel lblTrn_1 = new JLabel("     - 0912237: Trần Duy Khương");
+		lblTrn_1.setBounds(27, 295, 339, 25);
+		jP_Info.add(lblTrn_1);
 		lblTrn_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTrn_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblTrn_1.setBounds(40, 272, 339, 25);
-		add(lblTrn_1);
-		
-		JTextPane textPane = new JTextPane();
-		textPane.setEditable(false);
-		textPane.setBounds(50, -70, 369, 400);
-		add(textPane);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 374, 385, 54);
-		add(panel);
-		panel.setLayout(null);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBounds(389, 374, 385, 54);
-		add(panel_1);
+
+		JLabel lblNguyn = new JLabel("     - 0812333: Nguyễn Hiếu Nghĩa");
+		lblNguyn.setBounds(27, 272, 339, 25);
+		jP_Info.add(lblNguyn);
+		lblNguyn.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNguyn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lblTrn = new JLabel("     - 0812223: Trần Minh Khánh");
+		lblTrn.setBounds(27, 247, 339, 25);
+		jP_Info.add(lblTrn);
+		lblTrn.setHorizontalAlignment(SwingConstants.LEFT);
+		lblTrn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lblNhmSinhVin = new JLabel("Nhóm sinh viên:");
+		lblNhmSinhVin.setBounds(27, 224, 339, 25);
+		jP_Info.add(lblNhmSinhVin);
+		lblNhmSinhVin.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNhmSinhVin.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lblGingVin = new JLabel("Giảng viên: Nguyễn Văn Khiết");
+		lblGingVin.setBounds(27, 188, 339, 25);
+		jP_Info.add(lblGingVin);
+		lblGingVin.setHorizontalAlignment(SwingConstants.LEFT);
+		lblGingVin.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lblnCui = new JLabel("ĐỒ ÁN CUỐI KỲ JSQL");
+		lblnCui.setBounds(71, 149, 295, 25);
+		jP_Info.add(lblnCui);
+		lblnCui.setHorizontalAlignment(SwingConstants.CENTER);
+		lblnCui.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lblLpTrnhng = new JLabel("LẬP TRÌNH ỨNG DỤNG JAVA (TH2009/3)");
+		lblLpTrnhng.setBounds(71, 119, 295, 25);
+		jP_Info.add(lblLpTrnhng);
+		lblLpTrnhng.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLpTrnhng.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lbliHcKhoa = new JLabel("ĐẠI HỌC KHOA HỌC TỰ NHIÊN");
+		lbliHcKhoa.setBounds(71, 58, 295, 25);
+		jP_Info.add(lbliHcKhoa);
+		lbliHcKhoa.setHorizontalAlignment(SwingConstants.CENTER);
+		lbliHcKhoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(71, 34, 295, 25);
+		jP_Info.add(lblNewLabel);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setText("ĐẠI HỌC QUỐC GIA TP. HCM\r\n");
+
+		JLabel lblKhoaCngNgh = new JLabel("KHOA CÔNG NGHỆ THÔNG TIN");
+		lblKhoaCngNgh.setBounds(71, 83, 295, 25);
+		jP_Info.add(lblKhoaCngNgh);
+		lblKhoaCngNgh.setHorizontalAlignment(SwingConstants.CENTER);
+		lblKhoaCngNgh.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		JLabel label = new JLabel("");
+		label.setBounds(10, 38, 70, 70);
+		jP_Info.add(label);
+		label.setIcon(new ImageIcon(Panel_Info.class
+				.getResource("/img/logoUS.png")));
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		jP_Help = new JPanel();
+		jP_Help.setLayout(null);
+		jP_Help.setBounds(398, 11, 376, 417);
+		jP_Help.setBorder(javax.swing.BorderFactory.createTitledBorder(
+				javax.swing.BorderFactory.createEtchedBorder(), "Hướng dẫn"));
+		add(jP_Help);
+
+		JTextPane txtpnHngDnS = new JTextPane();
+		txtpnHngDnS.setBackground(SystemColor.controlShadow);
+		txtpnHngDnS.setBackground(new Color(240, 240, 240));
+		txtpnHngDnS
+				.setText("HƯỚNG DẪN SỬ DỤNG\r\n"
+						+ "\r\n1. Chạy module Server"
+						+ "\r\n     1.1. Nhấn Browse để tạo chọn file jSql (database)"
+						+ "\r\n     1.2. Nhấn Listen để mở server. Có thể tùy chỉnh thông số Port. "
+						+ "\r\n     1.3. Chờ client kết nối đến."
+						+ "\r\n2. Chạy module Client."
+						+ "\r\n     2.1. Chỉnh Port trùng với server."
+						+ "\r\n     2.2. Nhấn Conect để kết nối đến Server."
+						+ "\r\n     2.3. Nhập các câu truy vấn rồi nhấn Execute để yêu cầu Server thực hiện."
+						+ "\r\n     2.4  Chờ Server xử lý và hiển thị kết quả."
+						+ "\r\n     2.5 Lập lại bươc 2.3"
+						+ "\r\n3. Quản lý Database & Table"
+						+ "\r\n     - Nhấn Create New DB: Hiển thị form tạo database mới."
+						+ "\r\n     - Chọn tab Manager: Quản lý database và table."
+						+ "\r\n     - Chọn tab Add Table: Thêm bảng mới cho database"
+						+ "\r\n     - Chọn tab Add Data: Thêm giá trị vào bảng."
+						+ "\r\n     - Chọn tab Information: Thông tin & hướng dẫn sử dụng."
+						+ "");
+		txtpnHngDnS.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtpnHngDnS.setEditable(false);
+		txtpnHngDnS.setBounds(10, 35, 356, 371);
+
+		jSP_Help = new javax.swing.JScrollPane();
+		jSP_Help.setBounds(10, 35, 356, 371);
+		jSP_Help.setViewportView(txtpnHngDnS);
+		jP_Help.add(jSP_Help);
 	}
 
 	public void Init() {

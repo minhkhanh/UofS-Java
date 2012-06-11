@@ -176,6 +176,10 @@ public class Panel_Server extends JPanel implements ActionListener {
 		_Logs.add(tLog);
 
 		tableLog.setModel(new DefaultTableModel(_Logs, colNameTableLog));
+
+		tableLog.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tableLog.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tableLog.getColumnModel().getColumn(2).setPreferredWidth(100);
 	}
 
 	public void ChoosenDatabase() {

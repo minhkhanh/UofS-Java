@@ -1,40 +1,32 @@
 package jsql.server;
 
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import jsql.data.Database;
 
 /**
  * @author DWater
  * 
  */
 @SuppressWarnings("serial")
-public class Panel_ManagerTable extends JPanel implements ActionListener {
+public class Panel_Manager extends JPanel implements ActionListener {
 
 	public enum actionC {
 		mn_browse, mn_addtable, mn_deletetable, mn_adddata
 	}
 
 	private JButton jBtn_DeleteTable;
-	private JButton jBtn_CreateNewDatabase;
 	@SuppressWarnings("rawtypes")
 	private static JComboBox jCbb_ListTable;
 
-	private Frame_CreateNewDB _FrameCreateDB;
-
-	public Panel_ManagerTable() {
+	public Panel_Manager() {
 		this.InitFrame();
 		this.Init();
 	}
@@ -57,26 +49,14 @@ public class Panel_ManagerTable extends JPanel implements ActionListener {
 		jCbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jCbb_ListTable.setBounds(151, 11, 103, 30);
 		this.add(jCbb_ListTable);
-
-		jBtn_CreateNewDatabase = new JButton("Create DataBase");
-		jBtn_CreateNewDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_CreateNewDatabase.setActionCommand("createdb");
-		jBtn_CreateNewDatabase.addActionListener(this);
-		jBtn_CreateNewDatabase.setBounds(528, 75, 138, 30);
-		this.add(jBtn_CreateNewDatabase);
 	}
 
 	public void Init() {
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if ("createdb".equals(arg0.getActionCommand())) {
-			_FrameCreateDB = new Frame_CreateNewDB();
-			_FrameCreateDB.setVisible(true);
-		}
 
 		if ("deletetable".equals(arg0.getActionCommand())) {
 			if (this.CheckChooseDataBase()
@@ -120,6 +100,8 @@ public class Panel_ManagerTable extends JPanel implements ActionListener {
 	}
 
 	public void ChoosenDatabase() {
-
+		MiniTable aa = new MiniTable(Main.GetDataBase().getTable(0));
+		aa.setLocation(new Point(100, 100));
+		this.add(aa);
 	}
 }
