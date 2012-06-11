@@ -19,6 +19,7 @@ import jsql.parse.Parser;
 import jsql.parse.Statement;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.ImageIcon;
 
 /**
  * @author DWater
@@ -47,7 +48,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		this.Init();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	public void InitFrame() {
 
 		this.setSize(784, 439);
@@ -55,8 +56,9 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		this.setName("Add Data");
 
 		jBtn_SaveToDB = new JButton("Save to Database");
+		jBtn_SaveToDB.setIcon(new ImageIcon(Panel_AddData.class.getResource("/img/accept.png")));
 		jBtn_SaveToDB.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_SaveToDB.setBounds(301, 11, 149, 30);
+		jBtn_SaveToDB.setBounds(301, 11, 177, 30);
 		jBtn_SaveToDB.setActionCommand("ok");
 		jBtn_SaveToDB.addActionListener(this);
 		this.add(jBtn_SaveToDB);
@@ -97,7 +99,8 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		jP_AddData.setLayout(null);
 
 		jBtn_AddField = new JButton("Add");
-		jBtn_AddField.setBounds(10, 21, 77, 30);
+		jBtn_AddField.setIcon(new ImageIcon(Panel_AddData.class.getResource("/img/add.png")));
+		jBtn_AddField.setBounds(10, 29, 92, 30);
 		jBtn_AddField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_AddField.setActionCommand("ok");
 		jBtn_AddField.setActionCommand("addfield");

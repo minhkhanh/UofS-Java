@@ -24,10 +24,11 @@ public class Frame_Main extends JFrame implements ActionListener {
 	private JFileChooser jFChooser;
 	private Panel_Info p_Info;
 	private Panel_Server p_Server;
-	private Panel_ManagerTable p_Manager;
+	private Panel_Manager p_Manager;
 	private Panel_AddTable p_AddTable;
 	private Panel_AddData p_AddData;
 	private JButton jBtn_CreateNewDb;
+	private Frame_CreateNewDB _FrameCreateDB;
 
 	public Frame_Main() {
 
@@ -51,7 +52,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		p_Info = new Panel_Info();
 		p_Server = new Panel_Server();
-		p_Manager = new Panel_ManagerTable();
+		p_Manager = new Panel_Manager();
 		p_AddTable = new Panel_AddTable();
 		p_AddData = new Panel_AddData();
 		tabbedPane.add(p_Server);
@@ -92,6 +93,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jBtn_CreateNewDb = new JButton("Create New DB");
 		jBtn_CreateNewDb.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jBtn_CreateNewDb.setActionCommand(KeyAction.main_createdb.toString());
+		jBtn_CreateNewDb.addActionListener(this);
 		jBtn_CreateNewDb.setBounds(643, 11, 131, 30);
 		jP_Database.add(jBtn_CreateNewDb);
 
@@ -108,8 +110,8 @@ public class Frame_Main extends JFrame implements ActionListener {
 		KeyAction action = KeyAction.valueOf(arg0.getActionCommand());
 
 		if (action == KeyAction.main_createdb) {
-			Frame_CreateNewDB aa = new Frame_CreateNewDB();
-			aa.setVisible(true);
+			_FrameCreateDB = new Frame_CreateNewDB();
+			_FrameCreateDB.setVisible(true);
 		}
 
 		if (action == KeyAction.main_browse) {
@@ -127,10 +129,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 				p_Server.ChoosenDatabase();
 				p_AddTable.ChoosenDatabase();
 				p_AddData.ChoosenDatabase();
-			} else {
-				if (_PathFileDataBase.equals("")) {
-					Panel_Server.PrintLog("Đã hủy việc chọn File DataBase");
-				}
+				p_Manager.ChoosenDatabase();
 			}
 		}
 	}
