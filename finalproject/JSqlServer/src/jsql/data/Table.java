@@ -61,7 +61,6 @@ public class Table implements Serializable {
 		rows.clear();
 	}
 
-	// added by khuong
 	public Column getColumn(int idx) {
 		return columns.get(idx);
 	}
