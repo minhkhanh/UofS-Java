@@ -23,24 +23,23 @@ import jsql.data.Database;
 @SuppressWarnings("serial")
 public class Panel_Manager extends JPanel implements ActionListener {
 
+	public enum actionC {
+		mn_browse, mn_addtable, mn_deletetable, mn_adddata
+	};
+	
 	private JButton jBtn_AddTable;
 	private JButton jBtn_DeleteTable;
 	private JButton jBtn_AddData;
-	private JButton jBtn_Browse2;
 	private JButton jBtn_CreateNewDatabase;
-	private static JTextField jTf_AddrFileDB2;
 	@SuppressWarnings("rawtypes")
 	private static JComboBox jCbb_ListTable;
 
-	private Frame_AddTable _FrameAddTable;
 	private Frame_AddData _FrameAddData;
 	private Frame_CreateNewDB _FrameCreateDB;
-	private FileFilterDb _FileFilterDb;
-	JFileChooser jFChooser;
 
 	public Panel_Manager() {
 
-		this.setSize(794, 519);
+		this.setSize(784, 439);
 		this.setLayout(null);
 		this.setName("Manager Database");
 
@@ -72,24 +71,11 @@ public class Panel_Manager extends JPanel implements ActionListener {
 		lblFileDatabase.setBounds(10, 11, 103, 29);
 		this.add(lblFileDatabase);
 
-		jTf_AddrFileDB2 = new JTextField();
-		jTf_AddrFileDB2.setEditable(false);
-		jTf_AddrFileDB2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jTf_AddrFileDB2.setBounds(123, 11, 387, 30);
-		this.add(jTf_AddrFileDB2);
 
 		jCbb_ListTable = new JComboBox();
 		jCbb_ListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jCbb_ListTable.setBounds(151, 116, 103, 30);
 		this.add(jCbb_ListTable);
-
-		jBtn_Browse2 = new JButton("Browse");
-		jBtn_Browse2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		jBtn_Browse2.setActionCommand("browse");
-		jBtn_Browse2.setBounds(528, 10, 138, 30);
-		jBtn_Browse2.setActionCommand("browse");
-		jBtn_Browse2.addActionListener((ActionListener) this);
-		this.add(jBtn_Browse2);
 
 		jBtn_CreateNewDatabase = new JButton("Create DataBase");
 		jBtn_CreateNewDatabase.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -99,13 +85,7 @@ public class Panel_Manager extends JPanel implements ActionListener {
 		this.add(jBtn_CreateNewDatabase);
 
 		// INIT
-		_FileFilterDb = new FileFilterDb() {
-		};
-		jFChooser = new JFileChooser();
-		jFChooser.setFileFilter(new FileFilterDb(){});
-		
-		if (Main.GetDataBase() != null)
-			jTf_AddrFileDB2.setText(Main.GetDataBase().GetFilePath());
+
 
 		if (Main.GetDataBase() != null)
 			Refresh();
@@ -119,23 +99,6 @@ public class Panel_Manager extends JPanel implements ActionListener {
 			_FrameCreateDB.setVisible(true);
 		}
 
-		if ("browse".equals(arg0.getActionCommand())) {
-
-			int returnVal = jFChooser.showDialog(this, "Choose DataBase");
-
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				String pathFileDataBase = jFChooser.getSelectedFile().getPath();
-				Main.SetDataBase(Database.loadFromFile(pathFileDataBase));
-				this.Refresh();
-			}
-		}
-
-		if ("addtable".equals(arg0.getActionCommand())) {
-			if (this.CheckChooseDataBase()) {
-				_FrameAddTable = new Frame_AddTable();
-				_FrameAddTable.setVisible(true);
-			}
-		}
 
 		if ("deletetable".equals(arg0.getActionCommand())) {
 			if (this.CheckChooseDataBase()
@@ -182,7 +145,6 @@ public class Panel_Manager extends JPanel implements ActionListener {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void Refresh() {
-		jTf_AddrFileDB2.setText(Main.GetDataBase().GetFilePath());
 		jCbb_ListTable.setModel(new DefaultComboBoxModel(Helper
 				.GetListTableName(Main.GetDataBase())));
 	}

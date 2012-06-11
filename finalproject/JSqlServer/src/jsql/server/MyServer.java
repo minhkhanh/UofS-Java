@@ -39,12 +39,12 @@ public class MyServer implements Runnable {
 
 		try {
 			_ServerSocket = new ServerSocket(_Port);
-			Frame_Main.PrintLog("Khởi chạy máy chủ thành công ^_^");
-			Frame_Main.PrintLog("Server đang chạy ở port: "
+			Panel_Server.PrintLog("Server: Khởi chạy máy chủ thành công ^_^");
+			Panel_Server.PrintLog("Server: Server đang chạy ở port: "
 					+ Integer.toString(_ServerSocket.getLocalPort()));
-			
+
 			while (true) {
-				new ThreadSocket(_ServerSocket.accept()).start();
+				new MyThreadSocket(_ServerSocket.accept()).start();
 			}
 		} catch (IOException ex) {
 			Logger.getLogger(MyServer.class.getName()).log(Level.SEVERE, null,
@@ -55,9 +55,8 @@ public class MyServer implements Runnable {
 	public void stop() {
 		try {
 			_ServerSocket.close();
-			Frame_Main.PrintLog("Server đã được dừng !!");
+			Panel_Server.PrintLog("Server: Server đã được dừng !!");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

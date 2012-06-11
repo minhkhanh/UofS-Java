@@ -1,6 +1,7 @@
 package jsql.server;
 
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -39,7 +40,12 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 	public void InitFrame() {
 		setResizable(false);
-		setBounds(100, 100, 426, 275);
+		setSize(426, 275);
+		setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2
+				- getWidth() / 2,
+				Toolkit.getDefaultToolkit().getScreenSize().height / 2
+						- getHeight() / 2);
+		
 		jP_Main = new JPanel();
 		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(jP_Main);
@@ -178,7 +184,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 					"Đã tạo Database thành công ^_^", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			Frame_Main.PrintLog("Đã tạo Database mới: " + target + "\\" + name
+			Panel_Server.PrintLog("Server: Đã tạo Database mới: " + target + "\\" + name
 					+ ".db");
 		}
 
