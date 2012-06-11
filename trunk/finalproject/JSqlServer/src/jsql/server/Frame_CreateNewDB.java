@@ -16,12 +16,15 @@ import javax.swing.border.EmptyBorder;
 
 import jsql.data.Database;
 
+/**
+ * @author DWater
+ * 
+ */
 @SuppressWarnings("serial")
 public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 	private JPanel jP_Main;
 	private JPanel jP_CreateNewDB;
-
 	private JButton jBtn_NewButton;
 	private JButton jBtn_Cancel;
 	private JButton jBtn_Browse;
@@ -29,9 +32,6 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 	private JTextField jTf_Name;
 	private JFileChooser jFChooser;
 
-	/**
-	 * Create the frame.
-	 */
 	public Frame_CreateNewDB() {
 		this.InitFrame();
 		this.Init();

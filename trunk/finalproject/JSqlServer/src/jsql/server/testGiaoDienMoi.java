@@ -34,20 +34,20 @@ public class testGiaoDienMoi extends JFrame {
 	public testGiaoDienMoi() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		
+
 		JMenuBar menuBar = new JMenuBar();
-		//setJMenuBar(menuBar);
+		// setJMenuBar(menuBar);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		//	JMenuBar menuBar = new JMenuBar();
-		//setJMenuBar(menuBar);
-		
+
+		// JMenuBar menuBar = new JMenuBar();
+		// setJMenuBar(menuBar);
+
 		MainMenuBar aa = new MainMenuBar();
-		this.setJMenuBar(aa.myMenuBar);
-      //  jP_Main.add(toolBar.myToolBar, BorderLayout.NORTH);
+		// this.setJMenuBar(aa.myMenuBar);
+		// jP_Main.add(toolBar.myToolBar, BorderLayout.NORTH);
 	}
 
 }
