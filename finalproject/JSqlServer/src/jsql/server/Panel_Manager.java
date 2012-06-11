@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -99,9 +100,20 @@ public class Panel_Manager extends JPanel implements ActionListener {
 				.GetListTableName(Main.GetDataBase())));
 	}
 
+	Vector<MiniTable> _ListMiniTable;
+
 	public void ChoosenDatabase() {
-		MiniTable aa = new MiniTable(Main.GetDataBase().getTable(0));
-		aa.setLocation(new Point(100, 100));
-		this.add(aa);
+
+		_ListMiniTable = new Vector<>();
+		MiniTable tMiniTable;
+		Point pos;
+		int nTable = Main.GetDataBase().getTables().size();
+
+		for (int i = 0; i < nTable; i++) {
+			pos = new Point(i * 255, 100);
+
+			tMiniTable = new MiniTable(Main.GetDataBase().getTable(i), pos);
+			this.add(tMiniTable);
+		}
 	}
 }
