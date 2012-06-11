@@ -56,8 +56,11 @@ public class Frame_Main extends JFrame implements ActionListener {
 		jP_Main.setBorder(new EmptyBorder(5, 5, 5, 5));
 		jP_Main.setLayout(null);
 		setContentPane(jP_Main);
-	
-		this.setJMenuBar(new MainMenuBar().myMenuBar);
+
+		MainMenuBar aa = new MainMenuBar();
+		JMenuBar aaas = new JMenuBar();
+		
+		this.setJMenuBar(aa);
 
 		jLbl_AddrFolder = new JLabel("File DataBase:");
 		jLbl_AddrFolder.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -137,7 +140,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 
 		jP_Log.setLayout(null);
 		jP_Log.add(jSP_Log);
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setBounds(298, 71, 46, 14);
 		jP_Main.add(lblNewLabel);
@@ -227,7 +230,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 		tLog.add(Integer.toString(_Logs.size() + 1));
 
 		int month = c.get(Calendar.MONTH) + 1;
-		
+
 		// add time
 		time = c.get(Calendar.DAY_OF_MONTH) + "/" + month + "/"
 				+ c.get(Calendar.YEAR) + "   " + c.get(Calendar.HOUR_OF_DAY)
