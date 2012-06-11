@@ -150,7 +150,7 @@ public class Frame_AddTable extends JFrame implements ActionListener {
 
 		jCbb_DataType = new JComboBox();
 		jCbb_DataType.setModel(new DefaultComboBoxModel(new String[] { "int",
-				"string", }));
+				"string","float" }));
 		jCbb_DataType.setBounds(498, 57, 134, 30);
 		jP_AddField.add(jCbb_DataType);
 

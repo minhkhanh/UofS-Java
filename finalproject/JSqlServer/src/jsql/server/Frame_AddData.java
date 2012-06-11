@@ -161,35 +161,68 @@ public class Frame_AddData extends JFrame implements ActionListener {
 		if ("addfield".equals(arg0.getActionCommand())) {
 
 			TableModel tm = jTableNewData.getModel();
-			int nc = tm.getColumnCount();
 			Table table = Main.GetDataBase().getTable(
 					jCbb_ListTable.getSelectedIndex());
+			int nc = table.getColumns().size();
+			String typeCol, value;
 
-			// kiem tra xem nguoi dung nhap du thong tin chưa
+			// kiem tra xem nguoi dung nhap
 			for (int i = 0; i < nc; i++) {
+
+				// nguoi dung nhap thong tin chua
 				if (tm.getValueAt(0, i).equals("")) {
 					JOptionPane.showMessageDialog(this,
-							"Chưa nhập \"" + tm.getColumnName(i) + "\"!",
+							"Chưa nhập cột \"" + tm.getColumnName(i) + "\"!",
 							"Warning", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+
+				// thong tin hop le khong
+				typeCol = table.getColumnType(i).toUpperCase();
+				value = tm.getValueAt(0, i).toString().trim();
+
+				if (typeCol.equals("INT")) {
+					for (int ch = 0; ch < value.length(); ch++) {
+						if (!(value.charAt(ch) >= '0' && value.charAt(ch) <= '9')) {
+							JOptionPane.showMessageDialog(this,
+									"Dữ liệu cột \"" + tm.getColumnName(i)
+											+ "\" không hợp lệ!", "Warning",
+									JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+					}
+				}
+
+				if (typeCol.equals("FLOAT")) {
+					for (int ch = 0; ch < value.length(); ch++) {
+						if (!(value.charAt(ch) >= '0' && value.charAt(ch) <= '9')) {
+							JOptionPane
+									.showMessageDialog(
+											this,
+											"Dữ liệu cột \""
+													+ tm.getColumnName(i)
+													+ "\" không hợp lệ! "
+													+ "\n Dùng dấu \".\" để ngăn cách phần thập phân",
+											"Warning",
+											JOptionPane.WARNING_MESSAGE);
+							return;
+						}
+					}
+				}
+
 			}
 
 			// them thong tin vao bang
 			Statement statement;
 			String sql;
-			String value;
 
 			sql = "INSERT INTO " + table.getName() + " VALUES (";
 
 			for (int i = 0; i < nc; i++) {
 
 				value = tm.getValueAt(0, i).toString().trim();
-
-				JOptionPane.showMessageDialog(this, table.getColumnType(i),
-						"Warning", JOptionPane.WARNING_MESSAGE);
-
-				if (true) {
+				typeCol = table.getColumnType(i).toUpperCase();
+				if (typeCol.equals("INT")) {
 					sql += value;
 				} else {
 					sql += "'" + value + "'";
@@ -201,11 +234,8 @@ public class Frame_AddData extends JFrame implements ActionListener {
 
 			sql += ")";
 
-			JOptionPane.showMessageDialog(this, sql, "Warning",
-					JOptionPane.WARNING_MESSAGE);
-
-			// statement = Parser.parseStatement(sql);
-			// Main.GetDataBase().executeStatement(statement);
+			statement = Parser.parseStatement(sql);
+			Main.GetDataBase().executeStatement(statement);
 
 			this.Refresh();
 		}
