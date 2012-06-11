@@ -220,8 +220,10 @@ public class Frame_Main extends JFrame implements ActionListener {
 		// add id
 		tLog.add(Integer.toString(_Logs.size() + 1));
 
+		int month = c.get(Calendar.MONTH) + 1;
+		
 		// add time
-		time = c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.MONTH) + "/"
+		time = c.get(Calendar.DAY_OF_MONTH) + "/" + month + "/"
 				+ c.get(Calendar.YEAR) + "   " + c.get(Calendar.HOUR_OF_DAY)
 				+ ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
 
