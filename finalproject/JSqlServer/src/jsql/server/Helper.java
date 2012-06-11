@@ -14,6 +14,31 @@ import jsql.data.Table;
 @SuppressWarnings("serial")
 public class Helper implements Serializable {
 
+	// kiểm tra chuỗi tring tên fieldname, talbename hợp lệ không
+	public static Boolean CheckFieldAndTableName(String str) {
+
+		// các ký tự hợp lệ để đặt tên abc...z ABC...Z 1234 ký tự đầu là chữ
+		// nếu đầu hoặc cuối có khoảng trắng thì chuỗi chỉ là phần còn lại
+
+		// xóa khoảng trắng đầu và cuối
+		str = str.trim();
+
+		if (!((str.charAt(0) >= 'a' && str.charAt(0) <= 'z') || (str.charAt(0) >= 'A' && str
+				.charAt(0) <= 'Z'))) {
+			return false;
+		}
+
+		for (int i = 1; i < str.length(); i++) {
+			if (!((str.charAt(i) >= '0' && str.charAt(i) <= '9')
+					|| (str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str
+					.charAt(i) >= 'A' && str.charAt(i) <= 'Z'))) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	// de load vao combobox
 	public static String[] GetListTableName(Database db) {
 
