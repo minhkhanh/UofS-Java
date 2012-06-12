@@ -40,6 +40,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 	private JTextField jTf_Description;
 	private JComboBox<?> jCbb_DataType;
 	private JButton jBtn_AddField;
+	private JButton jBtn_Resest;
 
 	public Panel_AddTable() {
 		this.InitFrame();
@@ -148,6 +149,15 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		jBtn_AddField.setBounds(10, 54, 123, 35);
 		jBtn_AddField.addActionListener(this);
 		jP_AddField.add(jBtn_AddField);
+
+		jBtn_Resest = new JButton("Reset");
+		jBtn_Resest.setIcon(new ImageIcon(Panel_AddTable.class
+				.getResource("/img/refresh.png")));
+		jBtn_Resest.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		jBtn_Resest.setActionCommand(KeyAction.addtable_reset.toString());
+		jBtn_Resest.addActionListener(this);
+		jBtn_Resest.setBounds(423, 9, 103, 35);
+		add(jBtn_Resest);
 	}
 
 	public void Init() {
@@ -158,6 +168,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		jBtn_AddField.setEnabled(false);
 		jChb_Primary.setEnabled(false);
 		jCbb_DataType.setEnabled(false);
+		jBtn_Resest.setEnabled(false);
 	}
 
 	public void ChoosenDatabase() {
@@ -168,6 +179,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		jBtn_AddField.setEnabled(true);
 		jChb_Primary.setEnabled(true);
 		jCbb_DataType.setEnabled(true);
+		jBtn_Resest.setEnabled(true);
 	}
 
 	@Override
@@ -239,6 +251,10 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 
 				this.ResetAddField();
 			}
+		}
+
+		if (action == KeyAction.addtable_reset) {
+			this.ResetAddTable();
 		}
 	}
 
