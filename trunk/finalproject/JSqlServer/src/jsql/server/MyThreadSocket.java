@@ -24,7 +24,7 @@ public class MyThreadSocket extends Thread {
 	public MyThreadSocket(Socket socket) {
 		this._Socket = socket;
 		Panel_Server.PrintLog(_Socket.getInetAddress()
-				+ "đã kết nối đến Server ^_^");
+				+ " đã kết nối đến Server ^_^");
 	}
 
 	@Override
@@ -48,7 +48,11 @@ public class MyThreadSocket extends Thread {
 				_OOS.flush();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			Panel_Server.PrintLog(_Socket.getInetAddress()
+					+ " đã ngắt kết nối !");
+			//
+			// this.destroy();
 		}
 	}
 }
