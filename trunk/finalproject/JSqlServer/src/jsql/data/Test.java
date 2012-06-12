@@ -66,9 +66,9 @@ public class Test {
 		statement = Parser.parseStatement("SELECT MALOP, count(*) FROM HocSinh group by MALOP order by MALOP DESC");
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having avg(MS)>=3");
 		
-		database.executeStatement(statement);
+		//database.executeStatement(statement);
 		//database.saveToFile();
-		System.out.println("delete test.");
+		//System.out.println("delete test.");
 	}
 	
 	public static void testUpdate() {

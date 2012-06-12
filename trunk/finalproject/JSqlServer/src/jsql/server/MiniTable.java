@@ -81,6 +81,7 @@ public class MiniTable extends JPanel implements ActionListener {
 		btnDelete.setBounds(183, 5, 39, 23);
 		btnDelete.setActionCommand(KeyAction.mn_deletetable.toString());
 		btnDelete.addActionListener(this);
+
 		this.add(btnDelete);
 	}
 
@@ -103,6 +104,8 @@ public class MiniTable extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Đã xóa bảng thành công ^_^",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 
+			Panel_Server.PrintLog("Server: Đã xóa bảng \""
+					+ jLbl_TableName.getText() + "\"");
 			manager.Refresh();
 			Frame_Main.Refresh();
 		}

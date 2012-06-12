@@ -39,6 +39,8 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 
 	public void InitFrame() {
 
+
+		setTitle("Create New Database");
 		setResizable(false);
 		setSize(426, 275);
 		setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2
