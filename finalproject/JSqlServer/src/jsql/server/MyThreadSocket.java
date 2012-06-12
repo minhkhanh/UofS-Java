@@ -21,10 +21,13 @@ public class MyThreadSocket extends Thread {
 	private Request _Request;
 	private Result _Result;
 
+	private String _InetAddr;
+
 	public MyThreadSocket(Socket socket) {
 		this._Socket = socket;
-		Panel_Server.PrintLog(_Socket.getInetAddress()
-				+ " đã kết nối đến Server ^_^");
+		_InetAddr = _Socket.getInetAddress().getHostName();
+
+		Panel_Server.PrintLog(_InetAddr + " đã kết nối đến Server ^_^");
 	}
 
 	@Override
@@ -36,7 +39,7 @@ public class MyThreadSocket extends Thread {
 			_OIS = new ObjectInputStream(_Socket.getInputStream());
 
 			while (true) {
-				// doc request cua client
+				// get request from client
 				_Request = (Request) _OIS.readObject();
 
 				// thuc hien cau truy van
@@ -46,11 +49,15 @@ public class MyThreadSocket extends Thread {
 				// tra ket qua ve client
 				_OOS.writeObject(_Result);
 				_OOS.flush();
+
+				// Hiển thị ra log ở server
+				Panel_Server.PrintLog(_InetAddr + ": " + _Result.getMessage());
+				// cập nhật lại thông tin ở server
+				Frame_Main.Refresh();
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
-			Panel_Server.PrintLog(_Socket.getInetAddress()
-					+ " đã ngắt kết nối !");
+			Panel_Server.PrintLog(_InetAddr + " đã ngắt kết nối !");
 			//
 			// this.destroy();
 		}
