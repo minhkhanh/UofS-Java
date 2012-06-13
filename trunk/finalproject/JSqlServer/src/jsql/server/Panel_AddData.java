@@ -220,9 +220,12 @@ public class Panel_AddData extends JPanel implements ActionListener {
 			}
 
 			sql += ")";
-
-			statement = Parser.parseStatement(sql);
-			Main.GetDataBase().executeStatement(statement);
+			try {
+				statement = Parser.parseStatement(sql);
+				Main.GetDataBase().executeStatement(statement);	
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Error", 1);
+			}			
 
 			this.Refresh();
 		}

@@ -25,6 +25,10 @@ public class Table implements Serializable {
 		this.columns = cols;
 		this.rows = rows;
 	}
+	
+	public boolean checkName(String name) {
+		return this.name.toLowerCase().equals(name.toLowerCase());
+	}
 
 	public String getName() {
 		return name;
@@ -107,19 +111,30 @@ public class Table implements Serializable {
 		}
 		return -1;
 	}
+	
+//	private boolean checkKey(Row row1, Row row2) {
+//		for (int i = 0; i < columns.size(); i++) {
+//			Column col = columns.get(i);
+//			if (col.isPrimary() && !row1.getDataAt(i).equals(row2.getDataAt(i))) return true;
+//		}
+//		return false;
+//	}
 
 	void addRow(Row row) throws Exception {
 		if (row == null)
 			return;
 		// check key, data
+//		for (Row r : rows) {
+//			if (!checkKey(row, r)) throw new Exception("new row is exits");
+//		}
 		for (int i = 0; i < columns.size(); i++) {
 			Column col = columns.get(i);
 			if (col.isPrimary()) {
 				if (row.getDataAt(i) == null)
 					throw new Exception("key is null");
 				for (Row r : rows) {
-					if (r.getDataAt(i).compareTo(row.getDataAt(i)) == 0)
-						throw new Exception("key is exist");
+					if (r.getDataAt(i).equals(row.getDataAt(i)))
+						throw new Exception("new row is exits");
 				}
 			}
 		}

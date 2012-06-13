@@ -137,7 +137,7 @@ public class Database implements Serializable {
 				throw new Exception("update is null!");
 			Table table = null;
 			for (Table t : tables) {
-				if (t.getName().equals(update.getTable())) {
+				if (t.checkName(update.getTable())) {
 					table = t;
 					break;
 				}
@@ -169,10 +169,9 @@ public class Database implements Serializable {
 			System.out.println("update " + iCount + " row done!");
 			return new Result("update " + iCount + " row done!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("update error! " + e.getMessage());
+			return new Result("update error! " + e.getMessage());
 		}
-		System.out.println("update error!");
-		return new Result("update error!");
 	}
 
 	private Result executeDelete(Delete del) {
@@ -181,7 +180,7 @@ public class Database implements Serializable {
 				throw new Exception("delete is null!");
 			Table table = null;
 			for (Table t : tables) {
-				if (t.getName().equals(del.getTable())) {
+				if (t.checkName(del.getTable())) {
 					table = t;
 					break;
 				}
@@ -215,10 +214,9 @@ public class Database implements Serializable {
 			System.out.println("delete " + iCount + " row done!");
 			return new Result("delete " + iCount + " row done!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("delete error! " + e.getMessage());
+			return new Result("delete error! " + e.getMessage());
 		}
-		System.out.println("delete error!");
-		return new Result("delete error!");
 	}
 
 	private Result executeInsert(Insert insert) {
@@ -227,7 +225,7 @@ public class Database implements Serializable {
 				throw new Exception("insert is null!");
 			Table table = null;
 			for (Table t : tables) {
-				if (t.getName().equals(insert.getTable())) {
+				if (t.checkName(insert.getTable())) {
 					table = t;
 					break;
 				}
@@ -262,11 +260,9 @@ public class Database implements Serializable {
 			System.out.println("insert row done!");
 			return new Result("insert row done!");
 		} catch (Exception e) {
-			e.printStackTrace();
-			// return new Result("insert error!");
+			System.out.println("insert error! " + e.getMessage());
+			return new Result("insert error! " + e.getMessage());
 		}
-		System.out.println("insert row error!");
-		return new Result("insert error!");
 	}
 
 	// added by Khuong
