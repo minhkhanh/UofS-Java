@@ -5,8 +5,8 @@
     <property name="src"     value="src"/>
 
     <property name="build"   value="build"/>
-    <property name="classes" value="${build.dir}/classes"/>
-    <property name="jar"     value="${build.dir}/jar"/>
+    <property name="classes" value="${build}/classes"/>
+    <property name="jar"     value="${build}/jar"/>
 
     <property name="main-class"  value="jsql.client.Main"/>
 
