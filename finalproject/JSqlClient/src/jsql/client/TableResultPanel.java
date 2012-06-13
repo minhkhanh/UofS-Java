@@ -4,8 +4,6 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-
 import jsql.data.Table;
 
 public class TableResultPanel extends JPanel {
