@@ -3,7 +3,6 @@
  */
 package jsql.parse;
 
-import jsql.data.IntType;
 import jsql.data.StringType;
 import jsql.data.Type;
 
@@ -24,14 +23,15 @@ public class UpdateChange {
 		update.column = new ColumnConstant(new StringType(col));
 		data = data.substring(j+1).trim();
 		
+		update.value = Type.createType(data);
 		//toan hang
-		if (Utils.indexOfString(data, "'")==0) {
-			int i = Utils.indexOfString(data.substring(1), "'");
-			if (i<0) throw new Exception("split false!");
-			i++; // bu vao phan da tru ra
-			String tmp = data.substring(1, i);
-			update.value = new StringType(tmp);
-		} else update.value = new IntType(Integer.parseInt(data));
+//		if (Utils.indexOfString(data, "'")==0) {
+//			int i = Utils.indexOfString(data.substring(1), "'");
+//			if (i<0) throw new Exception("split false!");
+//			i++; // bu vao phan da tru ra
+//			String tmp = data.substring(1, i);
+//			update.value = new StringType(tmp);
+//		} else update.value = new IntType(Integer.parseInt(data));
 		
 		return update;
 	}
