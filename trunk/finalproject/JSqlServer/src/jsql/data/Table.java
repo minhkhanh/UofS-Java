@@ -3,12 +3,6 @@ package jsql.data;
 import java.io.Serializable;
 import java.util.Vector;
 
-import jsql.parse.ColumnConstant;
-import jsql.parse.Delete;
-import jsql.parse.Insert;
-import jsql.parse.Update;
-import jsql.parse.UpdateChange;
-
 public class Table implements Serializable {
 
 	/**
@@ -114,7 +108,7 @@ public class Table implements Serializable {
 		return -1;
 	}
 
-	private void addRow(Row row) throws Exception {
+	void addRow(Row row) throws Exception {
 		if (row == null)
 			return;
 		// check key, data
@@ -132,11 +126,11 @@ public class Table implements Serializable {
 		rows.add(row);
 	}
 
-	private void removeRow(Row row) {
+	void removeRow(Row row) {
 		rows.remove(row);
 	}
 
-	private boolean checkInsertInput(Vector<String> columnsName,
+	boolean checkInsertInput(Vector<String> columnsName,
 			Vector<Type> values) {
 		if (columns.size() < values.size())
 			return false;
@@ -160,74 +154,74 @@ public class Table implements Serializable {
 		return true;
 	}
 
-	void executeInsert(Insert insert) throws Exception {
-		Vector<String> columnsName = insert.getColumns();
-		Vector<Type> values = insert.getValues();
-		if (!checkInsertInput(columnsName, values))
-			throw new Exception("check input insert false");
-		if (columnsName.size() == 0) {
-			addRow(new Row(values));
-			return;
-		}
-		Row row = new Row(columns.size());
-		for (int i = 0; i < columnsName.size(); i++) {
-			int index = getColumnIndex(columnsName.get(i));
-			if (index == -1)
-				throw new Exception("column not exist");
-			row.setDataAt(index, values.get(i));
-		}
-		addRow(row);
-	}
+//	void executeInsert(Insert insert) throws Exception {
+//		Vector<String> columnsName = insert.getColumns();
+//		Vector<Type> values = insert.getValues();
+//		if (!checkInsertInput(columnsName, values))
+//			throw new Exception("check input insert false");
+//		if (columnsName.size() == 0) {
+//			addRow(new Row(values));
+//			return;
+//		}
+//		Row row = new Row(columns.size());
+//		for (int i = 0; i < columnsName.size(); i++) {
+//			int index = getColumnIndex(columnsName.get(i));
+//			if (index == -1)
+//				throw new Exception("column not exist");
+//			row.setDataAt(index, values.get(i));
+//		}
+//		addRow(row);
+//	}
 
-	int executeDelete(Delete del) throws Exception {
-		int iCount = 0;
-		if (del.getWhere() == null) {
-			iCount = rows.size();
-			rows.clear();
-			return iCount;
-		}
-		QueryTable table = new QueryTable(del.getTableConstant(),
-				del.getDatabase());
-		// RowInfo rowInfo = new RowInfo(columns);
-		for (int i = 0; i < rows.size();) {
-			Row row = rows.get(i);
-			// rowInfo.setRow(row);
-			QueryRow queryRow = new QueryRow(row, table.getColumns());
-			if (del.getWhere().filterByExpression(queryRow)) {
-				removeRow(row);
-				++iCount;
-			} else
-				++i;
-		}
-		return iCount;
-	}
+//	int executeDelete(Delete del) throws Exception {
+//		int iCount = 0;
+//		if (del.getWhere() == null) {
+//			iCount = rows.size();
+//			rows.clear();
+//			return iCount;
+//		}
+//		QueryTable table = new QueryTable(del.getTableConstant(),
+//				del.getDatabase());
+//		// RowInfo rowInfo = new RowInfo(columns);
+//		for (int i = 0; i < rows.size();) {
+//			Row row = rows.get(i);
+//			// rowInfo.setRow(row);
+//			QueryRow queryRow = new QueryRow(row, table.getColumns());
+//			if (del.getWhere().filterByExpression(queryRow)) {
+//				removeRow(row);
+//				++iCount;
+//			} else
+//				++i;
+//		}
+//		return iCount;
+//	}
 
-	public int executeUpdate(Update update) throws Exception {
-		int iCount = 0;
-		QueryTable table = new QueryTable(update.getTableConstant(),
-				update.getDatabase());
-		// RowInfo rowInfo = new RowInfo(columns);
-		for (int i = 0; i < rows.size(); ++i) {
-			// rowInfo.setRow(rows.get(i));
-			QueryRow queryRow = new QueryRow(rows.get(i), table.getColumns());
-			if (update.getWhere() == null
-					|| update.getWhere().filterByExpression(queryRow)) {
-				Row row = new Row(rows.get(i));
-				for (UpdateChange change : update.getChange()) {
-					ColumnConstant col = new ColumnConstant(null,
-							(String) change.getColumn().getBaseValue());
-					row.setDataAt(queryRow.getColumnIndex(col),
-							change.getValue());
-				}
-				if (updateRow(i, row))
-					++iCount;
-			}
-			;
-		}
-		return iCount;
-	}
+//	public int executeUpdate(Update update) throws Exception {
+//		int iCount = 0;
+//		QueryTable table = new QueryTable(update.getTableConstant(),
+//				update.getDatabase());
+//		// RowInfo rowInfo = new RowInfo(columns);
+//		for (int i = 0; i < rows.size(); ++i) {
+//			// rowInfo.setRow(rows.get(i));
+//			QueryRow queryRow = new QueryRow(rows.get(i), table.getColumns());
+//			if (update.getWhere() == null
+//					|| update.getWhere().filterByExpression(queryRow)) {
+//				Row row = new Row(rows.get(i));
+//				for (UpdateChange change : update.getChange()) {
+//					ColumnConstant col = new ColumnConstant(null,
+//							(String) change.getColumn().getBaseValue());
+//					row.setDataAt(queryRow.getColumnIndex(col),
+//							change.getValue());
+//				}
+//				if (updateRow(i, row))
+//					++iCount;
+//			}
+//			;
+//		}
+//		return iCount;
+//	}
 
-	private boolean updateRow(int index, Row row) {
+	boolean updateRow(int index, Row row) {
 		// check key
 		rows.set(index, row);
 		return true;
