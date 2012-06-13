@@ -10,6 +10,7 @@ import jsql.data.Database;
  * @author DWater
  * 
  */
+@SuppressWarnings("unused")
 public class Main {
 
 	private static Database _DataBase;
