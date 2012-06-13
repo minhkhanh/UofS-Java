@@ -144,6 +144,13 @@ public class Table implements Serializable {
 	void removeRow(Row row) {
 		rows.remove(row);
 	}
+	
+	private boolean checkStringType(String type, Type value) {
+		if (type.toUpperCase().equals(Column.INT)) return value instanceof IntType;
+		if (type.toUpperCase().equals(Column.STRING)) return value instanceof StringType;
+		if (type.toUpperCase().equals(Column.FLOAT)) return value instanceof FloatType;
+		return false;
+	}
 
 	boolean checkInsertInput(Vector<String> columnsName,
 			Vector<Type> values) {
@@ -156,14 +163,16 @@ public class Table implements Serializable {
 
 			// check type
 			for (int i = 0; i < columns.size(); ++i) {
-				if (columns.get(i).getClassType() != values.get(i).getClass())
+				if (!checkStringType(columns.get(i).getType(), values.get(i)))
+				//if (columns.get(i).getClassType() != values.get(i).getClass())
 					return false;
 			}
 		}
 		if (columnsName.size() > columns.size())
 			return false;
 		for (int i = 0; i < columnsName.size(); ++i) {
-			if (getColumnType(columnsName.get(i)) != values.get(i).getClass())
+			if (!checkStringType(columns.get(i).getType(), values.get(i)))
+			//if (getColumnType(columnsName.get(i)) != values.get(i).getClass())
 				return false;
 		}
 		return true;
