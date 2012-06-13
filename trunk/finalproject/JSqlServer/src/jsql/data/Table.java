@@ -145,10 +145,16 @@ public class Table implements Serializable {
 		rows.remove(row);
 	}
 	
-	private boolean checkStringType(String type, Type value) {
-		if (type.toUpperCase().equals(Column.INT)) return value instanceof IntType;
-		if (type.toUpperCase().equals(Column.STRING)) return value instanceof StringType;
-		if (type.toUpperCase().equals(Column.FLOAT)) return value instanceof FloatType;
+	private boolean checkStringType(String type, Vector<Type> values, int index) {
+		if (type.toUpperCase().equals(Column.INT)) return values.get(index) instanceof IntType;
+		if (type.toUpperCase().equals(Column.STRING)) return values.get(index) instanceof StringType;
+		if (type.toUpperCase().equals(Column.FLOAT)) {
+			if (values.get(index) instanceof FloatType) return true;
+			if (values.get(index) instanceof IntType) {
+				values.set(index, new FloatType(((Integer) values.get(index).getValue()).floatValue()));
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -163,7 +169,7 @@ public class Table implements Serializable {
 
 			// check type
 			for (int i = 0; i < columns.size(); ++i) {
-				if (!checkStringType(columns.get(i).getType(), values.get(i)))
+				if (!checkStringType(columns.get(i).getType(), values,i))
 				//if (columns.get(i).getClassType() != values.get(i).getClass())
 					return false;
 			}
@@ -171,7 +177,7 @@ public class Table implements Serializable {
 		if (columnsName.size() > columns.size())
 			return false;
 		for (int i = 0; i < columnsName.size(); ++i) {
-			if (!checkStringType(columns.get(i).getType(), values.get(i)))
+			if (!checkStringType(columns.get(i).getType(), values,i))
 			//if (getColumnType(columnsName.get(i)) != values.get(i).getClass())
 				return false;
 		}
