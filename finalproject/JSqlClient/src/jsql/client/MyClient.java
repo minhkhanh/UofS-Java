@@ -17,6 +17,7 @@ public class MyClient extends Thread {
 	private Socket client;
 	private ISocketConnection handle;
 	private int iCount = 0;
+	private int iNum = 0;
 	
 	public MyClient(String ip, int port, ISocketConnection handle){
 		this.IP = ip;
@@ -34,13 +35,15 @@ public class MyClient extends Thread {
                 try {
 					Result result = (Result) ois.readObject();
 					iCount++;
+					iNum--;
 					handle.hasResponse(result, iCount);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
             }
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println(e.getMessage());
 			//JOptionPane.showMessageDialog(null, "Không thể kết nối với server!", "Lỗi", 1);
 		}
 		handle.hasSocketDisconnect();
@@ -63,13 +66,17 @@ public class MyClient extends Thread {
 	}
 	
 	public boolean canSendRequest() {
-		return getRequestCount()==0;
+		return iNum==0;
 	}
 
 	public void sendRequest(Vector<Request> requests) throws Exception {
-		if (!isConnected()) throw new Exception("Hiện không kết nối với server!");
-		if (!canSendRequest()) throw new Exception("Hiện gởi request!");
+		if (!isConnected()) {
+			stopClient();
+			throw new Exception("Must connect to a server!");
+		}
+		if (!canSendRequest()) throw new Exception("Sendding request. Do'nt execute a statement!");
 		iCount = 0;
+		iNum = requests.size();
 		ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 		for (Request request : requests) {
 			//iCount++;

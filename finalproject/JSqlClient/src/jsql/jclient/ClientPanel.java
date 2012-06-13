@@ -49,18 +49,18 @@ public class ClientPanel extends JPanel implements ActionListener, ISocketConnec
 			if ("Connect".equals(aEvent.getActionCommand())) {
 				String address = headerPanel.textField.getText();
 				if (address == null || address.length() < 10)
-					throw new Exception("Address có độ dài không đủ!");
+					throw new Exception("Address has length too short!");
 				int mid = address.lastIndexOf(":");
 				if (mid < 7)
 					throw new Exception(
-							"Address có độ dài không đủ hoặc không đúng định dạng!");
+							"Address has length too short or do'nt match format!");
 				String ip = address.substring(0, mid);
 				String port = address.substring(mid + 1, address.length());
 				int iPort = 0;
 				try {
 					iPort = Integer.parseInt(port);
 				} catch (Exception e) {
-					throw new Exception("Port không đúng định dạng!");
+					throw new Exception("Port is do'nt match syntax!");
 				}
 
 				client = new MyClient(ip, iPort, this);
@@ -72,7 +72,7 @@ public class ClientPanel extends JPanel implements ActionListener, ISocketConnec
 			if("Execute".equals(aEvent.getActionCommand())){
 				//gửi lệnh query lên server
 				if (!client.isConnected()) {
-					throw new Exception("Hiện không kết nối với server!");
+					throw new Exception("Can not connect to server!");
 				}
 				String statement = statementPanel.textArea.getText();
 				Vector<Request> requests = Request.create(statement);
@@ -81,7 +81,7 @@ public class ClientPanel extends JPanel implements ActionListener, ISocketConnec
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Lỗi", 1);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 1);
 		}
 	}
 	@Override
