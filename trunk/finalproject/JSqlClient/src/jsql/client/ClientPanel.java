@@ -21,7 +21,7 @@ public class ClientPanel extends JPanel implements ActionListener, ISocketConnec
 	private HeaderPanel headerPanel;
 	private StatementPanel statementPanel;
 	private ResultPanel resultPanel;
-	private MyClient client;
+	private MyClient client = new MyClient();
 	/**
 	 * Create the panel.
 	 */
@@ -100,8 +100,13 @@ public class ClientPanel extends JPanel implements ActionListener, ISocketConnec
 		statementPanel.textArea.setEditable(true);
 	}
 	@Override
-	public void hasResponse(Result result, int iCount) {
-		System.out.println(iCount);
+	public void hasResponse(Result result, int iCount, int iNum) {
+		if (iCount==1) resultPanel.clearResult();
+		if (iNum>1) {
+			resultPanel.showResultMessage(result);
+			return;
+		}
+		resultPanel.showResultTable(result);
 	}
 
 }

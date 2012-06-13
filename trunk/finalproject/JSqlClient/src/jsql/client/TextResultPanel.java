@@ -23,9 +23,18 @@ public class TextResultPanel extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		textArea = new JTextArea();
+		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		add(scrollPane);
 
+	}
+	
+	public void clearResult() {
+		textArea.setText("");
+	}
+	
+	public void addResult(String mess) {
+		textArea.setText(textArea.getText() + "\n" + mess);
 	}
 
 }

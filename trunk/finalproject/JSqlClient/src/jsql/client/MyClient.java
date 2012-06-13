@@ -23,7 +23,8 @@ public class MyClient extends Thread {
 		this.port = port;
 		this.handle = handle;
 	}
-
+	public MyClient() {
+	}
 	@Override
 	public void run() {
 		try {
@@ -34,8 +35,7 @@ public class MyClient extends Thread {
                 try {
 					Result result = (Result) ois.readObject();
 					iCount++;
-					iNum--;
-					handle.hasResponse(result, iCount);
+					handle.hasResponse(result, iCount, iNum);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -64,8 +64,12 @@ public class MyClient extends Thread {
 		return iCount;
 	}
 	
+	public int getNumRequest() {
+		return iNum;
+	}
+	
 	public boolean canSendRequest() {
-		return iNum==0;
+		return iNum==iCount;
 	}
 
 	public void sendRequest(Vector<Request> requests) throws Exception {
@@ -75,13 +79,13 @@ public class MyClient extends Thread {
 		}
 		if (!canSendRequest()) throw new Exception("Sendding request. Do'nt execute a statement!");
 		iCount = 0;
-		iNum = requests.size();
-		ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
+		iNum = requests.size();		
 		for (Request request : requests) {
 			//iCount++;
+			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 			oos.writeObject(request);
-		}
-		oos.flush();
+			oos.flush();
+		}		
 	}
 
 }
