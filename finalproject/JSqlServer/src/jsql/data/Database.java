@@ -12,12 +12,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
+import jsql.parse.ColumnConstant;
 import jsql.parse.Delete;
 import jsql.parse.Insert;
 import jsql.parse.Select;
 import jsql.parse.Statement;
 import jsql.parse.Update;
+import jsql.parse.UpdateChange;
 
 /**
  * @author tmkhanh
@@ -143,10 +146,28 @@ public class Database implements Serializable {
 				throw new Exception("table is not exit!");
 
 			update.setDatabase(this);
-			int num = table.executeUpdate(update);
+			//int num = table.executeUpdate(update);
+			int iCount = 0;
+			QueryTable queryTable = new QueryTable(update.getTableConstant(),
+					update.getDatabase());
+			for (int i = 0; i < table.getRows().size(); ++i) {
+				QueryRow queryRow = new QueryRow(table.getRows().get(i), queryTable.getColumns());
+				if (update.getWhere() == null
+						|| update.getWhere().filterByExpression(queryRow)) {
+					Row row = new Row(table.getRows().get(i));
+					for (UpdateChange change : update.getChange()) {
+						ColumnConstant col = new ColumnConstant(null,
+								(String) change.getColumn().getBaseValue());
+						row.setDataAt(queryRow.getColumnIndex(col),
+								change.getValue());
+					}
+					if (table.updateRow(i, row))
+						++iCount;
+				}
+			}
 
-			System.out.println("update " + num + " row done!");
-			return new Result("update " + num + " row done!");
+			System.out.println("update " + iCount + " row done!");
+			return new Result("update " + iCount + " row done!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -169,10 +190,30 @@ public class Database implements Serializable {
 				throw new Exception("table is not exit!");
 
 			del.setDatabase(this);
-			int num = table.executeDelete(del);
 
-			System.out.println("delete " + num + " row done!");
-			return new Result("delete " + num + " row done!");
+			//int num = table.executeDelete(del);
+			int iCount = 0;
+			if (del.getWhere() == null) {
+				iCount = table.getRows().size();
+				table.getRows().clear();
+			} else {
+				QueryTable queryTable = new QueryTable(del.getTableConstant(),
+						del.getDatabase());
+				// RowInfo rowInfo = new RowInfo(columns);
+				for (int i = 0; i < table.getRows().size();) {
+					Row row = table.getRows().get(i);
+					// rowInfo.setRow(row);
+					QueryRow queryRow = new QueryRow(row, queryTable.getColumns());
+					if (del.getWhere().filterByExpression(queryRow)) {
+						table.removeRow(row);
+						++iCount;
+					} else
+						++i;
+				}
+			}
+			
+			System.out.println("delete " + iCount + " row done!");
+			return new Result("delete " + iCount + " row done!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -197,7 +238,27 @@ public class Database implements Serializable {
 			// insert.getValues())) throw new
 			// Exception("check input insert false");
 			insert.setDatabase(this);
-			table.executeInsert(insert);
+			
+			
+			Vector<String> columnsName = insert.getColumns();
+			Vector<Type> values = insert.getValues();
+			if (!table.checkInsertInput(columnsName, values))
+				throw new Exception("check input insert false");
+			if (columnsName.size() == 0) {
+				table.addRow(new Row(values));
+			} else {
+				Row row = new Row(table.getColumns().size());
+				for (int i = 0; i < columnsName.size(); i++) {
+					int index = table.getColumnIndex(columnsName.get(i));
+					if (index == -1)
+						throw new Exception("column not exist");
+					row.setDataAt(index, values.get(i));
+				}
+				table.addRow(row);
+			}
+			
+			//table.executeInsert(insert);
+			
 			System.out.println("insert row done!");
 			return new Result("insert row done!");
 		} catch (Exception e) {
