@@ -147,7 +147,7 @@ public class Select extends Statement implements Exp {
 	
 	public Result executeSelect(Select parent) throws Exception {
 		Table table = executeQuery(parent);
-		Result r = new Result(null);
+		Result r = new Result("select done. find " + table.getRows().size() + " row.");
 		r.setTable(table);
 		return r;
 	}

@@ -131,7 +131,7 @@ public class Panel_Server extends JPanel implements ActionListener {
 
 				if (_ThreadServer.isAlive()) {
 					_MyServer.stop();
-					_ThreadServer.stop();
+					//_ThreadServer.stop();
 				}
 				_MyServer.SetPort(_Port);
 				_ThreadServer = new Thread(_MyServer);

@@ -1,5 +1,6 @@
 package jsql.server;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -32,13 +33,12 @@ public class MyThreadSocket extends Thread {
 
 	@Override
 	public void run() {
-		try {
-			Thread.sleep(100);
+		while (_Socket.isConnected()) {
+			try {
+				// Thread.sleep(100);
+				_OOS = new ObjectOutputStream(_Socket.getOutputStream());
+				_OIS = new ObjectInputStream(_Socket.getInputStream());
 
-			_OOS = new ObjectOutputStream(_Socket.getOutputStream());
-			_OIS = new ObjectInputStream(_Socket.getInputStream());
-
-			while (true) {
 				// get request from client
 				_Request = (Request) _OIS.readObject();
 
@@ -54,12 +54,20 @@ public class MyThreadSocket extends Thread {
 				Panel_Server.PrintLog(_InetAddr + ": " + _Result.getMessage());
 				// cập nhật lại thông tin ở server
 				Frame_Main.Refresh();
+			} catch (Exception e) {
+				//e.printStackTrace();				
+				//
+				// this.destroy();
 			}
-		} catch (Exception e) {
-			// e.printStackTrace();
-			Panel_Server.PrintLog(_InetAddr + " disconnected !");
-			//
-			// this.destroy();
+		}
+		Panel_Server.PrintLog(_InetAddr + " disconnected !");
+	}
+
+	public void stopConnect() {
+		try {
+			_Socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
