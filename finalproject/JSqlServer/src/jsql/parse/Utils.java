@@ -46,13 +46,16 @@ public class Utils {
 	public static int indexOfString(String str, String find) {
 		//xoa het cac tu trong chuoi 'xxx'
 		int oldLength = -1;
-		while (str.indexOf('\'')>=0 && oldLength!=str.length()) {
+		int num = 0;
+		int k = -1;
+		while ((k=str.indexOf('\''))>=0 && oldLength!=str.length() && str.toUpperCase().indexOf(find.toUpperCase())>k) {
 			int i = str.indexOf('\'');
-			int j = str.substring(i + 1).indexOf('\'');
-			str = str.substring(0, i + 1) + str.substring(j + i + 1);
+			int j = str.substring(i + 1).indexOf('\'') + i;
+			str = str.substring(0, i + 1) + str.substring(j + 1);
+			num += (j-i);
 			oldLength = str.length();
 		}
-		return str.toUpperCase().indexOf(find.toUpperCase());
+		return str.toUpperCase().indexOf(find.toUpperCase()) + num;
 	}
 	public static int indexOfString(StringBuilder str, String find) {
 		return indexOfString(str.toString(), find);

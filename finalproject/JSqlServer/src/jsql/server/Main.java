@@ -1,6 +1,12 @@
 package jsql.server;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -33,7 +39,22 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 
 			public void run() {
-				new Frame_Main().setVisible(true);
+				final Frame_Main frm = new Frame_Main();
+				frm.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+				frm.addWindowListener(new WindowAdapter() {					
+					
+					@Override
+					public void windowClosing(WindowEvent arg0) {
+						System.out.println("exiting");
+						int result = JOptionPane.showConfirmDialog(frm, "Are you sure you want to exit?", "Quit", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.YES_OPTION) {
+							if (GetDataBase()!=null) GetDataBase().saveToFile();
+							frm.dispose();
+							System.exit(0);
+						}						
+					}
+				});
+				frm.setVisible(true);
 			}
 		});
 	}
