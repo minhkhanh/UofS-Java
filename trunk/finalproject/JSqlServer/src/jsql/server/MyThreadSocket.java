@@ -55,9 +55,6 @@ public class MyThreadSocket extends Thread {
 				// cập nhật lại thông tin ở server
 				Frame_Main.Refresh();
 			} catch (Exception e) {
-				//e.printStackTrace();				
-				//
-				// this.destroy();
 			}
 		}
 		Panel_Server.PrintLog(_InetAddr + " disconnected !");
