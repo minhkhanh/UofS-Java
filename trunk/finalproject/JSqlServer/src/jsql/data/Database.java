@@ -35,6 +35,7 @@ public class Database implements Serializable {
 
 	public static final String INT = "INT";
 	public static final String STRING = "STRING";
+	public static final String FLOAT = "FLOAT";
 
 	private List<Table> tables;
 

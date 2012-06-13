@@ -18,7 +18,9 @@ public class Column implements Serializable {
 	private String type;
 	private String description;
 	private boolean primary = false;
-
+	public static final String INT = "INT";
+	public static final String STRING = "STRING";
+	public static final String FLOAT = "FLOAT";
 	public Column(String name, String type) {
 		this.name = name;
 		this.type = type;
