@@ -222,7 +222,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 
 			sql += ")";
 
-			JOptionPane.showMessageDialog(this, sql, "Error", 1);
+			///JOptionPane.showMessageDialog(this, sql, "Error", 1);
 			try {
 				statement = Parser.parseStatement(sql);
 				Main.GetDataBase().executeStatement(statement);
