@@ -158,9 +158,9 @@ public class Panel_AddData extends JPanel implements ActionListener {
 
 				// nguoi dung nhap thong tin chua
 				if (tm.getValueAt(0, i).equals("")) {
-					JOptionPane.showMessageDialog(this,
-							"Unknown column \"" + tm.getColumnName(i) + "\"!",
-							"Warning", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Unknown column \""
+							+ tm.getColumnName(i) + "\"!", "Warning",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -182,7 +182,8 @@ public class Panel_AddData extends JPanel implements ActionListener {
 
 				if (typeCol.equals("FLOAT")) {
 					for (int ch = 0; ch < value.length(); ch++) {
-						if (!(value.charAt(ch) >= '0' && value.charAt(ch) <= '9')) {
+						if (!((value.charAt(ch) >= '0' && value.charAt(ch) <= '9') || value
+								.charAt(ch) == '.')) {
 							JOptionPane
 									.showMessageDialog(
 											this,
@@ -209,7 +210,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 
 				value = tm.getValueAt(0, i).toString().trim();
 				typeCol = table.getColumnType(i).toUpperCase();
-				if (typeCol.equals("INT")) {
+				if (typeCol.equals("INT") || typeCol.equals("FLOAT")) {
 					sql += value;
 				} else {
 					sql += "'" + value + "'";
@@ -220,12 +221,14 @@ public class Panel_AddData extends JPanel implements ActionListener {
 			}
 
 			sql += ")";
+
+			JOptionPane.showMessageDialog(this, sql, "Error", 1);
 			try {
 				statement = Parser.parseStatement(sql);
-				Main.GetDataBase().executeStatement(statement);	
+				Main.GetDataBase().executeStatement(statement);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Error", 1);
-			}			
+			}
 
 			this.Refresh();
 		}
