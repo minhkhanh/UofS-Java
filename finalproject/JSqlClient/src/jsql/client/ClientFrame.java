@@ -17,6 +17,7 @@ public class ClientFrame extends JFrame {
 	public ClientFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
+		setResizable(false);
 		contentPane = new ClientPanel();
 		setContentPane(contentPane);
 	}

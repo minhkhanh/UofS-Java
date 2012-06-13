@@ -24,7 +24,7 @@ public class StatementPanel extends JPanel {
 	 */
 	public StatementPanel() {
 		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Statement", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setMinimumSize(new Dimension(600, 390));
+		setPreferredSize(new Dimension(600, 390));
 		setLayout(new BorderLayout(0, 0));
 		
 		textArea = new JTextArea();

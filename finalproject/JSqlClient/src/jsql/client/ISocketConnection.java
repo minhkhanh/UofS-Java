@@ -12,5 +12,5 @@ import jsql.data.Result;
 public interface ISocketConnection {
     public void hasSocketConnected();
     public void hasSocketDisconnect();
-    public void hasResponse(Result result, int iCount);
+    public void hasResponse(Result result, int iCount, int iNum);
 }

@@ -19,7 +19,7 @@ public class Request implements Serializable {
 			Vector<Request> querys = new Vector<Request>();
 			String[] listQ = statement.split("\n");
 			for (String string : listQ) {
-				querys.add(new Request(string));
+				if (string.trim().length()>0) querys.add(new Request(string));
 			}
 			if (querys.size()==0) throw new Exception("Câu lệnh rỗng!");
 			return querys;
