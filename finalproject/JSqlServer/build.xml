@@ -13,11 +13,25 @@
     <target name="clean">
         <delete dir="${build}"/>
     </target>
+	
+	<target name="prepare">
+		<mkdir dir="${classes}"/>
+		<copy file="${src}/img/accept.png" tofile="${classes}/img/accept.png"/>
+		<copy file="${src}/img/add.png" tofile="${classes}/img/add.png"/>
+		<copy file="${src}/img/comment.png" tofile="${classes}/img/comment.png"/>
+		<copy file="${src}/img/delete.png" tofile="${classes}/img/delete.png"/>
+		<copy file="${src}/img/delete_16x16.png" tofile="${classes}/img/delete_16x16.png"/>
+		<copy file="${src}/img/delete_24x24.png" tofile="${classes}/img/delete_24x24.png"/>
+		<copy file="${src}/img/help.png" tofile="${classes}/img/help.png"/>
+		<copy file="${src}/img/info.png" tofile="${classes}/img/info.png"/>
+		<copy file="${src}/img/logoUS.png" tofile="${classes}/img/logoUS.png"/>
+		<copy file="${src}/img/new_page.png" tofile="${classes}/img/new_page.png"/>
+		<copy file="${src}/img/refresh.png" tofile="${classes}/img/refresh.png"/>
+		<copy file="${src}/img/rss.png" tofile="${classes}/img/rss.png"/>
+	</target>
 
-    <target name="compile">
-        <mkdir dir="${classes}"/>
-    	<copy dir="${src}/img" todir="${classes}/img"/>
-        <javac srcdir="${src}" destdir="${classes}"/>
+    <target name="compile" depends="prepare">
+        <javac srcdir="${src}" destdir="${classes}" encoding="utf8"/>
     </target>
 
     <target name="jar" depends="compile">
