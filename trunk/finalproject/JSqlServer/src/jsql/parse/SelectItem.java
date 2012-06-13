@@ -20,6 +20,9 @@ public class SelectItem {
 			alias = data;
 			data = col;
 		}
+		if (data.trim().equals("*")) {
+			exp = new ColumnConstant(null, data.trim());
+		} else
 		exp = ExpressionTree.createExp(data);
 	}
 	
