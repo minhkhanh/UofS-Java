@@ -166,7 +166,7 @@ public class ExpressionTree implements Exp {
 			if (operator instanceof OperatorLonHon) return cR.lon(cL);
 			if (operator instanceof OperatorNhoHonHoacBang) return cR.nhobang(cL);
 			if (operator instanceof OperatorLonHonHoacBang) return cR.lonbang(cL);
-			
+			if (operator instanceof OperatorLike) return ((StringConstant)cR).like((StringConstant)cL);
 			throw new Exception("compare operator is dont suport!");
 		}
 		
@@ -249,7 +249,7 @@ public class ExpressionTree implements Exp {
 			if (operator instanceof OperatorLonHon) return cR.lon(cL);
 			if (operator instanceof OperatorNhoHonHoacBang) return cR.nhobang(cL);
 			if (operator instanceof OperatorLonHonHoacBang) return cR.lonbang(cL);
-			
+			if (operator instanceof OperatorLike) return ((StringConstant)cR).like((StringConstant)cL);
 			throw new Exception("compare operator is dont suport!");
 		}
 		
