@@ -36,10 +36,20 @@ public abstract class Type implements Serializable, Comparable<Type> {
 			String str = val.substring(1, val.length()-1);
 			if (str==null || str.length()==0) throw new Exception("erro type!");
 			return new StringType(str);
-		}			
-		int iVal = Integer.parseInt(val);
-		return new IntType(iVal);
-		//throw new Exception("type not suport!");		
+		}
+		try {
+			int iVal = Integer.parseInt(val);
+			return new IntType(iVal);	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}	
+		try {
+			float iVal = Float.parseFloat(val);
+			return new FloatType(iVal);	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		throw new Exception("type not suport!");
 	}
 	
 	@Override
