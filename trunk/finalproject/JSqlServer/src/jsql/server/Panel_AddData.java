@@ -71,7 +71,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 		jCbb_ListTable.setBounds(119, 11, 156, 30);
 		this.add(jCbb_ListTable);
 
-		jLbl_ChoseTable = new JLabel("Chon Bang: ");
+		jLbl_ChoseTable = new JLabel("Choose Table: ");
 		jLbl_ChoseTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		jLbl_ChoseTable.setBounds(24, 11, 85, 30);
 		this.add(jLbl_ChoseTable);
@@ -134,7 +134,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 			// luu du lieu xuong database -> close form
 			Main.GetDataBase().saveToFile();
 
-			JOptionPane.showMessageDialog(this, "Đã lưu database ^_^",
+			JOptionPane.showMessageDialog(this, "Database Saved ^_^",
 					"Warning", JOptionPane.INFORMATION_MESSAGE);
 
 			// this.dispose();
@@ -159,7 +159,7 @@ public class Panel_AddData extends JPanel implements ActionListener {
 				// nguoi dung nhap thong tin chua
 				if (tm.getValueAt(0, i).equals("")) {
 					JOptionPane.showMessageDialog(this,
-							"Chưa nhập cột \"" + tm.getColumnName(i) + "\"!",
+							"Unknown column \"" + tm.getColumnName(i) + "\"!",
 							"Warning", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
@@ -172,8 +172,8 @@ public class Panel_AddData extends JPanel implements ActionListener {
 					for (int ch = 0; ch < value.length(); ch++) {
 						if (!(value.charAt(ch) >= '0' && value.charAt(ch) <= '9')) {
 							JOptionPane.showMessageDialog(this,
-									"Dữ liệu cột \"" + tm.getColumnName(i)
-											+ "\" không hợp lệ!", "Warning",
+									"Data columns \"" + tm.getColumnName(i)
+											+ "\" Invalid!", "Warning",
 									JOptionPane.WARNING_MESSAGE);
 							return;
 						}
@@ -186,10 +186,10 @@ public class Panel_AddData extends JPanel implements ActionListener {
 							JOptionPane
 									.showMessageDialog(
 											this,
-											"Dữ liệu cột \""
+											"Data columns \""
 													+ tm.getColumnName(i)
-													+ "\" không hợp lệ! "
-													+ "\n Dùng dấu \".\" để ngăn cách phần thập phân",
+													+ "\" Invalid! "
+													+ "\n Use \".\" to separate the decimal",
 											"Warning",
 											JOptionPane.WARNING_MESSAGE);
 							return;

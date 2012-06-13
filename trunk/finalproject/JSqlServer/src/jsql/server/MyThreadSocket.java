@@ -27,7 +27,7 @@ public class MyThreadSocket extends Thread {
 		this._Socket = socket;
 		_InetAddr = _Socket.getInetAddress().getHostName();
 
-		Panel_Server.PrintLog(_InetAddr + " đã kết nối đến Server ^_^");
+		Panel_Server.PrintLog(_InetAddr + " already connected to the Server ^_^");
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class MyThreadSocket extends Thread {
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
-			Panel_Server.PrintLog(_InetAddr + " đã ngắt kết nối !");
+			Panel_Server.PrintLog(_InetAddr + " disconnected !");
 			//
 			// this.destroy();
 		}
