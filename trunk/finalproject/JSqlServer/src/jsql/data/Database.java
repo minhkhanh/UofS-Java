@@ -99,7 +99,7 @@ public class Database implements Serializable {
 
 	public boolean haveTable(String name) {
 		for (Table table : tables) {
-			if (table.getName().equals(name))
+			if (table.getName().toUpperCase().equals(name.toUpperCase()))
 				return true;
 		}
 		return false;
@@ -287,7 +287,7 @@ public class Database implements Serializable {
 	public Table getTable(String tableName) {
 
 		for (int i = 0; i < tables.size(); i++)
-			if (tables.get(i).getName().equals(tableName))
+			if (tables.get(i).getName().toUpperCase().equals(tableName.toUpperCase()))
 				return tables.get(i);
 		return null;
 	}
