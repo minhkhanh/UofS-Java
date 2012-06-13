@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import jsql.data.Request;
 import jsql.data.Result;
-import jsql.jclient.ISocketConnection;
 
 public class MyClient extends Thread {
 	

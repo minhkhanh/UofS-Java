@@ -28,7 +28,7 @@ public class Main{
 		EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new jsql.jclient.ClientFrame().setVisible(true);
+                new jsql.client.ClientFrame().setVisible(true);
             }
         });
 	}
