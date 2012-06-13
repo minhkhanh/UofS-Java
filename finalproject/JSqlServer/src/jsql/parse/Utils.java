@@ -15,13 +15,13 @@ import jsql.data.StringType;
 public class Utils {
 	public static String[] splitString(String str, String[] pattern) {
 		//xoa het cac tu trong chuoi 'xxx'
-		int oldLength = -1;
-		while (str.indexOf('\'')>=0 && oldLength!=str.length()) {
-			int i = str.indexOf('\'');
-			int j = str.substring(i + 1).indexOf('\'');
-			str = str.substring(0, i + 1) + str.substring(j + i + 1);
-			oldLength = str.length();
-		}
+//		int oldLength = -1;
+//		while (str.indexOf('\'')>=0 && oldLength!=str.length()) {
+//			int i = str.indexOf('\'');
+//			int j = str.substring(i + 1).indexOf('\'');
+//			str = str.substring(0, i + 1) + str.substring(j + i + 1);
+//			oldLength = str.length();
+//		}
 		//tach index
 		int[] vIndex = new int[pattern.length];
 		for (int i = 0; i < vIndex.length; i++) {
