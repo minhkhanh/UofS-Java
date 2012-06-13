@@ -1,4 +1,4 @@
-package jsql.jclient;
+package jsql.client;
 
 import java.awt.Dimension;
 

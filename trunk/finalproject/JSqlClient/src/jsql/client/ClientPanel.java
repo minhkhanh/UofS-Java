@@ -1,4 +1,4 @@
-package jsql.jclient;
+package jsql.client;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -9,7 +9,6 @@ import java.util.Vector;
 
 import javax.swing.BoxLayout;
 
-import jsql.client.MyClient;
 import jsql.data.Request;
 import jsql.data.Result;
 

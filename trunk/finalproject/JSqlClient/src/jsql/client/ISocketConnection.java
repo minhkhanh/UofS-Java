@@ -1,7 +1,7 @@
 /**
  * 
  */
-package jsql.jclient;
+package jsql.client;
 
 import jsql.data.Result;
 
