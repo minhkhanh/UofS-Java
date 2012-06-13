@@ -138,7 +138,7 @@ public class Frame_Main extends JFrame implements ActionListener {
 				jTf_AddrDB.setText(_PathFileDataBase);
 				Main.SetDataBase(Database.loadFromFile(_PathFileDataBase));
 
-				Panel_Server.PrintLog("Server: Đã chọn File DataBase");
+				Panel_Server.PrintLog("Server: Choosed File DataBase");
 				p_Server.SetStatus("Click Listen to Start Server !");
 				Frame_Main.Refresh();
 			}

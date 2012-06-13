@@ -217,12 +217,12 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 				Main.GetDataBase().addTable(table);
 				Main.GetDataBase().saveToFile();
 
-				JOptionPane.showMessageDialog(this, "Đã thêm table \""
-						+ tableName + "\"" + " thành công ^_^", "OK",
+				JOptionPane.showMessageDialog(this, "Added table \""
+						+ tableName + "\"" + " successfully ^_^", "OK",
 						JOptionPane.INFORMATION_MESSAGE);
 
-				Panel_Server.PrintLog("Server: Đã thêm table \"" + tableName
-						+ "\"" + " vào database.");
+				Panel_Server.PrintLog("Server: Added table \"" + tableName
+						+ "\"" + " into the database.");
 
 				this.ResetAddTable();
 
@@ -263,14 +263,14 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		// fieldName bi trung
 		for (int i = 0; i < _Fields.size(); i++)
 			if (fieldName.equals(_Fields.get(i).get(1))) {
-				JOptionPane.showMessageDialog(this, "FieldName đã tồn tại!",
+				JOptionPane.showMessageDialog(this, "FieldName already exists!",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 
 		// chua nhap fieldName
 		if (fieldName.equals("")) {
-			JOptionPane.showMessageDialog(this, "Xin nhập FieldName!",
+			JOptionPane.showMessageDialog(this, "Enter FieldName!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -288,7 +288,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 
 		// Chua chon DataType
 		if (dataType.equals("")) {
-			JOptionPane.showMessageDialog(this, "Xin chọn DataType!",
+			JOptionPane.showMessageDialog(this, "Choose DataType!",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -296,7 +296,7 @@ public class Panel_AddTable extends JPanel implements ActionListener {
 		// Chua nhap description
 		if (description.equals("")) {
 			int ch = JOptionPane.showConfirmDialog(this,
-					"Bạn chưa nhập phần Description! Tiếp tục?", "Warning",
+					"You did not enter the Description! Continue?", "Warning",
 					JOptionPane.YES_NO_OPTION);
 			if (ch == 1)
 				return false;

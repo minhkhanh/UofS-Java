@@ -134,7 +134,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			// chưa chọn thư mục để lưu file jSql
 			if (target.trim().equals("")) {
 				JOptionPane.showMessageDialog(this,
-						"Xin chọn thư mục để lưu file Database !", "Warning",
+						"Please choose directory to save file Database !", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -143,9 +143,9 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			tfile = new File(target);
 			if (!tfile.exists()) {
 				int ch = JOptionPane.showConfirmDialog(this,
-						"Đường dẫn thư mục không tồn tại. "
-								+ "\nĐường dẫn sẽ được tạo."
-								+ "\nĐồng ý hay Không ?", "Warning",
+						"Directory path does not exist. "
+								+ "\nThe path will be created."
+								+ "\nAgree or Not ?", "Warning",
 						JOptionPane.YES_NO_OPTION);
 				if (ch == 1)
 					return;
@@ -156,7 +156,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 						JOptionPane
 								.showMessageDialog(
 										this,
-										"Không thể tạo thư mục. Xin xem lại đường dẫn !",
+										"Can not create directory. Please check the path !",
 										"Warning", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
@@ -166,7 +166,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			// chua nhap ten
 			if (name.equals("")) {
 				JOptionPane.showMessageDialog(this,
-						"Xin vui lòng nhập tên Database !", "Warning",
+						"Please enter Database's name !", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -175,7 +175,7 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			tfile = new File(target + "\\" + name + ".db");
 			if (tfile.exists()) {
 				JOptionPane.showMessageDialog(this,
-						"Database đã  tồn tại. Xin nhập tên khác !", "Warning",
+						"Database already exists. Please enter a different name !", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -184,10 +184,10 @@ public class Frame_CreateNewDB extends JFrame implements ActionListener {
 			Database.createNewDatabase(target + "\\" + name + ".db");
 
 			JOptionPane.showMessageDialog(this,
-					"Đã tạo Database thành công ^_^", "Info",
+					"Database created successfully ^_^", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			Panel_Server.PrintLog("Server: Đã tạo Database mới: " + target
+			Panel_Server.PrintLog("Server: Created a new Database: " + target
 					+ "\\" + name + ".db");
 			this.dispose();
 

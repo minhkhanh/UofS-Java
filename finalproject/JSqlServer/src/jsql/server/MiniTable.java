@@ -92,8 +92,8 @@ public class MiniTable extends JPanel implements ActionListener {
 
 		if (action == KeyAction.mn_deletetable) {
 
-			int ch = JOptionPane.showConfirmDialog(this, "Xóa bảng \""
-					+ jLbl_TableName.getText() + "\"." + " Bạn có chắc chắn ?",
+			int ch = JOptionPane.showConfirmDialog(this, "Delete table \""
+					+ jLbl_TableName.getText() + "\"." + " Are you sure ?",
 					"Warning", JOptionPane.YES_NO_OPTION);
 			if (ch == 1)
 				return;
@@ -101,10 +101,10 @@ public class MiniTable extends JPanel implements ActionListener {
 			Main.GetDataBase().DeleteTable(jLbl_TableName.getText());
 			Main.GetDataBase().saveToFile();
 
-			JOptionPane.showMessageDialog(this, "Đã xóa bảng thành công ^_^",
+			JOptionPane.showMessageDialog(this, "Deleted table successfully ^_^",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 
-			Panel_Server.PrintLog("Server: Đã xóa bảng \""
+			Panel_Server.PrintLog("Server: Deleted table \""
 					+ jLbl_TableName.getText() + "\"");
 			manager.Refresh();
 			Frame_Main.Refresh();

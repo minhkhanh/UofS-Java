@@ -39,8 +39,8 @@ public class MyServer implements Runnable {
 
 		try {
 			_ServerSocket = new ServerSocket(_Port);
-			Panel_Server.PrintLog("Server: Khởi chạy máy chủ thành công ^_^");
-			Panel_Server.PrintLog("Server: Server đang chạy ở port: "
+			Panel_Server.PrintLog("Server: Start the server successfully ^_^");
+			Panel_Server.PrintLog("Server: Server is running at port: "
 					+ Integer.toString(_ServerSocket.getLocalPort()));
 
 			while (true) {
@@ -55,7 +55,7 @@ public class MyServer implements Runnable {
 	public void stop() {
 		try {
 			_ServerSocket.close();
-			Panel_Server.PrintLog("Server: Server đã được dừng !!");
+			Panel_Server.PrintLog("Server: Server has been stopped !!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

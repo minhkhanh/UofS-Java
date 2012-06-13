@@ -39,18 +39,18 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		jMn_Help = new JMenu("Help");
 		this.add(jMn_Help);
 
-		jMI_Exit = new JMenuItem("Thoát");
+		jMI_Exit = new JMenuItem("Exit");
 		jMI_Exit.setActionCommand(actionC.exit.toString());
 		jMI_Exit.addActionListener(this);
 		jMn_File.addSeparator();
 		jMn_File.add(jMI_Exit);
 
-		jMI_Help = new JMenuItem("Hướng dẫn");
+		jMI_Help = new JMenuItem("Help");
 		jMI_Help.setActionCommand(actionC.help.toString());
 		jMI_Help.addActionListener(this);
 		jMn_Help.add(jMI_Help);
 
-		jMI_Info = new JMenuItem("Thông tin");
+		jMI_Info = new JMenuItem("Information");
 		jMn_Help.add(jMI_Info);
 		jMI_Info.setActionCommand(actionC.info.toString());
 		jMI_Info.addActionListener(this);
