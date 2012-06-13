@@ -25,7 +25,7 @@ public class Panel_Manager extends JPanel implements ActionListener {
 		this.setSize(784, 439);
 		this.setLayout(null);
 		this.setName("Manager Table");
-		_LisMiniTable = new Vector<>();
+		_LisMiniTable = new Vector<MiniTable>();
 	}
 
 	public void Init() {

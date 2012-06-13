@@ -43,7 +43,7 @@ public class MyThreadSocket extends Thread {
 				_Request = (Request) _OIS.readObject();
 
 				// thuc hien cau truy van
-				_Statement = Parser.parseStatement(_Request.GetQuery());
+				_Statement = Parser.parseStatement(_Request.getQuery());
 				_Result = Main.GetDataBase().executeStatement(_Statement);
 
 				// tra ket qua ve client
