@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import jsql.data.Request;
+
 public class ThreadSocket extends Thread{
 	private Socket socket;
 	private Request request;
