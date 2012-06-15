@@ -30,7 +30,7 @@ public class IntType extends NumberType {
 		if (num instanceof FloatType) {
 			Integer t = ((Float)num.getValue()).intValue();
 			this.value = (Integer)this.value + t;
-			return new FloatType( (Float)num.getValue() + (Integer) value);
+			return new IntType( (Integer) value);
 		}
 		if (num instanceof IntType) {
 			this.value = (Integer)this.value + (Integer)num.getValue();

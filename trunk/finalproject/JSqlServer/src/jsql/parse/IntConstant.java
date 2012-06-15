@@ -19,7 +19,7 @@ public class IntConstant extends NumberConstant {
 
 	@Override
 	public int compareTo(Constant obj) throws Exception {
-		if (!(obj instanceof IntConstant)) throw new Exception("compare is not suport!");
+		if (!(obj instanceof NumberConstant)) throw new Exception("compare is not suport!");
 		return ((Type)getValue()).compareTo((Type) obj.getValue());
 	}
 	
