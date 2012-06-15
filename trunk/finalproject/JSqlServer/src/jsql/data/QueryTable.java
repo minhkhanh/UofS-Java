@@ -134,7 +134,8 @@ public class QueryTable {
 					.nextElement();
 			if (columnConstant.equals(col)) {
 				Integer i = columns.get(columnConstant);
-				if(index!=null && i !=null) throw new Exception("loi column khong dam bao duy nhat, thu dung alias");
+				if(index!=null && i !=null) 
+					throw new Exception("loi column khong dam bao duy nhat, thu dung alias");
 				index = i;
 			}
 		}
