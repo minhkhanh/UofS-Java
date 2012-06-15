@@ -150,6 +150,7 @@ public class SetConstant extends Constant {
 			}
 			return new BooleanConstant(new BooleanType(false));
 		}
+		if (((SetType)getValue()).getSets().isEmpty()) return new BooleanConstant(new BooleanType(false));
 		throw new Exception("compare is not suport (syntax error)!");
 	}
 	@Override
@@ -179,6 +180,7 @@ public class SetConstant extends Constant {
 			}
 			return new BooleanConstant(new BooleanType(false));
 		}
+		if (((SetType)getValue()).getSets().isEmpty()) return new BooleanConstant(new BooleanType(false));
 		throw new Exception("compare is not suport (syntax error)!");
 	}
 	@Override
@@ -208,6 +210,7 @@ public class SetConstant extends Constant {
 			}
 			return new BooleanConstant(new BooleanType(false));
 		}
+		if (((SetType)getValue()).getSets().isEmpty()) return new BooleanConstant(new BooleanType(false));
 		throw new Exception("compare is not suport (syntax error)!");
 	}
 }

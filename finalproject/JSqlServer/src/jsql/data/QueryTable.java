@@ -292,7 +292,7 @@ public class QueryTable {
 		if (operator instanceof OperatorAvg) {
 			Integer i = getColumnIndex(col);
 			if (i==null) throw new Exception("column Aggregate error");
-			NumberType sum = new IntType(0);
+			NumberType sum = new FloatType(0f);
 			for (Row row : rows) {
 				//IntType t = (IntType) row.getDataAt(i);
 				//sum += (Integer)t.getValue();
