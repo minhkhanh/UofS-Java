@@ -43,7 +43,7 @@ public class Delete extends Statement {
 				if (iWhere<0) throw new Exception("do'nt have table");
 				//co menh de where				
 				sqlStatement = sqlStatement.substring(iWhere + 5).trim();
-				ExpressionTree exp = ExpressionTree.createWhere(sqlStatement);
+				ExpressionTree exp = (ExpressionTree) ExpressionTree.createWhere(sqlStatement);
 				del.setWhere(exp);
 			}
 			

@@ -26,6 +26,7 @@ public abstract class Type implements Serializable, Comparable<Type> {
 	}
 	@Override
 	public boolean equals(Object obj) {
+		if (this instanceof NumberType && obj instanceof NumberType) return compareTo((Type) obj)==0;
 		if (obj.getClass()!=this.getClass()) return false;
 		return value.equals(((Type)obj).value);
 	}

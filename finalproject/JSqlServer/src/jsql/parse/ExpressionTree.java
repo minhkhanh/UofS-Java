@@ -6,8 +6,10 @@ package jsql.parse;
 import java.util.Stack;
 import java.util.Vector;
 
+import jsql.data.BooleanType;
 import jsql.data.QueryRow;
 import jsql.data.QueryTable;
+import jsql.data.SetType;
 import jsql.data.Type;
 
 /**
@@ -19,10 +21,11 @@ public class ExpressionTree implements Exp {
 	protected Exp childLeft; //toan hang 2
 	protected Exp childRight; //toan hang 1
 	protected ExpressionTree(Operator operator) {
+		//super(EXP, null);
 		this.operator = operator;
 	}
-	public static ExpressionTree createWhere(String sqlStatement) throws Exception {
-		return (ExpressionTree) createExp(sqlStatement);
+	public static Exp createWhere(String sqlStatement) throws Exception {
+		return (Exp) createExp(sqlStatement);
 	}
 	public static Exp createExp(String sqlStatement) throws Exception {
 		//chuyen cau lenh string thanh mang cac obj
@@ -31,37 +34,37 @@ public class ExpressionTree implements Exp {
 		Object e = null;
 		while ((e = Utils.splitWhereStatement(statement))!=null) {
 			listStatement.add(e);
-			if (e instanceof OperatorIn) {
-				e = Utils.splitWhereStatementIN(statement);
-				listStatement.add(e);
-			}
+//			if (e instanceof OperatorIn) {
+//				e = Utils.splitWhereStatementIN(statement);
+//				listStatement.add(e);
+//			}
 		}
 		// chuyen tu trung to sang hau to
-		Vector<Exp> listOutput = new Vector<Exp>();
+		Vector<Object> listOutput = new Vector<Object>();
 		Stack<Object> stack = new Stack<Object>();
 		for (Object object : listStatement) {
-			if (object instanceof Constant) listOutput.add((Exp) object);
+			if (object instanceof Exp) listOutput.add((Exp) object);
 			if (object instanceof DauNgoacMo) stack.push(object);
 			if (object instanceof DauNgoacDong) {
 				Object obj = null;
 				while (!stack.empty() && !((obj = stack.pop()) instanceof DauNgoacMo)) {
-					listOutput.add((Exp) obj);
+					listOutput.add(obj);
 				}
 			}
 			if (object instanceof Operator) {
 				while (!stack.empty() && (stack.peek() instanceof Operator) && ((Operator)stack.peek()).compareTo((Operator) object)>=0) {
-					listOutput.add((Exp) stack.pop());
+					listOutput.add(stack.pop());
 				}
 				stack.push(object);
 			}
 		}
-		while (!stack.empty()) listOutput.add((Exp) stack.pop());
+		while (!stack.empty()) listOutput.add(stack.pop());
 		
 		Stack<Exp> stackExp = new Stack<Exp>();
 		//chuyen thanh cay bieu thuc
-		for (Exp exp : listOutput) {
-			if (exp instanceof Constant) {
-				stackExp.push(exp);
+		for (Object exp : listOutput) {
+			if (exp instanceof Exp) {
+				stackExp.push((Exp) exp);
 			}
 			if (exp instanceof Operator) {
 				ExpressionTree temp = new ExpressionTree((Operator) exp);
@@ -108,26 +111,26 @@ public class ExpressionTree implements Exp {
 		childLeft = null;
 	}	
 	
-	public boolean filterByExpression(QueryRow queryRow) throws Exception {
-		Constant c = evaluate(queryRow);
+	public boolean filterByExpression(QueryRow queryRow, Select parent) throws Exception {
+		Constant c = evaluate(queryRow, parent);
 		if (!(c instanceof BooleanConstant)) throw new Exception("where syntax error!");
 		return (Boolean) ((BooleanConstant)c).getBaseValue();
 	}
-	private Constant evaluate(QueryRow queryRow) throws Exception {
+	private Constant evaluate(QueryRow queryRow, Select parent) throws Exception {
 		if (isOneChild()) {
 			Exp e = getOneChild();
-			if (e instanceof Constant) return (Constant) e;
+			if (e instanceof Constant && operator==null) return (Constant) e;
 		}
 		if (operator==null) throw new Exception("compare with null");
 		Exp eL = getChildLeft();
 		Constant cL = null;
-		if (eL instanceof Constant) cL = (Constant) eL;
-		else if (eL!=null) cL = ((ExpressionTree)eL).evaluate(queryRow);
+		if (eL instanceof ExpressionTree) cL = ((ExpressionTree)eL).evaluate(queryRow, parent);
+		else if (eL!=null) cL = (Constant) eL;
 
 		Exp eR = getChildRight();
 		Constant cR = null;
-		if (eR instanceof Constant) cR = (Constant) eR;
-		else if (eR!=null) cR = ((ExpressionTree)eR).evaluate(queryRow);
+		if (eR instanceof ExpressionTree) cR = ((ExpressionTree)eR).evaluate(queryRow, parent);
+		else if (eR!=null) cR = (Constant) eR;
 		
 		if (eR instanceof Select) {
 			
@@ -160,19 +163,68 @@ public class ExpressionTree implements Exp {
 		}
 		
 		if (operator instanceof OperatorCompare) {
+			if (operator instanceof OperatorLike) return ((StringConstant)cR).like((StringConstant)cL);
+			if (cL instanceof SetConstant) {
+				Constant t = cL;
+				cL = cR;
+				cR = t;
+				((SetConstant)cR).processing(queryRow);
+			}
 			if (operator instanceof OperatorBang) return cR.bang(cL);
 			if (operator instanceof OperatorKhac) return cR.khac(cL);
 			if (operator instanceof OperatorNhoHon) return cR.nho(cL);
 			if (operator instanceof OperatorLonHon) return cR.lon(cL);
 			if (operator instanceof OperatorNhoHonHoacBang) return cR.nhobang(cL);
-			if (operator instanceof OperatorLonHonHoacBang) return cR.lonbang(cL);
-			if (operator instanceof OperatorLike) return ((StringConstant)cR).like((StringConstant)cL);
+			if (operator instanceof OperatorLonHonHoacBang) return cR.lonbang(cL);			
 			throw new Exception("compare operator is dont suport!");
 		}
 		
-		if (operator instanceof OperatorSet) {			
-			if (!(cR instanceof SetConstant)) throw new Exception("set with non-setable");
-			if (operator instanceof OperatorIn) return ((SetConstant)cR).contain(cL);
+		if (operator instanceof OperatorSet) {					
+			if (operator instanceof OperatorIn) {
+				if (cL instanceof Constant && !(cL instanceof ColumnConstant) && !(cL instanceof SetConstant)) {
+					SetConstant t = new SetConstant(new SetType(null));
+					t.add(cL);
+					cL = t;
+				}
+				if (!(cL instanceof SetConstant)) throw new Exception("set with non-setable");
+				((SetConstant)cL).processing(queryRow);
+				return ((SetConstant)cL).contain(cR);
+			}
+			if (operator instanceof OperatorExists) {
+				if (!isOneChild()) throw new Exception("Exists syntax error");
+				if (getOneChild() instanceof Constant && !(getOneChild() instanceof ColumnConstant) && !(getOneChild() instanceof SetConstant)) {
+					return new BooleanConstant(new BooleanType(true));
+				}
+				if (!(getOneChild() instanceof SetConstant)) throw new Exception("set with non-setable");
+				
+				SetConstant t = (SetConstant) getOneChild(); 
+				t.processing(queryRow);
+				return t.isExists();
+			}			
+			if (operator instanceof OperatorAll) {
+				if (!isOneChild()) throw new Exception("All syntax error");
+				if (getOneChild() instanceof Constant && !(getOneChild() instanceof ColumnConstant) && !(getOneChild() instanceof SetConstant)) {
+					return new BooleanConstant(new BooleanType(true));
+				}
+				if (!(getOneChild() instanceof SetConstant)) throw new Exception("set with non-setable");
+				
+				SetConstant t = (SetConstant) getOneChild(); 
+				t.processing(queryRow);
+				t.setMode(SetConstant.MODE_ALL);
+				return t;
+			}
+			if (operator instanceof OperatorAny) {
+				if (!isOneChild()) throw new Exception("Any syntax error");
+				if (getOneChild() instanceof Constant && !(getOneChild() instanceof ColumnConstant) && !(getOneChild() instanceof SetConstant)) {
+					return new BooleanConstant(new BooleanType(true));
+				}
+				if (!(getOneChild() instanceof SetConstant)) throw new Exception("set with non-setable");
+				
+				SetConstant t = (SetConstant) getOneChild(); 
+				t.processing(queryRow);
+				t.setMode(SetConstant.MODE_ANY);
+				return t;
+			}
 			throw new Exception("set operator is dont suport!");
 		}
 		
@@ -197,12 +249,12 @@ public class ExpressionTree implements Exp {
 		throw new Exception("set operator is dont suport!");
 	}
 	
-	public boolean filterByExpression(QueryTable queryTable) throws Exception {
-		Constant c = evaluate(queryTable);
+	public boolean filterByExpression(QueryTable queryTable, Select parent) throws Exception {
+		Constant c = evaluate(queryTable, parent);
 		if (!(c instanceof BooleanConstant)) throw new Exception("where syntax error!");
 		return (Boolean) ((BooleanConstant)c).getBaseValue();
 	}
-	public Constant evaluate(QueryTable queryTable) throws Exception {
+	public Constant evaluate(QueryTable queryTable, Select parent) throws Exception {
 		if (isOneChild()) {
 			Exp e = getOneChild();
 			if (e instanceof Constant && !(operator instanceof OperatorAggregate)) return (Constant) e;
@@ -210,13 +262,13 @@ public class ExpressionTree implements Exp {
 		if (operator==null) throw new Exception("compare with null");
 		Exp eL = getChildLeft();
 		Constant cL = null;
-		if (eL instanceof Constant) cL = (Constant) eL;
-		else if (eL!=null) cL = ((ExpressionTree)eL).evaluate(queryTable);
+		if (eL instanceof ExpressionTree) cL = ((ExpressionTree)eL).evaluate(queryTable, parent);
+		else if (eL!=null) cL = (Constant) eL;
 
 		Exp eR = getChildRight();
 		Constant cR = null;
-		if (eR instanceof Constant) cR = (Constant) eR;
-		else if (eR!=null) cR = ((ExpressionTree)eR).evaluate(queryTable);
+		if (eR instanceof ExpressionTree) cR = ((ExpressionTree)eR).evaluate(queryTable, parent);
+		else if (eR!=null) cR = (Constant) eR;
 		
 		if (eR instanceof Select) {
 			

@@ -14,18 +14,10 @@ import jsql.data.StringType;
  */
 public class Utils {
 	public static String[] splitString(String str, String[] pattern) {
-		//xoa het cac tu trong chuoi 'xxx'
-//		int oldLength = -1;
-//		while (str.indexOf('\'')>=0 && oldLength!=str.length()) {
-//			int i = str.indexOf('\'');
-//			int j = str.substring(i + 1).indexOf('\'');
-//			str = str.substring(0, i + 1) + str.substring(j + i + 1);
-//			oldLength = str.length();
-//		}
 		//tach index
 		int[] vIndex = new int[pattern.length];
 		for (int i = 0; i < vIndex.length; i++) {
-			vIndex[i] = indexOfString(str, pattern[i]);
+			vIndex[i] = indexOfStringExtent(str, pattern[i]);
 		}
 		Arrays.sort(vIndex);
 		String[] result = new String[vIndex.length];
@@ -42,6 +34,20 @@ public class Utils {
 		String tmp = str.substring(0, prefix.length());
 		tmp = tmp.toUpperCase();
 		return tmp.equals(prefix);
+	}
+	public static int indexOfStringExtent(String str, String find) {
+		//xoa het cac tu trong chuoi 'xxx'
+		str = str.toUpperCase().trim();
+		find = find.toUpperCase().trim();
+		boolean inString = false;
+		int count = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i)=='(') count++;
+			if (str.charAt(i)==')') count--;
+			if (str.charAt(i)=='\'') inString = !inString;
+			if (!inString && count==0 && str.substring(i).startsWith(find)) return i;
+		}
+		return -1;
 	}
 	public static int indexOfString(String str, String find) {
 		//xoa het cac tu trong chuoi 'xxx'
@@ -76,13 +82,16 @@ public class Utils {
 			return new ColumnConstant(new StringType("*"));
 		}
 		if (indexOfString(statement, "(")==0) {
-			statement = trim(statement.deleteCharAt(0));
-			return new DauNgoacMo();
+			return splitExp(statement);
 		}
-		if (indexOfString(statement, ")")==0) {
-			statement = trim(statement.deleteCharAt(0));
-			return new DauNgoacDong();
-		}
+//		if (indexOfString(statement, "(")==0) {
+//			statement = trim(statement.deleteCharAt(0));
+//			return new DauNgoacMo();
+//		}
+//		if (indexOfString(statement, ")")==0) {
+//			statement = trim(statement.deleteCharAt(0));
+//			return new DauNgoacDong();
+//		}
 		if (indexOfString(statement, "AND")==0 && !isWordChar(statement.charAt(3))) {
 			statement = trim(statement.delete(0, 3));
 			return new OperatorAnd();
@@ -171,6 +180,25 @@ public class Utils {
 			statement = trim(statement.delete(0, 3));
 			return new OperatorSum();
 		}
+		if (indexOfString(statement, "EXISTS")==0 && !isWordChar(statement.charAt(6))) {
+			statement = trim(statement.delete(0, 6));
+			return new OperatorExists();
+		}
+		if (indexOfString(statement, "ALL")==0 && !isWordChar(statement.charAt(3))) {
+			statement = trim(statement.delete(0, 3));
+			return new OperatorAll();
+		}
+		if (indexOfString(statement, "ANY")==0 && !isWordChar(statement.charAt(3))) {
+			statement = trim(statement.delete(0, 3));
+			return new OperatorAny();
+		}
+		if (indexOfString(statement, "SELECT")==0 && !isWordChar(statement.charAt(6))) {
+			//statement = trim(statement.delete(0, 3));
+			Statement t = Parser.parseStatement(statement.toString());
+			if (!(t instanceof Select)) throw new Exception("error on subquery!");
+			statement.delete(0, statement.length());
+			return t;
+		}
 		if (indexOfString(statement, "DISTINCT")==0 && !isWordChar(statement.charAt(8))) {
 			statement = trim(statement.delete(0, 8));
 			int i = 0;
@@ -210,6 +238,60 @@ public class Utils {
 		}		
 				
 		//throw new Exception("split false!");		
+	}
+//	private static String splitStringInStatement(String str) {
+//		int oldLength = -1;
+//		while (str.indexOf('\'')>=0 && oldLength!=str.length()) {
+//			int i = str.indexOf('\'');
+//			int j = str.substring(i + 1).indexOf('\'') + i;
+//			str = str.substring(0, i + 1) + str.substring(j + 1);
+//			oldLength = str.length();
+//		}
+//		return str;
+//	}
+//	private static int findStringNotInString(String str, String find) {
+//		
+//	}
+	private static Exp splitExp(StringBuilder statement) throws Exception {
+		//StringBuilder sql = new StringBuilder(splitStringInStatement(statement.toString()).trim());
+		if (statement.charAt(0)!='(') return ExpressionTree.createWhere(statement.toString());
+		//lay ve ct chinh
+		int count = 0;
+		boolean inString = false;
+		for (int j = 0; j < statement.length(); j++) {
+			if (statement.charAt(j)=='\'') inString = !inString;
+			if (!inString && statement.charAt(j)=='(') ++count;
+			if (!inString && statement.charAt(j)==')') --count;
+			if (count==0) {
+				String sub = statement.substring(1, j).trim();
+				statement = trim(statement.delete(0, j + 1));
+				//check neu la tap hop
+				if (isSetOf(sub)) {
+					return new SetConstant(sub);
+				}
+				return ExpressionTree.createExp(sub);
+			}
+		}
+		throw new Exception("sql syntax error!");
+	}
+	private static boolean isSetOf(String statement) {
+		StringBuilder sql = new StringBuilder(statement.trim());
+		//bo cac dau () cap con
+		int count = 0;
+		for (int i = 0; i < sql.length(); i++) {
+			if (sql.charAt(i)=='(') {
+				count = 0;
+				for (int j = i; j < sql.length(); j++) {
+					if (sql.charAt(j)=='(') ++count;
+					if (sql.charAt(j)==')') --count;
+					if (count==0) {
+						sql.delete(i + 1, j);
+						break;
+					}
+				}
+			}
+		}
+		return indexOfString(sql, ",")>0;
 	}
 	public static Object splitWhereStatementIN(StringBuilder statement) throws Exception {
 		if (statement==null||statement.length()==0) throw new Exception("split false!");

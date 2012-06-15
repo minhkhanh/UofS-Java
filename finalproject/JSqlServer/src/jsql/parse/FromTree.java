@@ -49,7 +49,7 @@ public class FromTree extends ExpressionTree {
 			opt = new OperatorInnerJoin();
 		} else {
 			statement = Utils.trim(statement.delete(0, 2));
-			on = ExpressionTree.createWhere(statement.toString());
+			on = (ExpressionTree) ExpressionTree.createWhere(statement.toString());
 		}
 		FromTree from = new FromTree(opt);
 		from.childRight = eR;
@@ -58,7 +58,7 @@ public class FromTree extends ExpressionTree {
 		
 		return from;
 	}
-	public QueryTable executeFrom(Database database) throws Exception {
+	public QueryTable executeFrom(Database database, Select parent) throws Exception {
 		if (isOneChild()) {
 			TableConstant table = (TableConstant)getOneChild();
 			if (table==null) throw new Exception("from statement error");
@@ -66,9 +66,9 @@ public class FromTree extends ExpressionTree {
 			return q;
 		}
 		if (operator instanceof OperatorJoin) {
-			QueryTable tableA = (getChildRight() instanceof FromTree) ? ((FromTree)getChildRight()).executeFrom(database) : new QueryTable((TableConstant)getChildRight(), database);
-			QueryTable tableB = (getChildLeft() instanceof FromTree) ? ((FromTree)getChildLeft()).executeFrom(database) : new QueryTable((TableConstant)getChildLeft(), database);
-			return tableA.executeOperator((OperatorJoin) operator, on, tableB);
+			QueryTable tableA = (getChildRight() instanceof FromTree) ? ((FromTree)getChildRight()).executeFrom(database, parent) : new QueryTable((TableConstant)getChildRight(), database);
+			QueryTable tableB = (getChildLeft() instanceof FromTree) ? ((FromTree)getChildLeft()).executeFrom(database, parent) : new QueryTable((TableConstant)getChildLeft(), database);
+			return tableA.executeOperator((OperatorJoin) operator, on, tableB, parent);
 		}
 		throw new Exception("from statement error");
 	}

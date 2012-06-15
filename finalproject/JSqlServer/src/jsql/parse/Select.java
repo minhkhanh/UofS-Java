@@ -18,7 +18,7 @@ import jsql.data.Type;
  * @author tmkhanh
  *
  */
-public class Select extends Statement implements Exp {
+public class Select extends Statement {
 
 	/**
 	 * 
@@ -71,7 +71,7 @@ public class Select extends Statement implements Exp {
 				if (Utils.indexOfString(key, "WHERE")==0) {
 					if (sel.where!=null) throw new Exception("statement have 2 WHERE");
 					key = key.substring(5).trim();
-					sel.where = ExpressionTree.createWhere(key);
+					sel.where = (ExpressionTree) ExpressionTree.createWhere(key);
 					continue;
 				}
 				if (Utils.indexOfString(key, "ORDER BY")==0) {
@@ -170,7 +170,7 @@ public class Select extends Statement implements Exp {
 	private void executeFrom() throws Exception {
 		if (from==null) throw new Exception("menh de select ko co from");
 		if (from instanceof TableConstant) queryTable = new QueryTable((TableConstant) from, database);
-		else queryTable = ((FromTree)from).executeFrom(database); 
+		else queryTable = ((FromTree)from).executeFrom(database, this); 
 	}
 	
 	private void executeWhere() throws Exception {
@@ -178,7 +178,7 @@ public class Select extends Statement implements Exp {
 		for (int i = 0; i < queryTable.getRows().size(); ) {
 			Row row = queryTable.getRows().elementAt(i);
 			QueryRow queryRow = new QueryRow(row, queryTable.getColumns());
-			if (where!=null && !where.filterByExpression(queryRow)) {
+			if (where!=null && !where.filterByExpression(queryRow, this)) {
 				queryTable.removeRow(i);
 			} else ++i;
 		}
@@ -205,7 +205,7 @@ public class Select extends Statement implements Exp {
 		}
 		if (having!=null) {
 			for (int i = 0; i < queryGroup.size(); ) {
-				if (!having.filterByExpression(queryGroup.get(i))) {
+				if (!having.filterByExpression(queryGroup.get(i), this)) {
 					queryGroup.remove(i);
 				} else ++i;
 			}
@@ -257,7 +257,7 @@ public class Select extends Statement implements Exp {
 				for (int j = 0; j < listSelect.size(); j++) {					
 					Exp exp = listSelect.get(j);	
 					if (exp instanceof ExpressionTree) {
-						Constant c = ((ExpressionTree)exp).evaluate(table);
+						Constant c = ((ExpressionTree)exp).evaluate(table, this);
 						newRow.addData((Type) c.getValue());
 						continue;
 					}
@@ -279,7 +279,7 @@ public class Select extends Statement implements Exp {
 				for (int j = 0; j < listSelect.size(); j++) {					
 					Exp exp = listSelect.get(j);	
 					if (exp instanceof ExpressionTree) {
-						Constant c = ((ExpressionTree)exp).evaluate(queryTable);
+						Constant c = ((ExpressionTree)exp).evaluate(queryTable, this);
 						newRow.addData((Type) c.getValue());
 						continue;
 					}

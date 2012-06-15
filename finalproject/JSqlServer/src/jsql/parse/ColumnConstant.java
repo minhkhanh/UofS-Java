@@ -51,8 +51,8 @@ public class ColumnConstant extends Constant {
 	@Override
 	public boolean equals(Object obj) {
 		ColumnConstant col = (ColumnConstant)obj;
-		if (col.alias==null) return columnName.equals(col.columnName); 
-		return columnName.equals(col.columnName) && alias.equals(col.alias);
+		if (col.alias==null) return columnName.toUpperCase().equals(col.columnName.toUpperCase()); 
+		return columnName.toUpperCase().equals(col.columnName.toUpperCase()) && alias.toUpperCase().equals(col.alias.toUpperCase());
 	}
 	
 	@Override
