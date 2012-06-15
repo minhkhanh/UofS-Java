@@ -66,7 +66,7 @@ public class Test {
 		
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh hs, Lop l where ( ( hs.MALOP=l.MALOP ) and ( HocSinh.MS > Any(2, 3) ) )");
 		//statement = Parser.parseStatement("SELECT * FROM Lop l where (select count(*) from HocSinh hs group by hs.MALOP where hs.MALOP=l.MALOP)>=2");
-		statement = Parser.parseStatement("SELECT * FROM Lop l where exists(select hs.MALOP from HocSinh hs where hs.MALOP=l.MALOP)");
+		statement = Parser.parseStatement("SELECT * FROM Lop l where l.MALOP not in (select MALOP from HocSinh)");
 		
 		//statement = Parser.parseStatement("SELECT MALOP, count(*) FROM HocSinh group by MALOP order by MALOP DESC");
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having avg(MS)>=3");
