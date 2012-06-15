@@ -106,7 +106,7 @@ public class SetConstant extends Constant {
 
 
 	public BooleanConstant isExists() {
-		return new BooleanConstant(new BooleanType(((SetType)getValue()).getSets().isEmpty()));
+		return new BooleanConstant(new BooleanType(!((SetType)getValue()).getSets().isEmpty()));
 	}
 	
 	public BooleanConstant contain(Constant obj) throws Exception {

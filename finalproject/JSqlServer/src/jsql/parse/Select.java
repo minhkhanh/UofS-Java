@@ -116,6 +116,10 @@ public class Select extends Statement {
 		if (parent==null) return null;
 		return parent.getParentQueryData(col);
 	}
+	
+	public Select getParent() {
+		return parent;
+	}
 
 	public ExpressionTree getWhere() {
 		return where;
@@ -152,7 +156,7 @@ public class Select extends Statement {
 		return r;
 	}
 	
-	private Table executeQuery(Select parent) throws Exception {
+	public Table executeQuery(Select parent) throws Exception {
 		this.parent = parent;
 		executeFrom();
 		executeWhere();
@@ -178,6 +182,7 @@ public class Select extends Statement {
 		for (int i = 0; i < queryTable.getRows().size(); ) {
 			Row row = queryTable.getRows().elementAt(i);
 			QueryRow queryRow = new QueryRow(row, queryTable.getColumns());
+			currentRow = queryRow;
 			if (where!=null && !where.filterByExpression(queryRow, this)) {
 				queryTable.removeRow(i);
 			} else ++i;

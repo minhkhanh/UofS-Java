@@ -57,7 +57,7 @@ public class Test {
 		database.executeStatement(statement);
 		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (3, 'Tran', 2)");
 		database.executeStatement(statement);
-		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (4, 'ABC', 3)");
+		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (4, 'ABC', 2)");
 		database.executeStatement(statement);
 		statement = Parser.parseStatement("INSERT INTO HocSinh VALUES (5, 'DEF', 2)");
 		database.executeStatement(statement);
@@ -65,7 +65,8 @@ public class Test {
 		//statement = Parser.parseStatement("SELECT Persons.LastName, SUM(Persons.FirstName), Orders.OrderNo FROM Persons RIGHT JOIN Orders ON Persons.P_Id=Orders.P_Id ORDER BY Persons.LastName WHERE LastName='Svendson' AND (FirstName='Tove' OR FirstName='Ola') GROUP BY Customer,OrderDate HAVING SUM(OrderPrice)>1500");
 		
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh hs, Lop l where ( ( hs.MALOP=l.MALOP ) and ( HocSinh.MS > Any(2, 3) ) )");
-		statement = Parser.parseStatement("SELECT * FROM Lop l where (select count(*) from HocSinh hs group by hs.MALOP where hs.MALOP=l.MALOP)>=2");
+		//statement = Parser.parseStatement("SELECT * FROM Lop l where (select count(*) from HocSinh hs group by hs.MALOP where hs.MALOP=l.MALOP)>=2");
+		statement = Parser.parseStatement("SELECT * FROM Lop l where exists(select hs.MALOP from HocSinh hs where hs.MALOP=l.MALOP)");
 		
 		//statement = Parser.parseStatement("SELECT MALOP, count(*) FROM HocSinh group by MALOP order by MALOP DESC");
 		//statement = Parser.parseStatement("SELECT HocSinh.Ten, Lop.Ten FROM HocSinh group by MALOP having avg(MS)>=3");
