@@ -10,6 +10,7 @@ import jsql.data.BooleanType;
 import jsql.data.QueryRow;
 import jsql.data.QueryTable;
 import jsql.data.SetType;
+import jsql.data.Table;
 import jsql.data.Type;
 
 /**
@@ -125,30 +126,58 @@ public class ExpressionTree implements Exp {
 		Exp eL = getChildLeft();
 		Constant cL = null;
 		if (eL instanceof ExpressionTree) cL = ((ExpressionTree)eL).evaluate(queryRow, parent);
-		else if (eL!=null) cL = (Constant) eL;
+		else if (eL instanceof Constant) cL = (Constant) eL;
 
 		Exp eR = getChildRight();
 		Constant cR = null;
 		if (eR instanceof ExpressionTree) cR = ((ExpressionTree)eR).evaluate(queryRow, parent);
-		else if (eR!=null) cR = (Constant) eR;
+		else if (eR instanceof Constant) cR = (Constant) eR;
 		
 		if (eR instanceof Select) {
-			
+			((Select)eR).setDatabase(parent.getDatabase());
+			Table t = ((Select)eR).executeQuery(parent);
+			if (t.getColumns().size()!=1) {
+				throw new Exception("error sub select query!");
+			} else if (t.getRows().size()==0) {
+				cR = new SetConstant(new SetType(null));
+			} else if (t.getRows().size()==1) {
+				cR = Constant.create(t.getRow(0).getDataAt(0));
+			} else {
+				cR = new SetConstant(new SetType(null));
+				for (int i = 0; i < t.getRows().size(); i++) {
+					((SetConstant)cR).add(Constant.create(t.getRow(i).getDataAt(0)));
+				}
+			}
 		}
 		
 		if (eL instanceof Select) {
-			
+			((Select)eL).setDatabase(parent.getDatabase());
+			Table t = ((Select)eL).executeQuery(parent);
+			if (t.getColumns().size()!=1) {
+				throw new Exception("error sub select query!");
+			} else if (t.getRows().size()==0) {
+				cL = new SetConstant(new SetType(null));
+			} else if (t.getRows().size()==1) {
+				cL = Constant.create(t.getRow(0).getDataAt(0));
+			} else {
+				cL = new SetConstant(new SetType(null));
+				for (int i = 0; i < t.getRows().size(); i++) {
+					((SetConstant)cL).add(Constant.create(t.getRow(i).getDataAt(0)));
+				}
+			}
 		}
 		
 		if (cL instanceof ColumnConstant) {
 			//String colName = (String)cL.getBaseValue();
 			Type type = queryRow.getData((ColumnConstant) cL);
+			if (type==null && parent.getParent()!=null) type = parent.getParent().getParentQueryData((ColumnConstant)cL);
 			if (type==null) throw new Exception("sql syntac error: column name is not exist!");
 			cL = Constant.create(type);
 		}
 		if (cR instanceof ColumnConstant) {
 			//String colName = (String)cR.getBaseValue();
 			Type type = queryRow.getData((ColumnConstant) cR);
+			if (type==null && parent.getParent()!=null) type = parent.getParent().getParentQueryData((ColumnConstant)cR);
 			if (type==null) throw new Exception("sql syntac error: column name is not exist!");
 			cR = Constant.create(type);
 		}
@@ -192,35 +221,35 @@ public class ExpressionTree implements Exp {
 			}
 			if (operator instanceof OperatorExists) {
 				if (!isOneChild()) throw new Exception("Exists syntax error");
-				if (getOneChild() instanceof Constant && !(getOneChild() instanceof ColumnConstant) && !(getOneChild() instanceof SetConstant)) {
+				if (cR instanceof Constant && !(cR instanceof ColumnConstant) && !(cR instanceof SetConstant)) {
 					return new BooleanConstant(new BooleanType(true));
 				}
-				if (!(getOneChild() instanceof SetConstant)) throw new Exception("set with non-setable");
+				if (!(cR instanceof SetConstant)) throw new Exception("set with non-setable");
 				
-				SetConstant t = (SetConstant) getOneChild(); 
+				SetConstant t = (SetConstant) cR; 
 				t.processing(queryRow);
 				return t.isExists();
 			}			
 			if (operator instanceof OperatorAll) {
 				if (!isOneChild()) throw new Exception("All syntax error");
-				if (getOneChild() instanceof Constant && !(getOneChild() instanceof ColumnConstant) && !(getOneChild() instanceof SetConstant)) {
+				if (cR instanceof Constant && !(cR instanceof ColumnConstant) && !(cR instanceof SetConstant)) {
 					return new BooleanConstant(new BooleanType(true));
 				}
-				if (!(getOneChild() instanceof SetConstant)) throw new Exception("set with non-setable");
+				if (!(cR instanceof SetConstant)) throw new Exception("set with non-setable");
 				
-				SetConstant t = (SetConstant) getOneChild(); 
+				SetConstant t = (SetConstant) cR; 
 				t.processing(queryRow);
 				t.setMode(SetConstant.MODE_ALL);
 				return t;
 			}
 			if (operator instanceof OperatorAny) {
 				if (!isOneChild()) throw new Exception("Any syntax error");
-				if (getOneChild() instanceof Constant && !(getOneChild() instanceof ColumnConstant) && !(getOneChild() instanceof SetConstant)) {
+				if (cR instanceof Constant && !(cR instanceof ColumnConstant) && !(cR instanceof SetConstant)) {
 					return new BooleanConstant(new BooleanType(true));
 				}
-				if (!(getOneChild() instanceof SetConstant)) throw new Exception("set with non-setable");
+				if (!(cR instanceof SetConstant)) throw new Exception("set with non-setable");
 				
-				SetConstant t = (SetConstant) getOneChild(); 
+				SetConstant t = (SetConstant) cR; 
 				t.processing(queryRow);
 				t.setMode(SetConstant.MODE_ANY);
 				return t;
