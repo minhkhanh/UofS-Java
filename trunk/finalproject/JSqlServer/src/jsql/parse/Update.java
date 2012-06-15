@@ -43,7 +43,7 @@ public class Update extends Statement {
 			} else {
 				set = sqlStatement.substring(0, iWhere);
 				sqlStatement = sqlStatement.substring(iWhere).substring(5).trim();
-				ExpressionTree exp = ExpressionTree.createWhere(sqlStatement);
+				ExpressionTree exp = (ExpressionTree) ExpressionTree.createWhere(sqlStatement);
 				update.setWhere(exp);
 			}
 			int iP = -1;

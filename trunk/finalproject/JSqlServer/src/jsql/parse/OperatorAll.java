@@ -7,10 +7,13 @@ package jsql.parse;
  * @author tmkhanh
  *
  */
-public class OperatorIn extends OperatorSet {
+public class OperatorAll extends OperatorSet {
 	@Override
 	public String getKyHieu() {
-		return "IN";
+		return "ALL";
 	}
-
+	@Override
+	public int getSoNgoi() {
+		return 1;
+	}
 }

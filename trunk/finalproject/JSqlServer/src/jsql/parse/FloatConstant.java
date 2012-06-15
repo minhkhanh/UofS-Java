@@ -10,7 +10,7 @@ import jsql.data.Type;
  * @author tmkhanh
  *
  */
-public class FloatConstant extends Constant {
+public class FloatConstant extends NumberConstant {
 
 	public FloatConstant(FloatType value) {
 		super(FLOAT, value);

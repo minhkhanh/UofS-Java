@@ -27,6 +27,7 @@ import jsql.parse.OperatorMax;
 import jsql.parse.OperatorMin;
 import jsql.parse.OperatorRightJoin;
 import jsql.parse.OperatorSum;
+import jsql.parse.Select;
 import jsql.parse.TableConstant;
 
 /**
@@ -164,18 +165,18 @@ public class QueryTable {
 //	public void setAlias(String alias) {
 //		this.alias = alias;
 //	}
-	public QueryTable executeOperator(OperatorJoin join, ExpressionTree on, QueryTable queryTable) throws Exception {
+	public QueryTable executeOperator(OperatorJoin join, ExpressionTree on, QueryTable queryTable, Select parent) throws Exception {
 		if (join instanceof OperatorInnerJoin) {
-			return innerJoin(on, queryTable);
+			return innerJoin(on, queryTable, parent);
 		}
 		if (join instanceof OperatorLeftJoin) {
-			return leftJoin(on, queryTable);
+			return leftJoin(on, queryTable, parent);
 		}
 		if (join instanceof OperatorRightJoin) {
-			return rightJoin(on, queryTable);
+			return rightJoin(on, queryTable, parent);
 		}
 		if (join instanceof OperatorFullJoin) {
-			return fullJoin(on, queryTable);
+			return fullJoin(on, queryTable, parent);
 		}
 		return this;
 	}
@@ -212,7 +213,7 @@ public class QueryTable {
 		}
 	}
 	
-	private QueryTable fullJoin(ExpressionTree on, QueryTable queryTable) throws Exception {
+	private QueryTable fullJoin(ExpressionTree on, QueryTable queryTable, Select parent) throws Exception {
 		joinColumn(queryTable.columns);
 		Vector<Row> nRows = new Vector<Row>();
 		Vector<Row> rowBNoJoin = new Vector<Row>();
@@ -222,7 +223,7 @@ public class QueryTable {
 				Row newRow = Row.createNewRow(rowA, rowB);
 				QueryRow queryRow = new QueryRow(newRow, columns);
 				if (on!=null) {
-					if (on.filterByExpression(queryRow)) {
+					if (on.filterByExpression(queryRow, parent)) {
 						nRows.add(newRow);
 						bHave = true;
 					} else rowBNoJoin.add(rowB);
@@ -241,7 +242,7 @@ public class QueryTable {
 		return this;
 	}
 	
-	private QueryTable innerJoin(ExpressionTree on, QueryTable queryTable) throws Exception {
+	private QueryTable innerJoin(ExpressionTree on, QueryTable queryTable, Select parent) throws Exception {
 		joinColumn(queryTable.columns);
 		Vector<Row> nRows = new Vector<Row>();
 		for (Row rowA : rows) {
@@ -249,7 +250,7 @@ public class QueryTable {
 				Row newRow = Row.createNewRow(rowA, rowB);
 				QueryRow queryRow = new QueryRow(newRow, columns);
 				if (on!=null) {
-					if (on.filterByExpression(queryRow)) {
+					if (on.filterByExpression(queryRow, parent)) {
 						nRows.add(newRow);
 					}
 				} else nRows.add(newRow);
@@ -259,7 +260,7 @@ public class QueryTable {
 		return this;
 	}
 	
-	private QueryTable leftJoin(ExpressionTree on, QueryTable queryTable) throws Exception {
+	private QueryTable leftJoin(ExpressionTree on, QueryTable queryTable, Select parent) throws Exception {
 		joinColumn(queryTable.columns);
 		Vector<Row> nRows = new Vector<Row>();
 		for (Row rowA : rows) {
@@ -268,7 +269,7 @@ public class QueryTable {
 				Row newRow = Row.createNewRow(rowA, rowB);
 				QueryRow queryRow = new QueryRow(newRow, columns);
 				if (on!=null) {
-					if (on.filterByExpression(queryRow)) {
+					if (on.filterByExpression(queryRow, parent)) {
 						nRows.add(newRow);
 						bHave = true;
 					}
@@ -282,8 +283,8 @@ public class QueryTable {
 		rows = nRows;
 		return this;
 	}
-	private QueryTable rightJoin(ExpressionTree on, QueryTable queryTable) throws Exception {
-		return queryTable.leftJoin(on, this);
+	private QueryTable rightJoin(ExpressionTree on, QueryTable queryTable, Select parent) throws Exception {
+		return queryTable.leftJoin(on, this, parent);
 	}
 	
 	public Constant executeAggregate(OperatorAggregate operator, ColumnConstant col) throws Exception {		

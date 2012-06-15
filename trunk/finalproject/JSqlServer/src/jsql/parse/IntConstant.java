@@ -11,7 +11,7 @@ import jsql.data.Type;
  * @author tmkhanh
  *
  */
-public class IntConstant extends Constant {
+public class IntConstant extends NumberConstant {
 
 	public IntConstant(IntType value) {
 		super(INT, value);

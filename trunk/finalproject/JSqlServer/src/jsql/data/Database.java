@@ -154,7 +154,7 @@ public class Database implements Serializable {
 			for (int i = 0; i < table.getRows().size(); ++i) {
 				QueryRow queryRow = new QueryRow(table.getRows().get(i), queryTable.getColumns());
 				if (update.getWhere() == null
-						|| update.getWhere().filterByExpression(queryRow)) {
+						|| update.getWhere().filterByExpression(queryRow, null)) {
 					Row row = new Row(table.getRows().get(i));
 					for (UpdateChange change : update.getChange()) {
 						ColumnConstant col = new ColumnConstant(null,
@@ -204,7 +204,7 @@ public class Database implements Serializable {
 					Row row = table.getRows().get(i);
 					// rowInfo.setRow(row);
 					QueryRow queryRow = new QueryRow(row, queryTable.getColumns());
-					if (del.getWhere().filterByExpression(queryRow)) {
+					if (del.getWhere().filterByExpression(queryRow, null)) {
 						table.removeRow(row);
 						++iCount;
 					} else

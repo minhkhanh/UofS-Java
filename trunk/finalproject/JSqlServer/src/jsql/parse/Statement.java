@@ -11,7 +11,7 @@ import jsql.data.Database;
  * @author tmkhanh
  *
  */
-public abstract class Statement implements Serializable {
+public abstract class Statement implements Exp, Serializable {
 	/**
 	 * 
 	 */
